@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>개발 블로그 시작하기(티스토리, velog, github) - brog</title><meta name="Description" content="미루고 미뤄온 개발블로그 ... 시작하기"><meta property="og:url" content="http://localhost:1313/posts/hugo-blog/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="개발 블로그 시작하기(티스토리, velog, github)">
+  <meta property="og:description" content="미루고 미뤄온 개발블로그 ... 시작하기">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-05-20T14:39:37+09:00">
+    <meta property="article:modified_time" content="2024-05-20T14:39:37+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="개발 블로그 시작하기(티스토리, velog, github)">
+  <meta name="twitter:description" content="미루고 미뤄온 개발블로그 ... 시작하기">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="http://localhost:1313/posts/hugo-blog/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "개발 블로그 시작하기(티스토리, velog, github)",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http://localhost:1313/posts/hugo-blog/"
+        },"genre": "posts","wordcount":  534 ,
+        "url": "http://localhost:1313/posts/hugo-blog/","datePublished": "2024-05-20T14:39:37+09:00","dateModified": "2024-05-20T14:39:37+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "http://localhost:1313/authors/braveseokyung"
+                    }],"description": "미루고 미뤄온 개발블로그 ... 시작하기"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#블로그-고민의-역사">블로그 고민의 역사</a>
+      <ul>
+        <li><a href="#블로그를-선택한-기준">블로그를 선택한 기준</a></li>
+        <li><a href="#1차-시도-velog">1차 시도 velog</a></li>
+        <li><a href="#2차-시도-티스토리">2차 시도 티스토리</a></li>
+        <li><a href="#3차-시도-github---jekyll">3차 시도 Github - Jekyll</a></li>
+        <li><a href="#마지막-github---hugo">마지막! Github - Hugo</a></li>
+      </ul>
+    </li>
+    <li><a href="#github-blog-변경시-주의사항">Github blog 변경시 주의사항</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">개발 블로그 시작하기(티스토리, velog, github)</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='http://localhost:1313/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/blog/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Blog</a></span>&nbsp;<span class="post-category">and</span>&nbsp;<span class="post-series">series <a href="/series/hugo-blog/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"/></svg>Hugo-Blog</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-05-20">2024-05-20</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-05-20">2024-05-20</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;534 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>Series - 개발 블로그 시작하기(티스토리, velog, github)</span>
+                                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul><li><span class="active">개발 블로그 시작하기(티스토리, velog, github)</span></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#블로그-고민의-역사">블로그 고민의 역사</a>
+      <ul>
+        <li><a href="#블로그를-선택한-기준">블로그를 선택한 기준</a></li>
+        <li><a href="#1차-시도-velog">1차 시도 velog</a></li>
+        <li><a href="#2차-시도-티스토리">2차 시도 티스토리</a></li>
+        <li><a href="#3차-시도-github---jekyll">3차 시도 Github - Jekyll</a></li>
+        <li><a href="#마지막-github---hugo">마지막! Github - Hugo</a></li>
+      </ul>
+    </li>
+    <li><a href="#github-blog-변경시-주의사항">Github blog 변경시 주의사항</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="블로그-고민의-역사" class="headerLink">
+    <a href="#%eb%b8%94%eb%a1%9c%ea%b7%b8-%ea%b3%a0%eb%af%bc%ec%9d%98-%ec%97%ad%ec%82%ac" class="header-mark" aria-label="Header mark for '블로그 고민의 역사'"></a>블로그 고민의 역사</h2><p>블로그를 만들어야겠다고 결심한지 거의 2년..
+글을 쓰기도 전에 고민해야할 게 너무 많아서 블로그를 본격적으로 할 수가 없었다. 플랫폼이랑 스킨이랑 기왕 하는거 예쁘게 꾸미고 싶은 마음에 이것저것 깔짝대기만 하다가, 타블로그 친구들 덕분에 미뤄왔던 블로그 만들기를 해치울 수 있었다.</p>
+<p>나는 결과적으로 이번 시리즈에서 설명할 Hugo 블로그로 정착했는데, 나에게 중요했던 부분들은 아래와 같다.</p>
+<h3 id="블로그를-선택한-기준" class="headerLink">
+    <a href="#%eb%b8%94%eb%a1%9c%ea%b7%b8%eb%a5%bc-%ec%84%a0%ed%83%9d%ed%95%9c-%ea%b8%b0%ec%a4%80" class="header-mark" aria-label="Header mark for '블로그를 선택한 기준'"></a>블로그를 선택한 기준</h3><ul>
+<li>TOC가 제공되어야 함</li>
+<li>코드 작성과 latex 작성이 편해야 함 (markdown으로 모두 가능하게)</li>
+<li>가독성이 좋아야 함(내기준: 줄간격이 너무 넓지 않고 단락 구분이 명확해야 함)</li>
+<li>하이라이팅(코드, 콜아웃)이 예쁘면 좋겠음</li>
+<li>물론 위에 것들은 어느정도 커스텀이 가능하지만, 웬만하면 처음부터 잘 구성된 테마를 골라서 쉽게 글을 쓸 수 있으면 좋겠음</li>
+</ul>
+<p>너무 까다롭다 보니 하나를 쓰다보면 뭔가 조금씩 아쉽고 그래서 글 한개 쓰다말고 다른 걸 깔짝대보고의 반복이었다. 아래는 내가 써봤던 플랫폼과 테마인데, 고민했던 만큼 충분히 장점이 있는 것들이라 참고가 되었음 좋겠다.</p>
+<h3 id="1차-시도-velog" class="headerLink">
+    <a href="#1%ec%b0%a8-%ec%8b%9c%eb%8f%84-velog" class="header-mark" aria-label="Header mark for '1차 시도 velog'"></a>1차 시도 velog</h3><p>개발자 블로그로서 필요한 것들을 웬만하면 다 갖추고 있어서 엄청 편하다.(코드블럭, latex, TOC)
+특이하게 시리즈로 글을 쓸 수 있는데, 같은 주제를 시간을 두고 공부를 하면서 쓸 때 굉장히 유용한다.</p>
+<p>하지만 태그를 카테고리롤 사용하는 것이 좀 불편하고, 뭔가뭔가 디자인이 아쉽다.. 특히 콜아웃이 초록색 줄에 회색바탕인게 눈에 잘 들어오지 않았다.</p>
+<h3 id="2차-시도-티스토리" class="headerLink">
+    <a href="#2%ec%b0%a8-%ec%8b%9c%eb%8f%84-%ed%8b%b0%ec%8a%a4%ed%86%a0%eb%a6%ac" class="header-mark" aria-label="Header mark for '2차 시도 티스토리'"></a>2차 시도 티스토리</h3><p>티스토리 역시 테마만 잘 고르면 편하게 글을 작성할 수 있는데, 나는 특히
+<a href="https://pronist.tistory.com/5#%EA%B8%B0%EB%8A%A5-1" target="_blank" rel="noopener noreferrer">Hello</a>
+이 테마가 마음에 들었다.</p>
+<p>그런데 내가 블로그를 쓰는데 서툴어서 그런지, 다 쓴 글을 봤을 때 가독성이 떨어진다는 느낌을 받았다. 그리고 마크다운으로 쓰는 것이 사실상 불가능해서 내가 기존에 정리해둔 글들을 편하게 옮기기 어려웠다.</p>
+<h3 id="3차-시도-github---jekyll" class="headerLink">
+    <a href="#3%ec%b0%a8-%ec%8b%9c%eb%8f%84-github---jekyll" class="header-mark" aria-label="Header mark for '3차 시도 Github - Jekyll'"></a>3차 시도 Github - Jekyll</h3><p>사실 github은 너무 어려워서 처음에는 생각하지 않았다. 그치만 구글링하다가 .io로 끝나는 블로그들을 보니까 너무 간지나고 또 글을 쓸 때마다 잔디를 심을 수 있다는 말에 홀려서 시작하게 됐다 ㅎㅎ</p>
+<p>테마는 <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener noreferrer">Chirpy</a> 로 골랐는데, 정말 고생했다 &hellip;
+Chirpy는 처음 하는 사람이 적용하기에는 좀 어려운 테마인 것 같다.</p>
+<p>힘들게 적용해서 정착하려고 했지만 또 그놈의 뭔가뭔가 아쉬워 타령 시작. 전체적으로 흐릿한 분위기가 뭔가 가독성이 떨어지는 느낌이 들어 눈물을 머금고 포기했다. 또 빌드하고 결과물을 보기까지 시간이 10분 정도 걸리는데, 이것도 성격급한 나한테 잘 맞지 않았다.</p>
+<h3 id="마지막-github---hugo" class="headerLink">
+    <a href="#%eb%a7%88%ec%a7%80%eb%a7%89-github---hugo" class="header-mark" aria-label="Header mark for '마지막! Github - Hugo'"></a>마지막! Github - Hugo</h3><p>Github 블로그를 만드는 방법이 Jekyll 말고 또 있다는 것을 아는가!!
+나는 Github으로 블로그를 만드는 것이라고 생각했는데, 사실 github은 그냥 페이지를 배포하는 방법일 뿐이고, 블로그 페이지 자체는 site generator라고 해서 블로그 틀을 제공하는 툴을 사용하는 것이었다. Jekyll은 그 site generator의 한 종류이고, Hugo도 마찬가지이다!</p>
+<p>공부하다가 우연히 본 블로그의 테마가 마음에 들었는데, 검색해보니까 Hugo의 <a href="https://themes.gohugo.io/themes/doit/" target="_blank" rel="noopener noreferrer">DoIt</a> 테마였다. 내가 생각하는 이 테마의 장점은 이렇다.</p>
+<ul>
+<li>테마가 전반적으로 선명함(소제목, 글 구분이 뚜렷, 한 문단안에서는 줄간격 좁음)</li>
+<li>하이라이팅이 정말정말 예쁨 종류도 많고!</li>
+<li>TOC, latex, 코드블럭 모두 가능</li>
+<li>velog의 장점인 series도 있음</li>
+<li>테마를 설명하는 <a href="https://hugodoit.pages.dev/theme-documentation-basics/" target="_blank" rel="noopener noreferrer">documentation</a>이 상세해서 적용하기 (비교적) 쉬움.</li>
+<li>local에서 <code>hugo server -D</code> 로 빌드 결과를 바로바로 확인할 수 있음.</li>
+</ul>
+<p>이것저것 썼지만, 결국 예쁜 테마가 짱이다! 가 결론이다 ㅎㅎㅎ</p>
+<h2 id="github-blog-변경시-주의사항" class="headerLink">
+    <a href="#github-blog-%eb%b3%80%ea%b2%bd%ec%8b%9c-%ec%a3%bc%ec%9d%98%ec%82%ac%ed%95%ad" class="header-mark" aria-label="Header mark for 'Github blog 변경시 주의사항'"></a>Github blog 변경시 주의사항</h2><p>나처럼 이미 {username}.github.io로 블로그를 만든 상태에서 블로그를 다시 만들 경우, 꼭 <strong>사이트 게시 취소 또는 삭제</strong>를 해야한다. 그래야 그 도메인을 다시 쓸 수 있다.</p>
+<p>리포지토리를 삭제하는 것이 가장 쉬운 방법이지만, 리포지토리에서 settings-pages로 들어가 unpublish site를 누르면 된다.
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-05-20%20%ec%98%a4%ed%9b%84%204.02.43.png" title="스크린샷 2024-05-20 오후 4.02.43.png" data-thumbnail="스크린샷 2024-05-20 오후 4.02.43.png"><img
+            
+            loading="lazy"
+            src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-05-20%20%ec%98%a4%ed%9b%84%204.02.43.png"
+            srcset="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-05-20%20%ec%98%a4%ed%9b%84%204.02.43.png, %ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-05-20%20%ec%98%a4%ed%9b%84%204.02.43.png 1.5x, %ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-05-20%20%ec%98%a4%ed%9b%84%204.02.43.png 2x"
+            alt="스크린샷 2024-05-20 오후 4.02.43.png"></a></p>
+<p>그리고 내가 삽질한 부분은 여기인데 아무리 테마를 적용해도 사이트가 바뀌지 않아서 적용이 안됐구나, 하고 다시 해보고 다시해보고 반복하다가, 그냥 캐시가 삭제되지 않아 내 컴퓨터에서 옛날 블로그로 연결되고 있다는 사실을 깨달았다..</p>
+<div class="details admonition failure open">
+    <div class="details-summary admonition-title">
+        <span class="icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/></svg></span>페이지 삭제되지 않는 현상<span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+    </div>
+    <div class="details-content">
+        <div class="admonition-content"><p>웹캐시가 남아있어서 페이지가 계속 연결될 수 있다
+강력 새로고침( cmd + shift + r) 을 해보자!</p>
+<p><a href="https://godtaehee.tistory.com/1" target="_blank" rel="noopener noreferrer">ref: 깃헙 블로그 삭제되지 않는 현상</a></p>
+</div></div></div>
+<p>기존 블로그를 삭제했다면 준비는 끝! 다음 글에서는 본격적으로 Hugo 블로그를 만들고 Github pages로 호스팅해보자.</p></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-05-20</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div>
+<script>window.config={"comment":{}};</script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>

@@ -1,11 +1,9 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>brog</title>
-        <link>http://localhost:1313/</link>
-        <description>brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 20 May 2024 14:39:37 &#43;0900</lastBuildDate>
-            <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
-        <item>
+        <title>Blog - Category - brog</title>
+        <link>http://localhost:1313/categories/blog/</link>
+        <description>Blog - Category - brog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 20 May 2024 14:39:37 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/blog/" rel="self" type="application/rss+xml" /><item>
     <title>개발 블로그 시작하기(티스토리, velog, github)</title>
     <link>http://localhost:1313/posts/hugo-blog/</link>
     <pubDate>Mon, 20 May 2024 14:39:37 &#43;0900</pubDate><author>

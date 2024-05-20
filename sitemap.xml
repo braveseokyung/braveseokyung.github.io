@@ -2,6 +2,13 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://braveseokyung.github.io/</loc></url><url>
-            <loc>https://braveseokyung.github.io/categories/</loc></url><url>
-            <loc>https://braveseokyung.github.io/tags/</loc></url></urlset>
+            <loc>http://localhost:1313/authors/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/blog/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/braveseokyung/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/hugo-blog/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/hugo-blog/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/tags/</loc></url></urlset>
