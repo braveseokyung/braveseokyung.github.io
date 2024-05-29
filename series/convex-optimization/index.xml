@@ -1,0 +1,18 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Convex-Optimization - Series - brog</title>
+        <link>https://braveseokyung.github.io/series/convex-optimization/</link>
+        <description>Convex-Optimization - Series - brog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 May 2024 21:42:55 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/series/convex-optimization/" rel="self" type="application/rss+xml" /><item>
+    <title>Convex sets (1)</title>
+    <link>https://braveseokyung.github.io/posts/convex-optimization-1/</link>
+    <pubDate>Wed, 29 May 2024 21:42:55 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>https://braveseokyung.github.io/posts/convex-optimization-1/</guid>
+    <description><![CDATA[2.1 Affine and convex sets 2.1.1 Lines and line segments line두 point를 연결하는 set of points
+[전제] $x_1 \neq x_2$ , $x_{1},x_{2}\in \mathbb{R}^n$ , $\theta\in R$ (x1,x2가 1차원 vector) 일 때 집합 $$\{\theta x_1+(1-\theta)x_2\}$$ $y=\theta x_1+(1-\theta x_2)$ 로 두면 다음과 같이 $x_2$를 기준으로 표현할 수 있다 $$y=x_2+\theta(x_1-x_2)$$ [해석]
+$\theta=0$일때의 reference point $x_2$와 $x_1-x_2$의 방향의 sum
+$\theta$는 scale parameter로, y가 $x_2$로부터 $x_1$을 향해 얼마나 갈 것인지의 fraction
+line segment두 point 를 잇는 선분 line의 coefficient가 0-1 사이인 경우 $$\{\theta x_1+(1-\theta)x_2|\theta\in [0,1]\}$$ $0 \leq \theta \leq 1$ : $\theta$가 커질수록 x1을 향해 가까워지고,]]></description>
+</item></channel>
+</rss>

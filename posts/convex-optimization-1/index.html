@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>Convex sets (1) - brog</title><meta name="Description" content="convex sets"><meta property="og:url" content="https://braveseokyung.github.io/posts/convex-optimization-1/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="Convex sets (1)">
+  <meta property="og:description" content="convex sets">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-05-29T21:42:55+09:00">
+    <meta property="article:modified_time" content="2024-05-29T21:42:55+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Convex sets (1)">
+  <meta name="twitter:description" content="convex sets">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="https://braveseokyung.github.io/posts/convex-optimization-1/" /><link rel="prev" href="https://braveseokyung.github.io/posts/start-hugo-blog/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "Convex sets (1)",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://braveseokyung.github.io/posts/convex-optimization-1/"
+        },"genre": "posts","wordcount":  539 ,
+        "url": "https://braveseokyung.github.io/posts/convex-optimization-1/","datePublished": "2024-05-29T21:42:55+09:00","dateModified": "2024-05-29T21:42:55+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "https://braveseokyung.github.io/authors/braveseokyung"
+                    }],"description": "convex sets"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#21-affine-and-convex-sets">2.1 Affine and convex sets</a>
+      <ul>
+        <li><a href="#211-lines-and-line-segments">2.1.1 Lines and line segments</a></li>
+        <li><a href="#212-affine-sets">2.1.2 Affine sets</a></li>
+        <li><a href="#214-convex-sets">2.1.4 Convex sets</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">Convex sets (1)</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='https://braveseokyung.github.io/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/courses/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Courses</a></span>&nbsp;<span class="post-category">and</span>&nbsp;<span class="post-series">series <a href="/series/convex-optimization/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"/></svg>Convex-Optimization</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-05-29">2024-05-29</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-05-29">2024-05-29</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;539 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>Series - </span>
+                                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul><li><span class="active">Convex sets (1)</span></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#21-affine-and-convex-sets">2.1 Affine and convex sets</a>
+      <ul>
+        <li><a href="#211-lines-and-line-segments">2.1.1 Lines and line segments</a></li>
+        <li><a href="#212-affine-sets">2.1.2 Affine sets</a></li>
+        <li><a href="#214-convex-sets">2.1.4 Convex sets</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="21-affine-and-convex-sets" class="headerLink">
+    <a href="#21-affine-and-convex-sets" class="header-mark" aria-label="Header mark for '2.1 Affine and convex sets'"></a>2.1 Affine and convex sets</h2><h3 id="211-lines-and-line-segments" class="headerLink">
+    <a href="#211-lines-and-line-segments" class="header-mark" aria-label="Header mark for '2.1.1 Lines and line segments'"></a>2.1.1 Lines and line segments</h3><h4 id="line" class="headerLink">
+    <a href="#line" class="header-mark" aria-label="Header mark for 'line'"></a>line</h4><p>두 point를 연결하는 set of points</p>
+<p>[전제] $x_1 \neq x_2$ , $x_{1},x_{2}\in \mathbb{R}^n$ , $\theta\in R$ (x1,x2가 1차원 vector) 일 때 집합
+</p>
+$$\{\theta x_1+(1-\theta)x_2\}$$
+<p>$y=\theta x_1+(1-\theta x_2)$ 로 두면 다음과 같이 $x_2$를 기준으로 표현할 수 있다
+</p>
+$$y=x_2+\theta(x_1-x_2)$$
+<p>
+<a class="lightgallery" href="Pasted%20image%2020240405222644.png" title="Pasted image 20240405222644.png" data-thumbnail="Pasted image 20240405222644.png"><img
+            
+            loading="lazy"
+            src="Pasted%20image%2020240405222644.png"
+            srcset="Pasted%20image%2020240405222644.png, Pasted%20image%2020240405222644.png 1.5x, Pasted%20image%2020240405222644.png 2x"
+            alt="Pasted image 20240405222644.png" width="400" ></a>
+[해석]</p>
+<p>$\theta=0$일때의 reference point $x_2$와 $x_1-x_2$의 방향의 sum</p>
+<p>$\theta$는 scale parameter로, y가 $x_2$로부터 $x_1$을 향해 얼마나 갈 것인지의 fraction</p>
+<h4 id="line-segment" class="headerLink">
+    <a href="#line-segment" class="header-mark" aria-label="Header mark for 'line segment'"></a>line segment</h4><p>두 point 를 잇는 선분
+line의 coefficient가 0-1 사이인 경우
+</p>
+$$\{\theta x_1+(1-\theta)x_2|\theta\in [0,1]\}$$
+<p>$0 \leq \theta \leq 1$ : $\theta$가 커질수록 x1을 향해 가까워지고,</p>
+<p>$\theta>1$ : x1의 beyond에 존재</p>
+<h3 id="212-affine-sets" class="headerLink">
+    <a href="#212-affine-sets" class="header-mark" aria-label="Header mark for '2.1.2 Affine sets'"></a>2.1.2 Affine sets</h3><h4 id="affine-sets" class="headerLink">
+    <a href="#affine-sets" class="header-mark" aria-label="Header mark for 'Affine sets'"></a>Affine sets</h4><p>쉽게 생각해서 두 점을 찍고 그 두 점을 잇는 직선을 쭉 그었을 때 set을 벗어나지 않으면 affine</p>
+<p>set A의 임의의 두 점 $x_1,x_2$가 만드는 직선의 모든 점이 A 안에 들어있으면 Affine set이다</p>
+<p>다른말로는, C가 C 안의 임의의 두 point에 대해 그 두 point의 linear combination-coefficient의 합이 1이되는-도 포함하고 있으면 affine</p>
+<p>[전제] 모든(for any) $x_1,x_{2}\in C$, 모든 $\theta \in \mathbb{R}$  에 대해
+</p>
+$$\theta x_1+(1-\theta)x_{2}\in C$$
+<p>
+이면 C가 affine set</p>
+<ul>
+<li>example
+<ul>
+<li>직선, 평면은 다 affine set</li>
+<li>어떤 linear equation의 ==solution set== $S=\{x|Ax=b\}$</li>
+<li>half plane은 affine set이 아니다</li>
+</ul>
+</li>
+</ul>
+<p>2개 이상의 점으로 generalization</p>
+<p>affine set은 자신한테 속하는 모든 점들의 모든 affine combination도 포함한다
+즉, $x_1,...,x_{k}\in C$, $\theta_{1}+...+\theta_{k}=1$ 일때
+point $\theta_{1}x_1+...+\theta_{k}x_k$ 또한 C에 포함된다</p>
+<p>또 다른 expression : subspace + offset으로 표현될 수 있다</p>
+<p>C의 subspace V와 C에 속하는 임의의 점 $x_0$에 대해,
+</p>
+$$C=V+x_0=\{v+x_{0}|v \in V\}$$
+<p>
+affine set C의 dimension은 subspace $V=C-x_0$의 dimension이다</p>
+<h5 id="affine-hull" class="headerLink">
+    <a href="#affine-hull" class="header-mark" aria-label="Header mark for 'affine hull'"></a>affine hull</h5><p>어떤 집합 $C\subset \mathbb{R}^n$ 의 점들의 모든 affine combination의 set을 affine hull이라고 한다</p>
+<p>$aff C={\theta_{1}x_1+...+\theta_{k}x_k|x_1,...,x_{k}\in C, \theta_1+...+\theta_k=1}$</p>
+<blockquote>
+<p>affine hull은 C를 포함하는 가장 작은 affine set이다!</p>
+</blockquote>
+<h3 id="214-convex-sets" class="headerLink">
+    <a href="#214-convex-sets" class="header-mark" aria-label="Header mark for '2.1.4 Convex sets'"></a>2.1.4 Convex sets</h3><h4 id="convex-set" class="headerLink">
+    <a href="#convex-set" class="header-mark" aria-label="Header mark for 'Convex Set'"></a>Convex Set</h4><p>쉽게 생각해서 어떤 집합 안에 두 점을 찍고 두 점을 잇는 선분을 쭉 그었을 때, 집합에 포함되면 convex set
+임의의 $x_1,x_2$ 에 대해 두 점을 잇는 선분을 모두 포함하는 집합</p>
+<p>[전제] for any $x_1,x_{2}\in C$, for all $\theta \in [0,1]$<br>
+</p>
+$$\theta x_1+(1-\theta)x_{2}\in C$$
+<ul>
+<li>
+<p>examples
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.19.21.png" title="스크린샷 2024-04-06 오후 5.19.21.png" data-thumbnail="스크린샷 2024-04-06 오후 5.19.21.png"><img
+            
+            loading="lazy"
+            src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.19.21.png"
+            srcset="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.19.21.png, %ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.19.21.png 1.5x, %ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.19.21.png 2x"
+            alt="스크린샷 2024-04-06 오후 5.19.21.png"></a>
+convex, not convex, not convex</p>
+<p>boundary만 있고 안이 비어있는 경우도 다 convex</p>
+<p>Discrete set: 점이 1개면 convex set, 2개 이상~countable many이면 not convex</p>
+</li>
+</ul>
+<p>모든 affine set은 convex 하다</p>
+<p>if affine then convex</p>
+<p>affine이 convex보다 strict한 개념</p>
+<p>affine set $\subset$ convex set</p>
+<h4 id="linear-and-convex-combinations" class="headerLink">
+    <a href="#linear-and-convex-combinations" class="header-mark" aria-label="Header mark for 'Linear and Convex combinations'"></a>Linear and Convex combinations</h4><p>convex combination은 coefficient가 모두 0보나 크거나 같고 그 합이 1인 linear combination</p>
+<h5 id="linear-combinationaffine-combination" class="headerLink">
+    <a href="#linear-combinationaffine-combination" class="header-mark" aria-label="Header mark for 'linear combination(affine combination)'"></a>linear combination(affine combination)</h5><p>for some $\theta_{i}\in \mathbb{R}$,
+</p>
+$$x=\theta_{1}x_1+\theta_{2}x_2+...+\theta_{n}x_n$$
+<h5 id="convex-combination" class="headerLink">
+    <a href="#convex-combination" class="header-mark" aria-label="Header mark for 'convex combination'"></a>convex combination</h5><p>for some 1) $\theta_{i}\geq 0$, 2) $\sum \theta_i=1$
+</p>
+$$x=\theta_{1}x_1+\theta_{2}x_2+...+\theta_{n}x_n$$
+<p>
+point들의 mixture, weighted average로 볼 수 있다</p>
+<div class="details admonition note open">
+    <div class="details-summary admonition-title">
+        <span class="icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg></span>linear(affine) combination<span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+    </div>
+    <div class="details-content">
+        <div class="admonition-content"><p>affine set-convex set의 관계와 비슷한 것 같다</p>
+<p>그래서 linear combination을 affine combination이라고도 부르는구나!</p>
+<p>affine set의 확장처럼, convex set도 set에 포함되는 point들의 모든 convex combination을 포함하고 있는 set으로 볼 수 있다!</p>
+</div></div></div>
+<h4 id="convex-hull" class="headerLink">
+    <a href="#convex-hull" class="header-mark" aria-label="Header mark for 'convex hull'"></a>convex hull</h4><p>어떤 set의 convex hull이란,
+그 set의 점들의 모든 convex combination을 포함하고 있는 set</p>
+<blockquote>
+<p>어떤 set을 포함하는 smallest convex set!
+만약 그 set이 이미 convex set이면, conv(C)=C 즉 자기자신!</p>
+</blockquote>
+<p>conv $C=\{\theta_{1}x_1+...+\theta_{k}x_{k}|x_{i}\in C, \theta_{i}\geq 0, i=1,...,k, \theta_1+...+\theta_k=1\}$
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.38.43.png" title="스크린샷 2024-04-06 오후 5.38.43.png" data-thumbnail="스크린샷 2024-04-06 오후 5.38.43.png"><img
+            
+            loading="lazy"
+            src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.38.43.png"
+            srcset="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.38.43.png, %ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.38.43.png 1.5x, %ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-04-06%20%ec%98%a4%ed%9b%84%205.38.43.png 2x"
+            alt="스크린샷 2024-04-06 오후 5.38.43.png"></a></p>
+<p>[further 해석]
+convex combination의 아이디어는 infinite sum, integral로 generalized 될 수 있고,</p>
+<p>가장 general하게는 <strong>probability distribution</strong>으로 볼 수 있다</p>
+<p>[전제] $\theta_{i}\geq 0$, $i=1,2,...,$ $\sum\limits_{i=1}^{\infty}\theta_i=1$, $x_1,x_{2},... \in C$, C is convex</p>
+<ul>
+<li>
+<p>infinite sum  </p>
+$$\sum\limits_{i=1}^{\infty}\theta_{i}x_{i}\in C$$
+<p>
+if C converges</p>
+</li>
+<li>
+<p>integral, probability distribution</p>
+<p>$p:\mathbb{R}^{n}\rightarrow \mathbb{R}$, $p(x)\geq 0$ for all $x\in C$, $\int_{C}p(x)dx=1$,
+</p>
+$$\int_{C}p(x)x dx \in C$$
+<p>
+이 뜻은, C가 convex이고 x가 C에 속하는 random vector이면, $\mathbb{E}(x)\in C$</p>
+<p>간단하게 생각하면, random variable x가 $x_1,x_2$ 의 값만 가질 수 있고</p>
+<p>$p(x=x_1)=\theta,p(x=x_2)=1-\theta$ 이면 $\mathbb{E}x=\theta x_1+(1-\theta)x_2$</p>
+</li>
+</ul>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-05-29</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/start-hugo-blog/" class="prev" rel="prev" title="블로그 만들기 with Hugo &amp; Github"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>블로그 만들기 with Hugo &amp; Github</a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>
