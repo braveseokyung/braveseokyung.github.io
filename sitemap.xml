@@ -2,17 +2,20 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://braveseokyung.github.io/authors/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/authors/braveseokyung/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/categories/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/convex-optimization-1/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/series/convex-optimization/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/categories/courses/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/series/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/categories/blog/</loc><lastmod>2024-05-21T15:20:41&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/series/hugo-blog/</loc><lastmod>2024-05-21T15:20:41&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/start-hugo-blog/</loc><lastmod>2024-05-21T15:20:41&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/hugo-blog/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/tags/</loc></url></urlset>
+            <loc>http://localhost:1313/posts/review-comet/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/braveseokyung/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/energy-based-models/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/generative-models/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/</loc><lastmod>2024-06-05T20:18:07&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/convex-optimization-1/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/convex-optimization/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/courses/</loc><lastmod>2024-05-29T21:42:55&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/blog/</loc><lastmod>2024-05-21T15:20:41&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/hugo-blog/</loc><lastmod>2024-05-21T15:20:41&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/start-hugo-blog/</loc><lastmod>2024-05-21T15:20:41&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/hugo-blog/</loc><lastmod>2024-05-20T14:39:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/tags/</loc></url></urlset>
