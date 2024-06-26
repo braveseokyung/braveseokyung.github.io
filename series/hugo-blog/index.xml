@@ -1,21 +1,21 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Hugo-Blog - Series - brog</title>
-        <link>http://localhost:1313/series/hugo-blog/</link>
+        <link>https://braveseokyung.github.io/series/hugo-blog/</link>
         <description>Hugo-Blog - Series - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 May 2024 15:20:41 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/series/hugo-blog/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 May 2024 15:20:41 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/series/hugo-blog/" rel="self" type="application/rss+xml" /><item>
     <title>개발 블로그 시작하기(티스토리, velog, github)</title>
-    <link>http://localhost:1313/posts/hugo-blog/</link>
+    <link>https://braveseokyung.github.io/posts/hugo-blog/</link>
     <pubDate>Mon, 20 May 2024 14:39:37 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/hugo-blog/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/hugo-blog/</guid>
     <description><![CDATA[미루고 미뤄온 개발블로그 ... 시작하기]]></description>
 </item><item>
     <title>블로그 만들기 with Hugo &amp; Github</title>
-    <link>http://localhost:1313/posts/start-hugo-blog/</link>
+    <link>https://braveseokyung.github.io/posts/start-hugo-blog/</link>
     <pubDate>Tue, 21 May 2024 15:20:41 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/start-hugo-blog/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/start-hugo-blog/</guid>
     <description><![CDATA[Hugo로 블로그 만들고 Github Pages로 배포하기]]></description>
 </item></channel>
 </rss>

@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Generative-Adversarial-Network - Series - brog</title>
+        <link>https://braveseokyung.github.io/series/generative-adversarial-network/</link>
+        <description>Generative-Adversarial-Network - Series - brog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 May 2024 21:42:55 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/series/generative-adversarial-network/" rel="self" type="application/rss+xml" /><item>
+    <title>GAN (1)</title>
+    <link>https://braveseokyung.github.io/posts/gan-1/</link>
+    <pubDate>Wed, 29 May 2024 21:42:55 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>https://braveseokyung.github.io/posts/gan-1/</guid>
+    <description><![CDATA[generative model 중 generator와 discriminator의 2 player game으로 학습되는 GAN을 알아보자!]]></description>
+</item></channel>
+</rss>

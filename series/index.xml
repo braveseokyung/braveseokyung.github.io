@@ -1,28 +1,35 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Series - Series - brog</title>
-        <link>http://localhost:1313/series/</link>
+        <link>https://braveseokyung.github.io/series/</link>
         <description>Series - Series - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Jun 2024 20:18:07 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/series/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Jun 2024 20:18:07 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/series/" rel="self" type="application/rss+xml" /><item>
     <title>Energy-Based-Models</title>
-    <link>http://localhost:1313/series/energy-based-models/</link>
+    <link>https://braveseokyung.github.io/series/energy-based-models/</link>
     <pubDate>Wed, 05 Jun 2024 20:18:07 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>http://localhost:1313/series/energy-based-models/</guid>
+    </author><guid>https://braveseokyung.github.io/series/energy-based-models/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Convex-Optimization</title>
-    <link>http://localhost:1313/series/convex-optimization/</link>
+    <link>https://braveseokyung.github.io/series/convex-optimization/</link>
     <pubDate>Wed, 29 May 2024 21:42:55 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>http://localhost:1313/series/convex-optimization/</guid>
+    </author><guid>https://braveseokyung.github.io/series/convex-optimization/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>Generative-Adversarial-Network</title>
+    <link>https://braveseokyung.github.io/series/generative-adversarial-network/</link>
+    <pubDate>Wed, 29 May 2024 21:42:55 &#43;0900</pubDate><author>
+        <name>Author</name>
+    </author><guid>https://braveseokyung.github.io/series/generative-adversarial-network/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Hugo-Blog</title>
-    <link>http://localhost:1313/series/hugo-blog/</link>
+    <link>https://braveseokyung.github.io/series/hugo-blog/</link>
     <pubDate>Tue, 21 May 2024 15:20:41 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>http://localhost:1313/series/hugo-blog/</guid>
+    </author><guid>https://braveseokyung.github.io/series/hugo-blog/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>

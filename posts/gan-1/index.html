@@ -1,0 +1,690 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>GAN (1) - brog</title><meta name="Description" content="generative model 중 generator와 discriminator의 2 player game으로 학습되는 GAN을 알아보자!"><meta property="og:url" content="https://braveseokyung.github.io/posts/gan-1/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="GAN (1)">
+  <meta property="og:description" content="generative model 중 generator와 discriminator의 2 player game으로 학습되는 GAN을 알아보자!">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-05-29T21:42:55+09:00">
+    <meta property="article:modified_time" content="2024-05-29T21:42:55+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GAN (1)">
+  <meta name="twitter:description" content="generative model 중 generator와 discriminator의 2 player game으로 학습되는 GAN을 알아보자!">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="https://braveseokyung.github.io/posts/gan-1/" /><link rel="prev" href="https://braveseokyung.github.io/posts/start-hugo-blog/" /><link rel="next" href="https://braveseokyung.github.io/posts/convex-optimization-1/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "GAN (1)",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://braveseokyung.github.io/posts/gan-1/"
+        },"genre": "posts","wordcount":  529 ,
+        "url": "https://braveseokyung.github.io/posts/gan-1/","datePublished": "2024-05-29T21:42:55+09:00","dateModified": "2024-05-29T21:42:55+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "https://braveseokyung.github.io/authors/braveseokyung"
+                    }],"description": "generative model 중 generator와 discriminator의 2 player game으로 학습되는 GAN을 알아보자!"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#recap--likelihood-training">Recap : Likelihood Training</a></li>
+    <li><a href="#gan--generative-adversarial-models-">GAN ( Generative Adversarial Models )</a>
+      <ul>
+        <li><a href="#transformation-generator">Transformation (Generator)</a></li>
+        <li><a href="#classify-discriminator">Classify (discriminator)</a></li>
+      </ul>
+    </li>
+    <li><a href="#training-gans-two-player-game">⭐ Training GANs: Two-player game</a>
+      <ul>
+        <li><a href="#gan-training-algorithm">⭐ Gan Training Algorithm</a></li>
+      </ul>
+    </li>
+    <li><a href="#gans-architecture">GAN’s architecture</a>
+      <ul>
+        <li><a href="#training-discriminator">training discriminator</a></li>
+        <li><a href="#training-generator">training generator</a></li>
+      </ul>
+    </li>
+    <li><a href="#samples-from-gan">Samples from GAN</a></li>
+    <li><a href="#deep-convolutional-generative-adversarial-networksdcgan">Deep Convolutional Generative Adversarial Networks(DCGAN)</a></li>
+    <li><a href="#samples-from-dcgan">Samples from DCGAN</a></li>
+    <li><a href="#interpolating-between-random-points-in-latent-space">Interpolating between random points in latent space</a></li>
+    <li><a href="#interpretable-vector-arithmetic">Interpretable Vector Arithmetic</a></li>
+    <li><a href="#cyclegan">CycleGAN</a>
+      <ul>
+        <li><a href="#cyclegan-with-unpaired-data">⭐CycleGAN with unpaired data</a></li>
+        <li><a href="#cyclegan-setting">CycleGAN setting</a></li>
+        <li><a href="#cycle-consistency-loss">Cycle Consistency Loss</a></li>
+        <li><a href="#overall-loss-for-cyclegan">Overall loss for CycleGAN</a></li>
+        <li><a href="#cyclegan-samples">CycleGAN samples</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">GAN (1)</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='https://braveseokyung.github.io/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/generative-models/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Generative-Models</a></span>&nbsp;<span class="post-category">and</span>&nbsp;<span class="post-series">series <a href="/series/generative-adversarial-network/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"/></svg>Generative-Adversarial-Network</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-05-29">2024-05-29</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-05-29">2024-05-29</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;529 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>Series - </span>
+                                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul><li><span class="active">GAN (1)</span></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#recap--likelihood-training">Recap : Likelihood Training</a></li>
+    <li><a href="#gan--generative-adversarial-models-">GAN ( Generative Adversarial Models )</a>
+      <ul>
+        <li><a href="#transformation-generator">Transformation (Generator)</a></li>
+        <li><a href="#classify-discriminator">Classify (discriminator)</a></li>
+      </ul>
+    </li>
+    <li><a href="#training-gans-two-player-game">⭐ Training GANs: Two-player game</a>
+      <ul>
+        <li><a href="#gan-training-algorithm">⭐ Gan Training Algorithm</a></li>
+      </ul>
+    </li>
+    <li><a href="#gans-architecture">GAN’s architecture</a>
+      <ul>
+        <li><a href="#training-discriminator">training discriminator</a></li>
+        <li><a href="#training-generator">training generator</a></li>
+      </ul>
+    </li>
+    <li><a href="#samples-from-gan">Samples from GAN</a></li>
+    <li><a href="#deep-convolutional-generative-adversarial-networksdcgan">Deep Convolutional Generative Adversarial Networks(DCGAN)</a></li>
+    <li><a href="#samples-from-dcgan">Samples from DCGAN</a></li>
+    <li><a href="#interpolating-between-random-points-in-latent-space">Interpolating between random points in latent space</a></li>
+    <li><a href="#interpretable-vector-arithmetic">Interpretable Vector Arithmetic</a></li>
+    <li><a href="#cyclegan">CycleGAN</a>
+      <ul>
+        <li><a href="#cyclegan-with-unpaired-data">⭐CycleGAN with unpaired data</a></li>
+        <li><a href="#cyclegan-setting">CycleGAN setting</a></li>
+        <li><a href="#cycle-consistency-loss">Cycle Consistency Loss</a></li>
+        <li><a href="#overall-loss-for-cyclegan">Overall loss for CycleGAN</a></li>
+        <li><a href="#cyclegan-samples">CycleGAN samples</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled.png"></a>
+<h2 id="recap--likelihood-training" class="headerLink">
+    <a href="#recap--likelihood-training" class="header-mark" aria-label="Header mark for 'Recap : Likelihood Training'"></a>Recap : Likelihood Training</h2><ul>
+<li>
+<p>Maximal likelihood training models</p>
+$$
+    \hat{\theta}=\argmax_{\theta}\sum_{i=1}^{M}\log p_\theta(x_i), x_1,x_2,...,x_m \sim p_{data}(x)
+    $$
+<p>likelihood를 가장 크게 하는 $\theta$ MLE를 찾는 것은 data distrubtion과 generated distribution 사이의 KL divergence  $d_{KL}(p_{data}||p_{\theta})$ 를 최소화하는 것과 같다</p>
+<p>Variational Autoencoder, Normalizing Flows가 여기에 해당</p>
+<p>keyword : <a href="https://www.notion.so/data-distribution-6c76d92307b749198b93db38ef33145c?pvs=21" target="_blank" rel="noopener noreferrer">data distribution</a></p>
+</li>
+<li>
+<p>높은 likelihood가 high-quality generated sample을 뜻하는가?
+optimal generative model이라면 highest likelihood, best sample quality를 보장하겠지만, imperfect model에 대해서는 high likelihood가 good sample quality를 보장하지 못할 수 있다</p>
+</li>
+</ul>
+<h2 id="gan--generative-adversarial-models-" class="headerLink">
+    <a href="#gan--generative-adversarial-models-" class="header-mark" aria-label="Header mark for 'GAN ( Generative Adversarial Models )'"></a>GAN ( Generative Adversarial Models )</h2><h3 id="transformation-generator" class="headerLink">
+    <a href="#transformation-generator" class="header-mark" aria-label="Header mark for 'Transformation (Generator)'"></a>Transformation (Generator)</h3><ul>
+<li>Problem
+high-dimensional complex data distribution으로부터 sample하고 싶은데, direct한 방법이 없음</li>
+<li>Solution
+simple distribution으로부터 sample하고 ( ex. random noise ), 이 distribution을 복잡한 data distribution으로 transform</li>
+<li>Question
+이 complex transformation을 어떻게 얻을 것인가?
+→ Neural Network!</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%201.png"></a>
+<hr>
+<h3 id="classify-discriminator" class="headerLink">
+    <a href="#classify-discriminator" class="header-mark" aria-label="Header mark for 'Classify (discriminator)'"></a>Classify (discriminator)</h3><ul>
+<li>Problem
+output distribution이 training data distribution과 비슷한지 알고 싶음</li>
+<li>Solution
+생성된 sample과 training sample이 비슷한지 비교</li>
+<li>question
+이 classfier를 어떻게 표현할 것인가?
+→ Neural Network!</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%202.png"></a>
+<hr>
+<h2 id="training-gans-two-player-game" class="headerLink">
+    <a href="#training-gans-two-player-game" class="header-mark" aria-label="Header mark for '⭐ Training GANs: Two-player game'"></a>⭐ Training GANs: Two-player game</h2><p>Generator는 real-looking sample을 만들어 discriminator를 속일 수 있도록 학습하고, discriminator는 real image와 fake image를 구분할 수 있도록 학습</p>
+<p>minimax game</p>
+<ul>
+<li>
+<p>GAN Training objective</p>
+$$
+    \min_G\max_D V(D,G)=\mathbb{E}_{x\sim p_{data}(x)}[\log D(x)]+\mathbb{E}_{z\sim p_z(z)}[log(1-D(G(z)))]
+    $$
+<p>$D(x)$  : <strong>real data</strong> x 에 대한 discriminator output</p>
+<p>$1-D(G(z))$ : <strong>fake data</strong> G(z)에 대한 discriminator output</p>
+<p>$D(.)$: discriminator가 real이라 생각하면 1, fake라 생각하면 0
+위의 두 값 모두 discriminator가 답을 맞추면 1, 틀리면 0이 나옴</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%203.png"></a>
+<ul>
+<li>
+<p>binary cross entropy</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png"><img
+                    
+                    loading="lazy"
+                    src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png"
+                    srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png 2x"
+                    alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/derivation.png"></a>
+</li>
+</ul>
+<p>따라서,</p>
+<p>Discrminator D는 objective를 maximize하려고 하고 (D(x)는 1, D(G(z))는 0이 되도록)</p>
+<p>Generator G는 objective를 minimize하려고 한다 (D(G(z))가 1이 되도록)</p>
+<ul>
+<li>
+<p>optimality</p>
+<p>global minimum은 $p_{data}=p_G$ 일때라는 것을 보일 수 있음</p>
+</li>
+</ul>
+<p>→</p>
+<p>Alternate between</p>
+<ol>
+<li>
+<p>Gradient ascent on Discriminator</p>
+$$
+        \max_D \mathbb{E}_{x\sim p_{data}(x)}[\log D(x)]+\mathbb{E}_{z\sim p_z(z)}[log(1-D(G(z)))]
+        $$
+</li>
+<li>
+<p>Gradient descent on Generator</p>
+$$
+        \min_G\mathbb{E}_{z\sim p_z(z)}[log(1-D(G(z)))]
+        $$
+<p>in practice, discriminator가 맞는 likelihood를 minimize하지 말고 discriminator가 틀리는 likelihood를 maximize</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png"><img
+                    
+                    loading="lazy"
+                    src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png"
+                    srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png 2x"
+                    alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png"></a>
+<p>sample이 fake일 때 low signal, gradient vanishing
+sample이 이미 좋은데 gradient signal이 그쪽에서 dominated</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png"><img
+                    
+                    loading="lazy"
+                    src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png"
+                    srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png 2x"
+                    alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%205.png"></a>
+</li>
+</ol>
+<p>참고자료 : <a href="https://youtu.be/igP03FXZqgo?t=2538&amp;si=vb62yzuDcdm6lQly" target="_blank" rel="noopener noreferrer">https://youtu.be/igP03FXZqgo?t=2538&si=vb62yzuDcdm6lQly</a></p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-1.png"></a>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-2.png"></a>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/justin-johnson-3.png"></a>
+<ul>
+<li>discriminator gradient ascent: k steps</li>
+</ul>
+</li>
+</ul>
+<h3 id="gan-training-algorithm" class="headerLink">
+    <a href="#gan-training-algorithm" class="header-mark" aria-label="Header mark for '⭐ Gan Training Algorithm'"></a>⭐ Gan Training Algorithm</h3><a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%206.png"></a>
+<ul>
+<li>
+<p>training이 끝나면 generator를 가지고 generate new images</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%207.png"></a>
+</li>
+</ul>
+<h2 id="gans-architecture" class="headerLink">
+    <a href="#gans-architecture" class="header-mark" aria-label="Header mark for 'GAN’s architecture'"></a>GAN’s architecture</h2><a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%208.png"></a>
+<h3 id="training-discriminator" class="headerLink">
+    <a href="#training-discriminator" class="header-mark" aria-label="Header mark for 'training discriminator'"></a>training discriminator</h3><p>generator를 freeze하고, backprop error to update discriminator weights</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%209.png"></a>
+<h3 id="training-generator" class="headerLink">
+    <a href="#training-generator" class="header-mark" aria-label="Header mark for 'training generator'"></a>training generator</h3><p>discriminator를 freeze하고, backprop to update generator weights</p>
+<ul>
+<li>
+<p>generator를 학습할 때는 real example이 필요없다</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%204.png"></a>
+</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2010.png"></a>
+<h2 id="samples-from-gan" class="headerLink">
+    <a href="#samples-from-gan" class="header-mark" aria-label="Header mark for 'Samples from GAN'"></a>Samples from GAN</h2><p>generated sample</p>
+<ul>
+<li>nearest neighbor from training set</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2011.png"></a>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2012.png"></a>
+<h2 id="deep-convolutional-generative-adversarial-networksdcgan" class="headerLink">
+    <a href="#deep-convolutional-generative-adversarial-networksdcgan" class="header-mark" aria-label="Header mark for 'Deep Convolutional Generative Adversarial Networks(DCGAN)'"></a>Deep Convolutional Generative Adversarial Networks(DCGAN)</h2><ul>
+<li>
+<p>generator가 fractionally-strided convolution으로 구성된 upsampling network</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2013.png"></a>
+</li>
+<li>
+<p>discriminator도 convolutional network</p>
+</li>
+</ul>
+<p>Architecture guidelines</p>
+<ul>
+<li>pooling layer
+<ul>
+<li>discriminator : strided convolution으로 교체</li>
+<li>generator: fractional-strided convolution으로 교체</li>
+</ul>
+</li>
+<li>batch norm : generator/discriminator 모두에 batch norm 적용</li>
+<li>fc hidden layer 삭제</li>
+<li>generator의 모든 layer에서 ReLU 사용, 단 ouput에서만 Tanh사용</li>
+<li>discriminator의 모든 layer에서 LeakyReLU 사용</li>
+</ul>
+<h2 id="samples-from-dcgan" class="headerLink">
+    <a href="#samples-from-dcgan" class="header-mark" aria-label="Header mark for 'Samples from DCGAN'"></a>Samples from DCGAN</h2><a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2014.png"></a>
+<h2 id="interpolating-between-random-points-in-latent-space" class="headerLink">
+    <a href="#interpolating-between-random-points-in-latent-space" class="header-mark" aria-label="Header mark for 'Interpolating between random points in latent space'"></a>Interpolating between random points in latent space</h2><ul>
+<li>
+<p>generator가 training dataset을 memorize하면 interpolation 동안 sharp transition</p>
+<p>$z_t=tz_0+(1-t)z_1$</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2015.png"></a>
+</li>
+</ul>
+<h2 id="interpretable-vector-arithmetic" class="headerLink">
+    <a href="#interpretable-vector-arithmetic" class="header-mark" aria-label="Header mark for 'Interpretable Vector Arithmetic'"></a>Interpretable Vector Arithmetic</h2><ul>
+<li>{smiling woman}-{neutral woman}+{neutral man}={smiling man}</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2016.png"></a>
+<ul>
+<li>{Glasses man}-{No glasses man}+{No glasses woman}={Woman with glasses}</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2017.png"></a>
+<h2 id="cyclegan" class="headerLink">
+    <a href="#cyclegan" class="header-mark" aria-label="Header mark for 'CycleGAN'"></a>CycleGAN</h2><p>어떤 domain에서 다른 domain으로 translate image</p>
+<p>ex) monet↔photos, zebras↔horses, summer↔winter</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2018.png"></a>
+<h3 id="cyclegan-with-unpaired-data" class="headerLink">
+    <a href="#cyclegan-with-unpaired-data" class="header-mark" aria-label="Header mark for '⭐CycleGAN with unpaired data'"></a>⭐CycleGAN with unpaired data</h3><ul>
+<li>일반적인 regression과 CycleGAN이 다른 부분은 unpaired setting이라는 것.</li>
+<li>어떻게 X와 Y 사이의 transformation을 unsupervised manner로 배울 수 있을까?</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2019.png"></a>
+<h3 id="cyclegan-setting" class="headerLink">
+    <a href="#cyclegan-setting" class="header-mark" aria-label="Header mark for 'CycleGAN setting'"></a>CycleGAN setting</h3><ul>
+<li>
+<p>Data</p>
+<p>다른 domain의 두 set</p>
+<p>$X=\{x_i\}_{i=1}^{N_x}, Y=\{y_i\}_{i=1}^{N_y}$</p>
+</li>
+<li>
+<p>Generator 2개</p>
+<p>$F:\mathcal{X}\rightarrow\mathcal{Y}, G:\mathcal{Y}\rightarrow\mathcal{X}$</p>
+</li>
+<li>
+<p>Discriminator 2개</p>
+<p>$D_X,D_Y$</p>
+</li>
+</ul>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2020.png"></a>
+<ul>
+<li>
+<p>GAN loss objective 2개</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2021.png"></a>
+</li>
+</ul>
+<h3 id="cycle-consistency-loss" class="headerLink">
+    <a href="#cycle-consistency-loss" class="header-mark" aria-label="Header mark for 'Cycle Consistency Loss'"></a>Cycle Consistency Loss</h3><ul>
+<li>
+<p>$F(G(X))=X, G(F(Y))=Y$</p>
+</li>
+<li>
+<p>cycle</p>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2022.png"></a>
+<a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png"><img
+                
+                loading="lazy"
+                src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png"
+                srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png 2x"
+                alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2023.png"></a>
+</li>
+</ul>
+<h3 id="overall-loss-for-cyclegan" class="headerLink">
+    <a href="#overall-loss-for-cyclegan" class="header-mark" aria-label="Header mark for 'Overall loss for CycleGAN'"></a>Overall loss for CycleGAN</h3><a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2024.png"></a>
+<h3 id="cyclegan-samples" class="headerLink">
+    <a href="#cyclegan-samples" class="header-mark" aria-label="Header mark for 'CycleGAN samples'"></a>CycleGAN samples</h3><a class="lightgallery" href="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png" title="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png" data-thumbnail="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png"><img
+            
+            loading="lazy"
+            src="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png"
+            srcset="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png 1.5x, 11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png 2x"
+            alt="11%20Generative%20Adversarial%20Networks%209bd77cd02a7b4271b4925238db5d5b0b/Untitled%2025.png"></a>
+<h2 id="reference" class="headerLink">
+    <a href="#reference" class="header-mark" aria-label="Header mark for 'Reference'"></a>Reference</h2><p>Generative Adversarial Networks : <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/1406.2661</a></p>
+<p>Radford et al, “Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks, ICLR 2016 : <a href="http://arxiv.org/pdf/1511.06434" target="_blank" rel="noopener noreferrer">http://arxiv.org/pdf/1511.06434</a></p>
+<p>Zhu et al. Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks, ICCV 2017 : <a href="https://arxiv.org/abs/1703.10593" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/1703.10593</a></p></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-05-29</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/start-hugo-blog/" class="prev" rel="prev" title="블로그 만들기 with Hugo &amp; Github"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>블로그 만들기 with Hugo &amp; Github</a>
+            <a href="/posts/convex-optimization-1/" class="next" rel="next" title="Convex sets (1)">Convex sets (1)<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>

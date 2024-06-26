@@ -1,28 +1,28 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Categories - Category - brog</title>
-        <link>http://localhost:1313/categories/</link>
+        <link>https://braveseokyung.github.io/categories/</link>
         <description>Categories - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Jun 2024 20:18:07 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Jun 2024 20:18:07 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/categories/" rel="self" type="application/rss+xml" /><item>
     <title>Generative-Models</title>
-    <link>http://localhost:1313/categories/generative-models/</link>
+    <link>https://braveseokyung.github.io/categories/generative-models/</link>
     <pubDate>Wed, 05 Jun 2024 20:18:07 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>http://localhost:1313/categories/generative-models/</guid>
+    </author><guid>https://braveseokyung.github.io/categories/generative-models/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Courses</title>
-    <link>http://localhost:1313/categories/courses/</link>
+    <link>https://braveseokyung.github.io/categories/courses/</link>
     <pubDate>Wed, 29 May 2024 21:42:55 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>http://localhost:1313/categories/courses/</guid>
+    </author><guid>https://braveseokyung.github.io/categories/courses/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Blog</title>
-    <link>http://localhost:1313/categories/blog/</link>
+    <link>https://braveseokyung.github.io/categories/blog/</link>
     <pubDate>Tue, 21 May 2024 15:20:41 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>http://localhost:1313/categories/blog/</guid>
+    </author><guid>https://braveseokyung.github.io/categories/blog/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>
