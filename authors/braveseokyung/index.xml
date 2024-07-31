@@ -1,11 +1,9 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>brog</title>
-        <link>https://braveseokyung.github.io/</link>
-        <description>brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 31 Jul 2024 21:22:15 &#43;0900</lastBuildDate>
-            <atom:link href="https://braveseokyung.github.io/index.xml" rel="self" type="application/rss+xml" />
-        <item>
+        <title>Braveseokyung - Author - brog</title>
+        <link>https://braveseokyung.github.io/authors/braveseokyung/</link>
+        <description>Braveseokyung - Author - brog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 31 Jul 2024 21:22:15 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/authors/braveseokyung/" rel="self" type="application/rss+xml" /><item>
     <title>VAE 이해해보기</title>
     <link>https://braveseokyung.github.io/posts/vae/</link>
     <pubDate>Wed, 31 Jul 2024 21:22:15 &#43;0900</pubDate><author>

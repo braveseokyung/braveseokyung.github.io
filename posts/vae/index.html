@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>VAE 이해해보기 - brog</title><meta name="Description" content="생성모델의 시작, VAE에 대해 알아보자!"><meta property="og:url" content="https://braveseokyung.github.io/posts/vae/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="VAE 이해해보기">
+  <meta property="og:description" content="생성모델의 시작, VAE에 대해 알아보자!">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-31T21:22:15+09:00">
+    <meta property="article:modified_time" content="2024-07-31T21:22:15+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="VAE 이해해보기">
+  <meta name="twitter:description" content="생성모델의 시작, VAE에 대해 알아보자!">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="https://braveseokyung.github.io/posts/vae/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "VAE 이해해보기",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://braveseokyung.github.io/posts/vae/"
+        },"genre": "posts","wordcount":  785 ,
+        "url": "https://braveseokyung.github.io/posts/vae/","datePublished": "2024-07-31T21:22:15+09:00","dateModified": "2024-07-31T21:22:15+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "https://braveseokyung.github.io/authors/braveseokyung"
+                    }],"description": "생성모델의 시작, VAE에 대해 알아보자!"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-background">0. Background</a>
+      <ul>
+        <li><a href="#ae-vs-vae"><strong>AE vs VAE?</strong></a></li>
+        <li><a href="#ae의-구조">AE의 구조</a></li>
+        <li><a href="#ae의-의의">AE의 의의</a></li>
+        <li><a href="#ae의-한계">AE의 한계</a></li>
+        <li><a href="#vae">VAE</a></li>
+      </ul>
+    </li>
+    <li><a href="#1-introduction">1. Introduction</a></li>
+    <li><a href="#2-method">2. Method</a>
+      <ul>
+        <li><a href="#optimization">optimization</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">VAE 이해해보기</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='https://braveseokyung.github.io/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>딥러닝</a></span>&nbsp;<span class="post-category">and</span>&nbsp;<span class="post-series">series <a href="/series/generative-models/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"/></svg>Generative-Models</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-07-31">2024-07-31</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-07-31">2024-07-31</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;785 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>Series - </span>
+                                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul><li><span class="active">VAE 이해해보기</span></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-background">0. Background</a>
+      <ul>
+        <li><a href="#ae-vs-vae"><strong>AE vs VAE?</strong></a></li>
+        <li><a href="#ae의-구조">AE의 구조</a></li>
+        <li><a href="#ae의-의의">AE의 의의</a></li>
+        <li><a href="#ae의-한계">AE의 한계</a></li>
+        <li><a href="#vae">VAE</a></li>
+      </ul>
+    </li>
+    <li><a href="#1-introduction">1. Introduction</a></li>
+    <li><a href="#2-method">2. Method</a>
+      <ul>
+        <li><a href="#optimization">optimization</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>이 글은 VAE 논문(<a href="https://arxiv.org/pdf/1312.6114.pdf" target="_blank" rel="noopener noreferrer">Auto-Encoding Variational Bayes</a>)을 리뷰하다가 막혀서 <a href="https://www.youtube.com/watch?v=o_peo6U7IRM&amp;t=1s" target="_blank" rel="noopener noreferrer">오토인코더의 모든 것</a>, <a href="https://www.youtube.com/watch?v=GbCAwVVKaHY" target="_blank" rel="noopener noreferrer">딥러닝 VAE</a> 를 참고해서 VAE를 이해 + 수식적인 부분 정리를 목적으로 쓴 글입니다.</p>
+<h2 id="0-background" class="headerLink">
+    <a href="#0-background" class="header-mark" aria-label="Header mark for '0. Background'"></a>0. Background</h2><h3 id="ae-vs-vae" class="headerLink">
+    <a href="#ae-vs-vae" class="header-mark" aria-label="Header mark for '&lt;strong&gt;AE vs VAE?&lt;/strong&gt;'"></a><strong>AE vs VAE?</strong></h3><p>통계와 수학으로 가득한 내용에 걸맞게 논문의 제목이 Auto-Encoding Variational Bayes인 것과 달리, 우리에게 흔히 알려져 있는 이름은 VAE(variational autoencoder)이다. 그렇다면 이 논문은 autoencoder와는 어떤 관계에 있는 것일까?</p>
+<h3 id="ae의-구조" class="headerLink">
+    <a href="#ae%ec%9d%98-%ea%b5%ac%ec%a1%b0" class="header-mark" aria-label="Header mark for 'AE의 구조'"></a>AE의 구조</h3><a class="lightgallery" href="img-VAE/Untitled.png" title="" data-thumbnail="img-VAE/Untitled.png"><img  loading="lazy" src="img-VAE/Untitled.png"     ></a>
+<p>Autoencoder는 인코더-디코더로 이루어진 네트워크이다. 입출력이 동일한 네트워크로, 인코더는 앞단에서 original data를 input으로 받아 z 차원의 latent를 output으로 뱉고, 디코더는 뒷단에서 latent를 input으로 받아 다시 original data와 같은 차원의 output을 출력한다. 학습은 deep neural network 방식으로, 인코더가 입력으로 받은 original data와 디코더가 출력한 같은  차원의 output data 사이의 reconstruction error(mse나 cross-entropy)를 loss로 삼아 이루어진다.</p>
+<h3 id="ae의-의의" class="headerLink">
+    <a href="#ae%ec%9d%98-%ec%9d%98%ec%9d%98" class="header-mark" aria-label="Header mark for 'AE의 의의'"></a>AE의 의의</h3><p>Autoencoder는 크게 <strong>1. 차원 축소(+manifold learning) 2. 생성 모델</strong> 의 역할을 한다. 인코더는 input을 z차원으로 축소하고(latent라고 부른다), 디코더는 z차원으로 축소된 latent를 다시 원래의 차원으로 복원한다. Autoencoder가 잘 학습되었다면, 인코더와 디코더를 분리했을 때 미지의 새로운 데이터에 대해서도 각각 latent와 reconstructed input을 출력할 것이다. 따라서 인코더는 데이터의 특성을 잘 학습하여 새로운 차원으로 embedding 시켜주는 차원 축소 그리고 manifold learning의 역할을, 디코더는 미지의 잠재 벡터에 대해 새로운 output을 출력하는 생성모델의 역할을 한다.</p>
+<p>그리고 이 모든 과정이 정답 데이터 없이 학습되는 unsupervised learning이라는 점도 중요한 특징이다.</p>
+<h3 id="ae의-한계" class="headerLink">
+    <a href="#ae%ec%9d%98-%ed%95%9c%ea%b3%84" class="header-mark" aria-label="Header mark for 'AE의 한계'"></a>AE의 한계</h3><p>Autoencoder에서 input과 디코더에 의해 reconstruct 된 input 간의 loss를 가지고 네트워크를 학습하는 과정은 maximum likelihood 과정의 최적화와 같기 때문에, original data의 확률 분포를 학습하는 과정이라고 볼 수 있다. 그러나 위와 같은 단순한 mse, cross-entropy loss를 사용하면 인코더가 original data에 대한 차원 축소나 복원은 잘 수행할 수 있어도, 미지의 데이터에 대해서는 학습한 바가 없어 제대로 생성할 수 없다는 한계가 있다.</p>
+<h3 id="vae" class="headerLink">
+    <a href="#vae" class="header-mark" aria-label="Header mark for 'VAE'"></a>VAE</h3><a class="lightgallery" href="img-VAE/Untitled-1.png" title="" data-thumbnail="img-VAE/Untitled-1.png"><img  loading="lazy" src="img-VAE/Untitled-1.png"     ></a>
+<p>따라서 output data의 확률 분포에 대한 가정을 바탕으로 디코더의 생성 모델 역할에 초점을 맞춘 것이 VAE라고 볼 수 있다. 이 inference 과정에 대한 알고리즘이 Auto-Encoding Variational Bayes이고, 이 알고리즘을 Autoencoder구조의 neural network로 만든 모델이 VAE이다.</p>
+<h2 id="1-introduction" class="headerLink">
+    <a href="#1-introduction" class="header-mark" aria-label="Header mark for '1. Introduction'"></a>1. Introduction</h2><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>이 논문은 정말 어렵다.. background를 저렇게 장황하게 썼는데도 introduction 첫 줄부터 무슨 말인지 이해할 수 없다..</p>
+<a class="lightgallery" href="img-VAE/Untitled-2.png" title="" data-thumbnail="img-VAE/Untitled-2.png"><img  loading="lazy" src="img-VAE/Untitled-2.png"     ></a>
+<p>efficient inference and learning in directed probabilistic models ← 이 말은 그냥 모델에서 encoder로 inference, decoder로 generate 한다는 뜻이다. latent variable은 z를 의미하고, prior probability는 θ를 parameter로 갖는 p(z), conditional probability는 z가 주어졌을 때 x의 확률분포이므로 p(x|z), posterior probablity는 p(z|x)이다. posterior probablity인 p(z|x)가 intractable하기 때문에,  φ를 parameter로 갖는 q(z|x)로 approximate한다.</p>
+<a class="lightgallery" href="img-VAE/Untitled-3.png" title="" data-thumbnail="img-VAE/Untitled-3.png"><img  loading="lazy" src="img-VAE/Untitled-3.png"     ></a>
+<p>이것을 통해 최종적으로 알고 싶은 것은 training data의 확률분포인 p(x)이다. p(x)가 maximize하는 likelihood이기 때문이다. 위의 식에서 $pθ(z|x)$ 이 intractable 할 때 p(x)를 어떻게 구하냐는 것이 이 논문이 introduction에서 제시하는 질문이고, 논문은 pθ(z|x)를 variational Bayesian approach를 통해 다른 parameter의 확률분포( $qφ(z|x)$ ) 근사함으로써 해결하고자 한다.</p>
+<h2 id="2-method" class="headerLink">
+    <a href="#2-method" class="header-mark" aria-label="Header mark for '2. Method'"></a>2. Method</h2><p>(log) data likelihood log p(x)를 구하는 과정을 따라가 보자.</p>
+<a class="lightgallery" href="img-VAE/Untitled-4.png" title="" data-thumbnail="img-VAE/Untitled-4.png"><img  loading="lazy" src="img-VAE/Untitled-4.png"     ></a>
+<p>xi는 데이터 포인트이고, 좌변이 maximize하고자 하는 log likelihood이다. p(x)와 z가 independent하므로 z에 대해 평균을 구해도 같다.(z가 갑자기 튀어나온 거 같아 이해는 안 되지만, 나중에 z를 쓰기 위함인가보다)</p>
+<a class="lightgallery" href="img-VAE/Untitled-5.png" title="" data-thumbnail="img-VAE/Untitled-5.png"><img  loading="lazy" src="img-VAE/Untitled-5.png"     ></a>
+<p>베이즈 정리에 의해 p(x)=p(x|z)p(z)/(pz|x)이다. (아는 게 나와서 기쁘다 ㅠㅠ)</p>
+<a class="lightgallery" href="img-VAE/Untitled-6.png" title="" data-thumbnail="img-VAE/Untitled-6.png"><img  loading="lazy" src="img-VAE/Untitled-6.png"     ></a>
+<p>로그를 나중에 찢어줄 것이기 때문에, 우변과 좌변에 같은 확률을 곱해준다</p>
+<a class="lightgallery" href="img-VAE/Untitled-7.png" title="" data-thumbnail="img-VAE/Untitled-7.png"><img  loading="lazy" src="img-VAE/Untitled-7.png"     ></a>
+<p>잘 찢어줬다!</p>
+<a class="lightgallery" href="img-VAE/Untitled-8.png" title="" data-thumbnail="img-VAE/Untitled-8.png"><img  loading="lazy" src="img-VAE/Untitled-8.png"     ></a>
+<p>갑자기 DkL이라는 게 나왔찌만, 할 수 있다.</p>
+<p>D() 부분은 분포간의 KL Divergence를 구하는 부분이다. KL Divergence는 분포끼리의 차이를 구하는 방법이라고 생각하면 된다.</p>
+<a class="lightgallery" href="img-VAE/Untitled-9.png" title="" data-thumbnail="img-VAE/Untitled-9.png"><img  loading="lazy" src="img-VAE/Untitled-9.png"     ></a>
+<p>두 분포간의 KL divergence는 위의 식처럼 구할 수 있기 때문에, log 부분이 D()의 내용으로 바뀐 것이다.</p>
+<a class="lightgallery" href="img-VAE/Untitled-10.png" title="" data-thumbnail="img-VAE/Untitled-10.png"><img  loading="lazy" src="img-VAE/Untitled-10.png"     ></a>
+<p>하지만 마지막 kl divergence는 위에서 설명했듯이 p(z|x)가 intractable하기 때문에 구할 수 없다. KL divergence는 항상 0보다 크거나 같기 때문에, 뒤의 term을 무시하고 앞의 부분만 최종 loss로 활용하여 optimize한다.</p>
+<a class="lightgallery" href="img-VAE/Untitled-11.png" title="" data-thumbnail="img-VAE/Untitled-11.png"><img  loading="lazy" src="img-VAE/Untitled-11.png"     ></a>
+<p>따라서 log likelihood는 optimize할 수 있는 loss보다 크거나 같기 때문에, 이 loss를 Variational lower bound, 줄여서 “ELBO”라고 부른다.</p>
+<p>ELBO는 maximize하려는 term이기 때문에(log likelihood에서 왔으니까) -를 붙여서 minimize하는 방향으로 써주고 모든 data point xi에 대해 sum하면,</p>
+<a class="lightgallery" href="img-VAE/Untitled-12.png" title="" data-thumbnail="img-VAE/Untitled-12.png"><img  loading="lazy" src="img-VAE/Untitled-12.png"     ></a>
+<p>이 되는데, 두 term에 대한 intuition이 가능하다. 좌측은 autoencoder에서 봤듯이, original input과 reconstructed input 사이의 복원 오차이고, 좌측은 prior z와 q(z|x) 사이의 KL divergence로 두 분포가 유사해야 한다는 제약 조건을 주는 regularization term이다.</p>
+<h3 id="optimization" class="headerLink">
+    <a href="#optimization" class="header-mark" aria-label="Header mark for 'optimization'"></a>optimization</h3><p>loss를 optimize해보자!</p>
+<ol>
+<li><strong>Reconstruction error</strong></li>
+</ol>
+<a class="lightgallery" href="img-VAE/Untitled-13.png" title="" data-thumbnail="img-VAE/Untitled-13.png"><img  loading="lazy" src="img-VAE/Untitled-13.png"     ></a>
+<p>Reconstruction error부터 정리해보면, (드디어 z로 평균을 구한 걸 써먹는다)</p>
+<a class="lightgallery" href="img-VAE/Untitled-14.png" title="" data-thumbnail="img-VAE/Untitled-14.png"><img  loading="lazy" src="img-VAE/Untitled-14.png"     ></a>
+<p>z가 continuous하므로 평균을 모든 z에 대해 적분해 구한다. 하지만 모든 z에 대해 적분하는 것은 불가능하기 때문에, 몇 개의 z만 sampling하는 monte-carlo tecqnique를 사용한다.</p>
+<a class="lightgallery" href="img-VAE/Untitled-15.png" title="" data-thumbnail="img-VAE/Untitled-15.png"><img  loading="lazy" src="img-VAE/Untitled-15.png"     ></a>
+<p>Monte-carlo tecqnique은 전체 개수가 많을 때, 표본으로 몇 개를 sampling하여 값을 얻으면 전체에서 구한 것과 비슷해진다는 내용이다. 우리의 경우는 평균을 구하기 위해 모든 z를 보지 않고 몇 개만 sampling한다고 생각하면 된다. 위의 식은 L개를 sampling하여 평균을 구한 것인데, 논문에 따르면 L=1로 1개만 sampling 해도 좋은 결과를 얻을 수 있다고 한다(사실 읭?스럽지만 넘어갔다..) 딥러닝에서 시간도 중요하기 때문에 이런 방향으로 논지를 펼친 것 같다.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>$let z ∼ p(z|x) = N (µ, σ2
+).$</p>
+<p>optimization을 최대한 쉽게 하기 위해, 논문에서는 prior z의 분포를 최대한 간단하게 정규분포로 설정했다. (이것도 이래도 되나 싶지만 논문에서 괜찮다고 했으니까 넘어가자)</p>
+<p>하지만 sampling process를 backpropagation 할 수가 없어 사용한 것이 reparameterization trick이다.</p>
+<a class="lightgallery" href="img-VAE/Untitled-16.png" title="" data-thumbnail="img-VAE/Untitled-16.png"><img  loading="lazy" src="img-VAE/Untitled-16.png"     ></a>
+<p>표준 정규분포를 이용하는 방식이다. 이렇게 하면 back propagation이 가능한 게, sampling을 하는 것이 아니라 encoder로 얻은 $µ, σ$ 에 random하게 얻은 표준편차를 곱해주는 식으로 표현이 된다.</p>
+<ol>
+<li><strong>Regularization error</strong></li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>또 가정을 한다.. 이렇게 가정이 많은데 이 모델이 잘 학습하는 게 신기하지만 이렇게 가정하고 나면 KL divergence는 쉽게 구할 수 있다.</p>
+<a class="lightgallery" href="img-VAE/Untitled-17.png" title="" data-thumbnail="img-VAE/Untitled-17.png"><img  loading="lazy" src="img-VAE/Untitled-17.png"     ></a>
+<p>VAE loss optimization 끝!</p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-07-31</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>
