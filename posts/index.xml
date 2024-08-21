@@ -3,7 +3,14 @@
         <title>All Posts - brog</title>
         <link>https://braveseokyung.github.io/posts/</link>
         <description>All Posts | brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 07 Aug 2024 19:35:06 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2024 21:00:37 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Bayesian Estimator</title>
+    <link>https://braveseokyung.github.io/posts/9-bayesian-estimation/</link>
+    <pubDate>Wed, 21 Aug 2024 21:00:37 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>https://braveseokyung.github.io/posts/9-bayesian-estimation/</guid>
+    <description><![CDATA[MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!]]></description>
+</item><item>
     <title>생성모델 평가지표 IS, FID, LPIPS</title>
     <link>https://braveseokyung.github.io/posts/generative-models-evaluation/</link>
     <pubDate>Wed, 07 Aug 2024 19:35:06 &#43;0900</pubDate><author>

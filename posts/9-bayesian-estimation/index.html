@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>Bayesian Estimator - brog</title><meta name="Description" content="MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!"><meta property="og:url" content="https://braveseokyung.github.io/posts/9-bayesian-estimation/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="Bayesian Estimator">
+  <meta property="og:description" content="MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-08-21T21:00:37+09:00">
+    <meta property="article:modified_time" content="2024-08-21T21:00:37+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Bayesian Estimator">
+  <meta name="twitter:description" content="MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="https://braveseokyung.github.io/posts/9-bayesian-estimation/" /><link rel="prev" href="https://braveseokyung.github.io/posts/generative-models-evaluation/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "Bayesian Estimator",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://braveseokyung.github.io/posts/9-bayesian-estimation/"
+        },"genre": "posts","wordcount":  586 ,
+        "url": "https://braveseokyung.github.io/posts/9-bayesian-estimation/","datePublished": "2024-08-21T21:00:37+09:00","dateModified": "2024-08-21T21:00:37+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "https://braveseokyung.github.io/authors/braveseokyung"
+                    }],"description": "MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > Posts </a><a class="menu-item"
+                    href="/tags/" > Tags </a><a class="menu-item"
+                    href="/categories/" > Categories </a><span class="menu-item delimiter"></span><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="" >Posts</a><a class="menu-item" href="/tags/" title="" >Tags</a><a class="menu-item" href="/categories/" title="" >Categories</a><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#maximum-likelihood-estimation-vs-bayesian-estimation">Maximum Likelihood Estimation vs Bayesian Estimation</a></li>
+    <li><a href="#pdfs">PDFs</a>
+      <ul>
+        <li><a href="#gaussian-distribution">Gaussian distribution</a></li>
+        <li><a href="#gamma-distribution">Gamma distribution</a></li>
+        <li><a href="#beta-distribution">Beta distribution</a></li>
+        <li><a href="#inverse-gamma-distribution">Inverse Gamma distribution</a></li>
+      </ul>
+    </li>
+    <li><a href="#prior-distribution">Prior Distribution</a>
+      <ul>
+        <li><a href="#bayesian-inference">Bayesian inference</a></li>
+        <li><a href="#example--biased-coinbernoulli">Example : biased coin(bernoulli)</a></li>
+        <li><a href="#example--gaussian">Example : Gaussian</a></li>
+      </ul>
+    </li>
+    <li><a href="#bayesian-estimator">Bayesian Estimator</a>
+      <ul>
+        <li><a href="#bayes-risk">Bayes risk</a></li>
+        <li><a href="#bayesian-estimators">Bayesian Estimators</a></li>
+        <li><a href="#bayesian-mmse-estimator">Bayesian MMSE estimator</a></li>
+        <li><a href="#bayesian-map-estimator">Bayesian MAP estimator</a></li>
+        <li><a href="#bayesian-estimator-and-posterior-pdf">Bayesian estimator and posterior pdf</a></li>
+        <li><a href="#example-bernoulli-distribution-with-uniform-prior">Example: Bernoulli distribution with uniform prior</a></li>
+        <li><a href="#example-bernoulli-distribution-with-linear-prior">Example: Bernoulli distribution with linear prior</a></li>
+        <li><a href="#example-bernoulli-distribution-with-beta-prior">Example: Bernoulli distribution with beta prior</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">Bayesian Estimator</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='https://braveseokyung.github.io/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/courses/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Courses</a></span>&nbsp;<span class="post-category">and</span>&nbsp;<span class="post-series">series <a href="/series/information-theory-and-inference/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"/></svg>Information-Theory-and-Inference</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-08-21">2024-08-21</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-08-21">2024-08-21</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;586 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>Series - </span>
+                                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul><li><span class="active">Bayesian Estimator</span></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#maximum-likelihood-estimation-vs-bayesian-estimation">Maximum Likelihood Estimation vs Bayesian Estimation</a></li>
+    <li><a href="#pdfs">PDFs</a>
+      <ul>
+        <li><a href="#gaussian-distribution">Gaussian distribution</a></li>
+        <li><a href="#gamma-distribution">Gamma distribution</a></li>
+        <li><a href="#beta-distribution">Beta distribution</a></li>
+        <li><a href="#inverse-gamma-distribution">Inverse Gamma distribution</a></li>
+      </ul>
+    </li>
+    <li><a href="#prior-distribution">Prior Distribution</a>
+      <ul>
+        <li><a href="#bayesian-inference">Bayesian inference</a></li>
+        <li><a href="#example--biased-coinbernoulli">Example : biased coin(bernoulli)</a></li>
+        <li><a href="#example--gaussian">Example : Gaussian</a></li>
+      </ul>
+    </li>
+    <li><a href="#bayesian-estimator">Bayesian Estimator</a>
+      <ul>
+        <li><a href="#bayes-risk">Bayes risk</a></li>
+        <li><a href="#bayesian-estimators">Bayesian Estimators</a></li>
+        <li><a href="#bayesian-mmse-estimator">Bayesian MMSE estimator</a></li>
+        <li><a href="#bayesian-map-estimator">Bayesian MAP estimator</a></li>
+        <li><a href="#bayesian-estimator-and-posterior-pdf">Bayesian estimator and posterior pdf</a></li>
+        <li><a href="#example-bernoulli-distribution-with-uniform-prior">Example: Bernoulli distribution with uniform prior</a></li>
+        <li><a href="#example-bernoulli-distribution-with-linear-prior">Example: Bernoulli distribution with linear prior</a></li>
+        <li><a href="#example-bernoulli-distribution-with-beta-prior">Example: Bernoulli distribution with beta prior</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="maximum-likelihood-estimation-vs-bayesian-estimation" class="headerLink">
+    <a href="#maximum-likelihood-estimation-vs-bayesian-estimation" class="header-mark" aria-label="Header mark for 'Maximum Likelihood Estimation vs Bayesian Estimation'"></a>Maximum Likelihood Estimation vs Bayesian Estimation</h2><p>앞글에서 MLE(Maximum Likelihood Estimator)는, likelihood를 maximize하는 parameter $\theta$를 estimator로 선택했다. 여기서 parmaeter $\theta$는 미지이지만 고정된 값으로 생각하는데, 이것은 frequentist의 관점이다. 반면 Bayesian estimation에서는 $\theta$를 <strong>random variable</strong>로 보는 Bayesian 관점을 취하는데, 때문에 random varaible $\theta$의 pdf인 $p(\theta)$가 중요해진다. $p(\theta)$는 prior라고 하는데, prior라고 부르는 이유는 $p(\theta)$를 우리가 사전에 알고있는 정보로 보기 때문이다.</p>
+<p>즉 Bayesian Estimation에서는 Prior의 pdf가 고려되므로, 몇가지 우리가 알고 있는 pdf로 prior를 가정함으로써 bayesian estimator를 유도하게 된다.</p>
+<h2 id="pdfs" class="headerLink">
+    <a href="#pdfs" class="header-mark" aria-label="Header mark for 'PDFs'"></a>PDFs</h2><p>Bayesian estimation을 할 때 중요한 PDF</p>
+<ul>
+<li>Gaussian $N(\mu,\sigma^2)$</li>
+<li>Gamma $Gamma(\alpha,\lambda)$</li>
+<li>Beta $Beta(a,b)$</li>
+<li>Inverse Gamma, $I Gamma(a,\lambda)$</li>
+</ul>
+<h3 id="gaussian-distribution" class="headerLink">
+    <a href="#gaussian-distribution" class="header-mark" aria-label="Header mark for 'Gaussian distribution'"></a>Gaussian distribution</h3><p>$X\sim\mathcal{N}(\mu,\sigma^2)$</p>
+<ul>
+<li>
+<p>pdf</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>mean</p>
+<p>$E(X)=\mu$</p>
+</li>
+<li>
+<p>mode</p>
+<p>$x_{mode}=\mu$</p>
+</li>
+</ul>
+<h3 id="gamma-distribution" class="headerLink">
+    <a href="#gamma-distribution" class="header-mark" aria-label="Header mark for 'Gamma distribution'"></a>Gamma distribution</h3><p>$X\sim Gamma(\alpha,\lambda)$</p>
+<ul>
+<li>
+<p>pdf</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%201.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%201.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%201.png"    height="500" width="500"></a>
+<p>엥 parameter a,$\lambda$ 인거 같은디</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%202.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%202.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%202.png"    height="500" width="500"></a>
+<ul>
+<li>$\Gamma(a)=(a-1)\Gamma(a-1)$</li>
+<li>Gamma(1,$\lambda)$=Expo($\lambda)$</li>
+</ul>
+</li>
+<li>
+<p>mean</p>
+<p>$E(X)=\frac{a}{\lambda}$</p>
+<p>$E(\frac{1}{X})=\frac{\lambda}{a-1}$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%203.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%203.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%203.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>mode</p>
+<p>$x_{mode}=\frac{a-1}{\lambda}$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%204.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%204.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%204.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h3 id="beta-distribution" class="headerLink">
+    <a href="#beta-distribution" class="header-mark" aria-label="Header mark for 'Beta distribution'"></a>Beta distribution</h3><p>$X\sim Beta(a,b)$</p>
+<ul>
+<li>
+<p>PDF</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%205.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%205.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%205.png"    height="500" width="500"></a>
+<p>where</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%206.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%206.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%206.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>mean</p>
+<p>$E(X)=\frac{a}{a+b}$</p>
+</li>
+<li>
+<p>mode</p>
+<p>$x_{mode}=\frac{a-1}{a+b-2}$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%207.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%207.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%207.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h3 id="inverse-gamma-distribution" class="headerLink">
+    <a href="#inverse-gamma-distribution" class="header-mark" aria-label="Header mark for 'Inverse Gamma distribution'"></a>Inverse Gamma distribution</h3><p>$X\sim IGamma(a,\lambda)$</p>
+<p>$X=\frac{1}{Y}, Y\sim Gamma(a,\lambda)$ : random variable의 역수가 Gamma distribution을 따르는경우</p>
+<ul>
+<li>
+<p>PDF</p>
+<p>transformation of variables</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%208.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%208.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%208.png"    height="500" width="500"></a>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%209.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%209.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%209.png"    height="300" width="300"></a>
+</li>
+<li>
+<p>mean</p>
+<p>$E(X)=\frac{\lambda}{a-1}$</p>
+<p>$E(\frac{1}{X})=\frac{a}{\lambda}$</p>
+<p>Gamma와 반대!</p>
+</li>
+<li>
+<p>mode</p>
+<p>$x_{mode}=\frac{\lambda}{a+1}$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2010.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2010.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2010.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h2 id="prior-distribution" class="headerLink">
+    <a href="#prior-distribution" class="header-mark" aria-label="Header mark for 'Prior Distribution'"></a>Prior Distribution</h2><ul>
+<li>
+<p>parameter  $\theta$ 에 대해 힌트가 있다고 생각해보자</p>
+<ul>
+<li>예를들어 가능한 range가 있거나</li>
+<li>다른 값보다 더 likely한 값이 있다는 prior information이나</li>
+</ul>
+</li>
+<li>
+<p>이러한 힌트가 $\theta$의 distribution으로 주어지고, prior distribution이라고 한다</p>
+<p>$p(\theta)$ : prior distribution on $\theta$</p>
+</li>
+</ul>
+<h3 id="bayesian-inference" class="headerLink">
+    <a href="#bayesian-inference" class="header-mark" aria-label="Header mark for 'Bayesian inference'"></a>Bayesian inference</h3><ul>
+<li>
+<p>우리가 알고있는 것</p>
+<p>이제 우리가 알고있는 것은</p>
+<ul>
+<li>
+<p>prior distribution : $\theta$ 에 대한 prior distribution $p(\theta)$</p>
+</li>
+<li>
+<p>data model : likelihood function $p(x;\theta)$</p>
+<p>우리가 관찰한 data들의 probability - unknown $\theta$가 given</p>
+</li>
+<li>
+<p>actual data : $\mathbf{x}=[x_1,…,x_N]$ (evidence)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>알고자 하는 것: posterior probability</p>
+<p>data $\mathbf{x}$를 관찰하는 것은  $\theta$의 probability에 영향을 준다(posterior)</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2011.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2011.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2011.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h3 id="example--biased-coinbernoulli" class="headerLink">
+    <a href="#example--biased-coinbernoulli" class="header-mark" aria-label="Header mark for 'Example : biased coin(bernoulli)'"></a>Example : biased coin(bernoulli)</h3><p>x=1 : H, x=0 : T</p>
+<ul>
+<li>
+<p>알고싶은 것</p>
+<p>$\theta=P(x=1)$ (0&lt;$\theta$&lt;1)</p>
+</li>
+<li>
+<p>prior를 uniform으로 가정</p>
+<p>$p(\theta)=Unif(0,1)$</p>
+</li>
+<li>
+<p>data model</p>
+<p>likelihood function $p(x;\theta)=\theta^x(1-\theta)^{1-x}$</p>
+</li>
+<li>
+<p>actual data</p>
+<p>$\mathbf{x}=[1,1,0]$</p>
+<p>$p(\mathbf{x};\theta)=\theta^2(1-\theta)$</p>
+</li>
+<li>
+<p>knowing the data(evidence) $\mathbf{x}$, $\theta$의 updated probability given [1,1,0]은</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2012.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2012.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2012.png"     ></a>
+<p>posterior가 Beta(3,2)</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2013.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2013.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2013.png"     ></a>
+<p>해석 : $\theta$에 대한 probability가 data를 관찰함으로써 update된 것</p>
+</li>
+</ul>
+<h3 id="example--gaussian" class="headerLink">
+    <a href="#example--gaussian" class="header-mark" aria-label="Header mark for 'Example : Gaussian'"></a>Example : Gaussian</h3><ul>
+<li>
+<p>알고싶은 것</p>
+<p>parameter $\theta=\mu$ 의 posterior probability</p>
+</li>
+<li>
+<p>prior distribution $p(\theta)$가 gaussian임이 알려져있음</p>
+<p>$\theta\sim\mathcal{N}(0,\gamma^2)$</p>
+</li>
+<li>
+<p>actual data</p>
+<p>single data point x=m을 observe</p>
+</li>
+<li>
+<p>data(evidence) x=m을 알게됨으로써, $\theta$의 posterior probability given m은</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2014.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2014.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2014.png"    height="500" width="500"></a>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2015.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2015.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2015.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h2 id="bayesian-estimator" class="headerLink">
+    <a href="#bayesian-estimator" class="header-mark" aria-label="Header mark for 'Bayesian Estimator'"></a>Bayesian Estimator</h2><ul>
+<li>
+<p>prior $p(\theta)$와 $p(x|\theta)$가 주어졌을 때 estimator $\hat\theta(x)$를 어떻게 구할 수 있을까?</p>
+<ul>
+<li>
+<p>p(x;\theta) 만 알았을 때는 모든 가능한 x에 대해 squared error를 최소화하는 \hat\theta(x)를 찾고자 했음</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2016.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2016.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2016.png"    height="300" width="300"></a>
+</li>
+<li>
+<p>이제 모든 가능한 x말고 $\theta$도 고려해야함</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2017.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2017.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2017.png"    height="300" width="300"></a>
+</li>
+</ul>
+</li>
+<li>
+<p>Bayesian estimation에서는 squared error를 <code>generalize</code>해서 error function $L(\hat\theta(x)-\theta)$로 표시하고, error function을 모든 $\mathbf{x},\theta$에 대해 expectation을 구한 것을 risk function이라고 함</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2018.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2018.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2018.png"    height="500" width="500"></a>
+<ul>
+<li>R : <code>Bayes risk</code></li>
+<li>L : <code>risk function</code></li>
+</ul>
+</li>
+<li>
+<p><code>Bayesian estimator</code>는 Bayes risk를 minimize 하는 $\theta$</p>
+<ul>
+<li>estimator는 data에 대한 함수이다 $\hat\theta_{Bayesian}(\mathbf{x})$</li>
+</ul>
+$$
+    ⁍
+    $$
+</li>
+</ul>
+<h3 id="bayes-risk" class="headerLink">
+    <a href="#bayes-risk" class="header-mark" aria-label="Header mark for 'Bayes risk'"></a>Bayes risk</h3><ul>
+<li>
+<p>bayesian estimator w.r.t to risk function L</p>
+<p>bayesian estimator는 bayes risk를 최소화하는 $\theta$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2019.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2019.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2019.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>risk function</p>
+<ul>
+<li>
+<p>squared error</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2020.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2020.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2020.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>absolute error</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2021.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2021.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2021.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>hit-or-miss error</p>
+<ul>
+<li>$\delta(x)$ : Dirac delta function</li>
+</ul>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2022.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2022.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2022.png"    height="500" width="500"></a>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2023.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2023.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2023.png"     ></a>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="bayesian-estimators" class="headerLink">
+    <a href="#bayesian-estimators" class="header-mark" aria-label="Header mark for 'Bayesian Estimators'"></a>Bayesian Estimators</h3><ul>
+<li>
+<p>$L\geq 0$일 때</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2024.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2024.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2024.png"    height="500" width="500"></a>
+<ul>
+<li>두번째 줄에서 세번째 줄 넘어갈 때 expectation에서 x하나에 대한 함수로 바꾼 것</li>
+</ul>
+</li>
+<li>
+<p><strong>Bayesian MMSE</strong>(Bayesian Minimum mean squared error) estimator</p>
+<ul>
+<li>
+<p>정의: mean squared risk를 최소화(risk function이 squared)</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2025.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2025.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2025.png"    height="500" width="500"></a>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>MAP estimator</strong></p>
+<ul>
+<li>
+<p>정의: hit-or-miss error risk를 최소화</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2026.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2026.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2026.png"    height="500" width="500"></a>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="bayesian-mmse-estimator" class="headerLink">
+    <a href="#bayesian-mmse-estimator" class="header-mark" aria-label="Header mark for 'Bayesian MMSE estimator'"></a>Bayesian MMSE estimator</h3><ul>
+<li>
+<p>mean squared risk를 최소화</p>
+</li>
+<li>
+<p>최소화 하는 estimator를 구하면</p>
+<p>Bayesian MMSE estimator는 $\theta$의 mean w.r.t to posterior pdf given data $\mathbf{x}$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2027.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2027.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2027.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>증명</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2028.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2028.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2028.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h3 id="bayesian-map-estimator" class="headerLink">
+    <a href="#bayesian-map-estimator" class="header-mark" aria-label="Header mark for 'Bayesian MAP estimator'"></a>Bayesian MAP estimator</h3><ul>
+<li>
+<p>hit-or-miss error risk를 최소화</p>
+</li>
+<li>
+<p>최소화 하는 estimator를 구하면</p>
+<p>MAP estimator는 <strong>mode</strong> of posterior pdf given data x</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2029.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2029.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2029.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>증명</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2030.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2030.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2030.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h3 id="bayesian-estimator-and-posterior-pdf" class="headerLink">
+    <a href="#bayesian-estimator-and-posterior-pdf" class="header-mark" aria-label="Header mark for 'Bayesian estimator and posterior pdf'"></a>Bayesian estimator and posterior pdf</h3><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p>posterior pdf에 의해 determined</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2031.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2031.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2031.png"    height="500" width="500"></a>
+<ul>
+<li>
+<p>예를 들어 posterior가 Gamma라면,</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2032.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2032.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2032.png"    height="500" width="500"></a>
+<p>mean&gt;mode이므로 MMSE estimator가 MAP estimator보다 큼</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="example-bernoulli-distribution-with-uniform-prior" class="headerLink">
+    <a href="#example-bernoulli-distribution-with-uniform-prior" class="header-mark" aria-label="Header mark for 'Example: Bernoulli distribution with uniform prior'"></a>Example: Bernoulli distribution with uniform prior</h3><ul>
+<li>
+<p>$\mathbf{x}=[x_1,...,x_N]$  : iid sample from Bernulli distribution</p>
+</li>
+<li>
+<p>parameter : $\theta$</p>
+</li>
+<li>
+<p>$p(x|\theta)$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2033.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2033.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2033.png"    height="300" width="300"></a>
+</li>
+<li>
+<p>assume prior $p(\theta)$ uniform</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2034.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2034.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2034.png"    height="300" width="300"></a>
+</li>
+<li>
+<p>posterior distribution은 $Beta(n_1+1,n_0+1)$이 된다</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2035.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2035.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2035.png"     ></a>
+</li>
+<li>
+<p>Bayesian MMSE estimator</p>
+<p>posterior의 평균이므로 $\frac{n_1+1}{n_1+n_0+2}=\frac{\sum x_i+1}{N+2}$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2036.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2036.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2036.png"     ></a>
+</li>
+<li>
+<p>MAP estimator</p>
+<p>posterior의 mode이므로 $\frac{n_1}{n_1+n_0}=\frac{\sum x_i}{N}$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2037.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2037.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2037.png"     ></a>
+</li>
+</ul>
+<h3 id="example-bernoulli-distribution-with-linear-prior" class="headerLink">
+    <a href="#example-bernoulli-distribution-with-linear-prior" class="header-mark" aria-label="Header mark for 'Example: Bernoulli distribution with linear prior'"></a>Example: Bernoulli distribution with linear prior</h3><ul>
+<li>
+<p>linear prior</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2038.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2038.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2038.png"    height="300" width="300"></a>
+</li>
+<li>
+<p>posterior beta distribution $Beta(n_1+2,n_0+1)$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2039.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2039.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2039.png"     ></a>
+</li>
+<li>
+<p>Bayesian MMSE estimator</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2040.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2040.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2040.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>MAP estimator</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2041.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2041.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2041.png"    height="500" width="500"></a>
+</li>
+</ul>
+<h3 id="example-bernoulli-distribution-with-beta-prior" class="headerLink">
+    <a href="#example-bernoulli-distribution-with-beta-prior" class="header-mark" aria-label="Header mark for 'Example: Bernoulli distribution with beta prior'"></a>Example: Bernoulli distribution with beta prior</h3><ul>
+<li>
+<p>beta prior : $Beta(a,b)$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2042.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2042.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2042.png"    height="500" width="500"></a>
+</li>
+<li>
+<p>posterior : $Beta(n_1+a,n_0+b)$</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2043.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2043.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2043.png"     ></a>
+</li>
+<li>
+<p>Bayesian MMSE estimator</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2044.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2044.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2044.png"     ></a>
+</li>
+<li>
+<p>MAP estimator</p>
+<a class="lightgallery" href="9%20Bayesian%20Estimator/Untitled%2045.png" title="" data-thumbnail="9%20Bayesian%20Estimator/Untitled%2045.png"><img  loading="lazy" src="9%20Bayesian%20Estimator/Untitled%2045.png"     ></a>
+</li>
+</ul></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-08-21</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/generative-models-evaluation/" class="prev" rel="prev" title="생성모델 평가지표 IS, FID, LPIPS"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>생성모델 평가지표 IS, FID, LPIPS</a></div>
+</div>
+<div id="comments" class="print:!tw-hidden tw-pt-32 tw-pb-8"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a><a href="#comments" id="view-comments" class="fixed-button" title="View Comments">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"comment","lightTheme":"github-light","repo":"braveseokyung/blog"}},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/utterances.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>
