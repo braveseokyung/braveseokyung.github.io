@@ -2,12 +2,13 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>http://localhost:1313/authors/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/authors/braveseokyung/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/categories/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/categories/computer-network/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/posts/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/</loc><lastmod>2024-09-03T21:30:12&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/braveseokyung/</loc><lastmod>2024-09-03T21:30:12&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/</loc><lastmod>2024-09-03T21:30:12&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/</loc><lastmod>2024-09-03T21:30:12&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/computer-network/</loc><lastmod>2024-09-03T21:30:12&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/</loc><lastmod>2024-09-03T21:30:12&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/network-tcp-udp-2/</loc><lastmod>2024-09-03T21:30:12&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/posts/network-tcp-udp/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/posts/9-bayesian-estimation/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/categories/courses/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
