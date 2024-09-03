@@ -2,17 +2,19 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://braveseokyung.github.io/authors/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/9-bayesian-estimation/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/authors/braveseokyung/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/categories/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/categories/courses/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/series/information-theory-and-inference/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/series/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/series/generative-models/</loc><lastmod>2024-08-07T19:35:06&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</loc><lastmod>2024-08-07T19:35:06&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/generative-models-evaluation/</loc><lastmod>2024-08-07T19:35:06&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/posts/vae/</loc><lastmod>2024-07-31T21:22:15&#43;09:00</lastmod></url><url>
-            <loc>https://braveseokyung.github.io/tags/</loc></url></urlset>
+            <loc>http://localhost:1313/authors/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/braveseokyung/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/computer-network/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/network-tcp-udp/</loc><lastmod>2024-08-28T15:37:24&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/9-bayesian-estimation/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/courses/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/information-theory-and-inference/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/</loc><lastmod>2024-08-21T21:00:37&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/series/generative-models/</loc><lastmod>2024-08-07T19:35:06&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</loc><lastmod>2024-08-07T19:35:06&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/generative-models-evaluation/</loc><lastmod>2024-08-07T19:35:06&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/vae/</loc><lastmod>2024-07-31T21:22:15&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/tags/</loc></url></urlset>

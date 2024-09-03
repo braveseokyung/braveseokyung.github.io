@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>TCP와 UDP - brog</title><meta name="Description" content="전송계층의 TCP와 UDP의 차이를 알아보자"><meta property="og:url" content="http://localhost:1313/posts/network-tcp-udp/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="TCP와 UDP">
+  <meta property="og:description" content="전송계층의 TCP와 UDP의 차이를 알아보자">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-08-28T15:37:24+09:00">
+    <meta property="article:modified_time" content="2024-08-28T15:37:24+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TCP와 UDP">
+  <meta name="twitter:description" content="전송계층의 TCP와 UDP의 차이를 알아보자">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="http://localhost:1313/posts/network-tcp-udp/" /><link rel="prev" href="http://localhost:1313/posts/9-bayesian-estimation/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "TCP와 UDP",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http://localhost:1313/posts/network-tcp-udp/"
+        },"genre": "posts","wordcount":  906 ,
+        "url": "http://localhost:1313/posts/network-tcp-udp/","datePublished": "2024-08-28T15:37:24+09:00","dateModified": "2024-08-28T15:37:24+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "http://localhost:1313/authors/braveseokyung"
+                    }],"description": "전송계층의 TCP와 UDP의 차이를 알아보자"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > Posts </a><a class="menu-item"
+                    href="/tags/" > Tags </a><a class="menu-item"
+                    href="/categories/" > Categories </a><span class="menu-item delimiter"></span><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="" >Posts</a><a class="menu-item" href="/tags/" title="" >Tags</a><a class="menu-item" href="/categories/" title="" >Categories</a><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tcpudp를-살펴보기-전에---네트워크-프로토콜은-뭐지">TCP/UDP를 살펴보기 전에 - 네트워크, 프로토콜은 뭐지?</a>
+      <ul>
+        <li><a href="#osi-7계층-tcpip-4계층">OSI 7계층, TCP/IP 4계층</a></li>
+        <li><a href="#그래서-tcpudp란">그래서 TCP/UDP란</a></li>
+      </ul>
+    </li>
+    <li><a href="#tcp">TCP</a>
+      <ul>
+        <li><a href="#tcp-handshake">TCP Handshake</a></li>
+        <li><a href="#tcp-제어-방식">TCP 제어 방식</a></li>
+      </ul>
+    </li>
+    <li><a href="#udp">UDP</a></li>
+    <li><a href="#tcp와-udp-비교">TCP와 UDP 비교</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">TCP와 UDP</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='http://localhost:1313/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href=""><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg></a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-08-28">2024-08-28</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-08-28">2024-08-28</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;906 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tcpudp를-살펴보기-전에---네트워크-프로토콜은-뭐지">TCP/UDP를 살펴보기 전에 - 네트워크, 프로토콜은 뭐지?</a>
+      <ul>
+        <li><a href="#osi-7계층-tcpip-4계층">OSI 7계층, TCP/IP 4계층</a></li>
+        <li><a href="#그래서-tcpudp란">그래서 TCP/UDP란</a></li>
+      </ul>
+    </li>
+    <li><a href="#tcp">TCP</a>
+      <ul>
+        <li><a href="#tcp-handshake">TCP Handshake</a></li>
+        <li><a href="#tcp-제어-방식">TCP 제어 방식</a></li>
+      </ul>
+    </li>
+    <li><a href="#udp">UDP</a></li>
+    <li><a href="#tcp와-udp-비교">TCP와 UDP 비교</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="tcpudp를-살펴보기-전에---네트워크-프로토콜은-뭐지" class="headerLink">
+    <a href="#tcpudp%eb%a5%bc-%ec%82%b4%ed%8e%b4%eb%b3%b4%ea%b8%b0-%ec%a0%84%ec%97%90---%eb%84%a4%ed%8a%b8%ec%9b%8c%ed%81%ac-%ed%94%84%eb%a1%9c%ed%86%a0%ec%bd%9c%ec%9d%80-%eb%ad%90%ec%a7%80" class="header-mark" aria-label="Header mark for 'TCP/UDP를 살펴보기 전에 - 네트워크, 프로토콜은 뭐지?'"></a>TCP/UDP를 살펴보기 전에 - 네트워크, 프로토콜은 뭐지?</h2><p>TCP/UDP가 &ldquo;컴퓨터 네트워크&quot;라는 학문에서 어디에 위치하고 있는지 알기위해, 컴퓨터 네트워크와 프로토콜의 개념을 먼저 살펴보자.</p>
+<p>네트워크란 컴퓨터 기기들이 통신할 수 있도록 연결해주는 시스템이고, 이때 통신은 기기간의 데이터 전송(송신과 수신)을 의미한다. 데이터를 전송하려면 전송 방식, 전송 경로, 데이터 보호 방식 등 여러가지를 정해야 하는데, 이를 위해 사람들이 정해둔 규칙이 바로 프로토콜이다.</p>
+<h3 id="osi-7계층-tcpip-4계층" class="headerLink">
+    <a href="#osi-7%ea%b3%84%ec%b8%b5-tcpip-4%ea%b3%84%ec%b8%b5" class="header-mark" aria-label="Header mark for 'OSI 7계층, TCP/IP 4계층'"></a>OSI 7계층, TCP/IP 4계층</h3><p>OSI 7계층은 네트워크 통신이 일어나는 과정을 7가지 계층으로 나눈 것이다. 계층을 나눔으로써 문제가 생겼을 때 어디의 문제인지 세분화해서 대응할 수 있다. TCP/IP 4계층 또한 같은 네트워크 계층 모델로, OSI보다 더 간단하고 실용적인 목적으로 개발됐다.</p>
+<p>TCP/IP 계층 모델의 이름에 오늘 살펴보려고 하는 &ldquo;TCP&quot;가 있는데, 이 TCP가 이 글에서 다루는 TCP가 맞다!</p>
+<p><img class="tw-inline" loading="lazy" src="image.png"   alt="OSI,TCP/IP"  ></p>
+<p>OSI 7계층이나 TCP/IP 4계층 모두 각 계층별로 프로토콜을 정리했는데, TCP/UDP는 이중 전송계층에 해당하는 프로토콜이다.(사진에서 Transport에 해당)</p>
+<p>네트워크 모델 자체가 데이터 송수신에 대해 다루고 있는데 왜 전송계층이 따로 있는지 헷갈릴 수 있다. Transport 계층은 애플리케이션 계층과 인터넷 계층 사이에 있는데, 인터넷 계층의 역할이 데이터를 수신 컴퓨터(호스트)까지 전달하는 것이라면, Transport 계층은 컴퓨터(호스트)가 받은 데이터를 애플리케이션까지 전달하는 것이다.</p>
+<div class="details admonition note open">
+    <div class="details-summary admonition-title">
+        <span class="icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg></span>컴퓨터(호스트)-애플리케이션, IP-포트<span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+    </div>
+    <div class="details-content">
+        <div class="admonition-content"><p>호스트, IP, 포트, 애플리케이션 .. 이런 개념을 잠깐 정리해보자면,</p>
+<p>컴퓨터==호스트</p>
+<p>호스트를 식별할 수 있도록 번호를 부여한 것이 <strong>IP</strong>, 애플리케이션을 식별할 수 있도록 번호를 부여한 것이 <strong>포트번호</strong> 이다!</p>
+</div></div></div>
+<h3 id="그래서-tcpudp란" class="headerLink">
+    <a href="#%ea%b7%b8%eb%9e%98%ec%84%9c-tcpudp%eb%9e%80" class="header-mark" aria-label="Header mark for '그래서 TCP/UDP란'"></a>그래서 TCP/UDP란</h3><p>즉, TCP와 UDP는 Transport 계층에서 컴퓨터부터 애플리케이션까지의 데이터 전송을 다루는 프로토콜이다.</p>
+<p>Transport 계층의 또 다른 중요한 역할은 &ldquo;신뢰성&rdquo; 있는 데이터 전송인데, 여기서 신뢰성이란 패킷을 유실하지 않고 목적지까지 보낸다는 뜻이다. 이에 더불어 패킷을 순서대로, 오류 없이 보내는 것도 신뢰성의 한 축인데, 이를 위한 프로토콜이 TCP이다. 이를 실현하기 위해 TCP는 송신자와 수신자 간 연결형 방식이고, 여러가지 제어방식을 가지게 된다.</p>
+<p>반면 UDP는 속도에 더 초점을 맞추는 프로토콜이다. 이에 따라 UDP는 비연결형 방식을 취하게 되고(연결을 확인하는데 시간이 걸리므로) 간단한 오류 처리이외에 별도로 제어방식을 사용하지는 않는다.</p>
+<h2 id="tcp" class="headerLink">
+    <a href="#tcp" class="header-mark" aria-label="Header mark for 'TCP'"></a>TCP</h2><p>위에서 언급했듯, TCP는 신뢰성 있는 데이터 전송을 위한 연결 지향 방식이고, 이에 더불어 여러 제어 방식을 취한다.</p>
+<p>연결을 지향한다는 것은, 송신자와 수신자가 계속 소통한다는 뜻이다. 연결을 확인하지 않는 UDP와 비교해서 이해하면 쉽다.</p>
+<table>
+<thead>
+<tr>
+<th><a class="lightgallery" href="image-1.png" title="" data-thumbnail="image-1.png"><img  loading="lazy" src="image-1.png"    height="300" width="300"></a>TCP</th>
+<th><a class="lightgallery" href="image-2.png" title="" data-thumbnail="image-2.png"><img  loading="lazy" src="image-2.png"    height="300" width="300"></a>UDP</th>
+</tr>
+</thead>
+</table>
+<h3 id="tcp-handshake" class="headerLink">
+    <a href="#tcp-handshake" class="header-mark" aria-label="Header mark for 'TCP Handshake'"></a>TCP Handshake</h3><p>TCP는 송신자와 수신자의 연결을 확인하고, 연결을 해제하기 위해 Handshake라는 방식을 사용한다.</p>
+<p><img class="tw-inline" loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-08-28%20%ec%98%a4%ed%9b%84%205.53.51.png"   alt="Handshake"  ></p>
+<p>사진의 SYN, ACK, FIN은 연결과 관련된 FLAG로, binary 값을 보내면서 서로 소통한다.</p>
+<table>
+<thead>
+<tr>
+<th>FLAG</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SYN</td>
+<td>접속 요청시 보내는 패킷</td>
+</tr>
+<tr>
+<td>ACK</td>
+<td>상대방으로부터 패킷을 받은 후, 잘 받았다고 알려주는 패킷</td>
+</tr>
+<tr>
+<td>FIN</td>
+<td>접속 종료를 위한 패킷</td>
+</tr>
+</tbody>
+</table>
+<p>이 FLAG들은 TCP 세그먼트 헤더에 포함된다.</p>
+<p><img class="tw-inline" loading="lazy" src="image-3.png"   alt="TCP 헤더"  ></p>
+<p>TCP 세그먼트 헤더는 FLAG말고도 여러 정보를 포함하고 있는데, 간단하게 살펴보자면</p>
+<p><strong>Source Port, Destination Port</strong> : 출발, 도착하는 포트 번호</p>
+<p><strong>Sequence number</strong> : 데이터의 순서를 보장하기 위해 해당 데이터 조각이 몇번째인지 알려줌. 첫 데이터 전송 시 난수로 생성됨</p>
+<p><strong>Acknowledgement number</strong> : 송신쪽에서 보낸 데이터 세그먼트를 받았음을 알리는 누적번호로, 다음에 받을 번호 표시</p>
+<p><strong>window size</strong> : 한 번에 전송할 수 있는 데이터의 양을 나타냄 -&gt; 흐름제어에서 사용됨</p>
+<p>그럼 이제 위에서 언급한 TCP flag와 헤더를 사용하는 Handshake 과정을 살펴보자. 기억할 것은 어느쪽이든지 SYN을 보내면, 받았음을 확인해주는 ACK를 보낸다는 것이다.</p>
+<ul>
+<li>3-way Handshake (연결 확인)</li>
+</ul>
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-03%20%ec%98%a4%ed%9b%84%207.50.36.png" title="" data-thumbnail="스크린샷 2024-09-03 오후 7.50.36.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-03%20%ec%98%a4%ed%9b%84%207.50.36.png"    height="500" width="500"></a>
+<ol>
+<li>연결을 확인하기 위해 클라이언트가 서버에 SYN을 보내고 SYN_SENT 상태로 대기한다.</li>
+<li>서버는 클라이언트로부터 SYN을 받았으므로 ACK를 보내고 SYN_RCVD 상태가 된다. 또, 반대로 클라이언트의 연결을 확인하기 위한 SYN을 보낸다.</li>
+<li>클라이언트는 서버로부터 SYN을 받았으므로 ACK를 보낸다. SYN, ACK 둘다 보내고 받았으므로 Established 상태가 된다.</li>
+<li>서버도 SYN, ACK 둘 다 보내고 받았으므로 Established 상태가 된다. 양쪽이 연결을 확인하고 답했으므로 준비완료.</li>
+</ol>
+<ul>
+<li>4-way handshake (연결 해제)</li>
+</ul>
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-03%20%ec%98%a4%ed%9b%84%207.51.49.png" title="" data-thumbnail="스크린샷 2024-09-03 오후 7.51.49.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-03%20%ec%98%a4%ed%9b%84%207.51.49.png"    height="500" width="500"></a>
+<ol>
+<li>데이터를 전부 전송한 클라이언트가 서버에 FIN을 보내고 FIN_WAIT1 상태로 대기한다.</li>
+<li>서버가 CLOSE_WAIT 상태로 변경되고 해당 포트에 연결되어 있는 애플리케이션에 CLOSE()를 요청한다. FIN을 받았으니까 클라이언트에 ACK를 보낸다.</li>
+<li>클라이언트는 FIN_WAIT2 상태로 대기하며 혹시 남은 패킷이 송신되기를 기다린다.</li>
+<li>CLOSE() 요청을 받은 애플리케이션은 종료 프로세스를 진행하고, LAST_ACK 상태가 되면서 클라이언트에 종료를 확인하는 FIN을 보낸다.</li>
+<li>FIN을 받았으니 클라이언트가 ACK를 보내고 TIME_WAIT 상태가 된다. 종료가 확인되었으니 모든 포트가 CLOSED된다.</li>
+</ol>
+<h3 id="tcp-제어-방식" class="headerLink">
+    <a href="#tcp-%ec%a0%9c%ec%96%b4-%eb%b0%a9%ec%8b%9d" class="header-mark" aria-label="Header mark for 'TCP 제어 방식'"></a>TCP 제어 방식</h3><p>흐름 제어 (Flow control)
+데이터 전송시에 송신 속도와 수신자가 감당할 수 있는 속도가 차이가 날 수 있다. 흐름 제어는 이러한 상황에 대비해 송신 측의 데이터 전송량을 조절하는 제어 방식이다.</p>
+<ul>
+<li>
+<p>슬라이딩 윈도우
+윈도우 사이즈로 데이터 전송 속도를 조절한다. 윈도우 사이즈에 해당하는 만큼만 데이터를 보내고, 다 보내고 나면 밀어서 다음 데이터를 또 윈도우 사이즈만큼 보낸다.</p>
+<p><img class="tw-inline" loading="lazy" src="image-7.png"   alt="alt text"  ></p>
+</li>
+</ul>
+<p>오류 제어 (Error control)</p>
+<p>오류 제어는 오류가 발생하면 데이터를 재전송할 수 있도록 한다.</p>
+<ul>
+<li>
+<p>Go Back N</p>
+<a class="lightgallery" href="image-4.png" title="" data-thumbnail="image-4.png"><img  loading="lazy" src="image-4.png"    height="200" width="200"></a>
+</li>
+</ul>
+<p>오류가 발생한 위치로 돌아가 다시 차례로 전송한다.</p>
+<ul>
+<li>
+<p>Selective Repeat</p>
+<a class="lightgallery" href="image-5.png" title="" data-thumbnail="image-5.png"><img  loading="lazy" src="image-5.png"    height="200" width="200"></a>
+</li>
+</ul>
+<p>오류가 발생한 위치로 돌아가는 건 같으나, 그것만 다시 전송한다.</p>
+<p>혼잡 제어 (Congestion control)
+네트워크에 패킷이 과도하게 많아 네트워크 속도가 감당할 수 없는 상황을 제어한다.</p>
+<ul>
+<li>
+<p>AIMD</p>
+<a class="lightgallery" href="image-6.png" title="" data-thumbnail="image-6.png"><img  loading="lazy" src="image-6.png"    height="500" width="500"></a>
+</li>
+</ul>
+<p>AIMD는 Additive Increase Multiplicative Decrease 의 줄임말로, 패킷을 하나씩 보내고 문제가 생기지 않으면 윈도우 사이즈를 하나씩 늘려준다(Additive Increase). 그러다가 패킷 전송에 실패하면 윈도우 사이즈를 절반으로 줄인다(Multiplicative Decrease).</p>
+<h2 id="udp" class="headerLink">
+    <a href="#udp" class="header-mark" aria-label="Header mark for 'UDP'"></a>UDP</h2><p>연결을 확인하고, 다양한 제어 방식을 두는 TCP와 다르게 UDP는 보다 간단하고 빠른 프로토콜이다.</p>
+<p>UDP의 헤더를 살펴보자.
+<img class="tw-inline" loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-03%20%ec%98%a4%ed%9b%84%208.35.57.png"   alt="UDP 헤더"  ></p>
+<p>Sequence number나 Acknowledge number로 패킷 순서를 보장하고, 연결 확인을 위한 FLAG를 뒀던 TCP의 헤더와 달리 UDP 헤더는 심플하다. 출발과 도착 포트 번호가 있고, checksum으로 간단한 오류를 확인하는 정도다.</p>
+<p>또한 데이터를 세그먼트 단위로 나눠서 전송하는 TCP와 다르게, 데이터그램 단위로 헤더를 붙여서 송수신한다. 순서를 맞추는 Sequence number가 없는 것도 이 맥락이다.</p>
+<p>즉 간단한 헤더 구조와 연결 확인 과정이 없어 신뢰성보다 속도에 비중을 둔 프로토콜이라고 정리할 수 있다.</p>
+<h2 id="tcp와-udp-비교" class="headerLink">
+    <a href="#tcp%ec%99%80-udp-%eb%b9%84%ea%b5%90" class="header-mark" aria-label="Header mark for 'TCP와 UDP 비교'"></a>TCP와 UDP 비교</h2><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>연결</td>
+<td>연결 지향</td>
+<td>비연결방식</td>
+</tr>
+<tr>
+<td>순서</td>
+<td>순서 보장</td>
+<td>순서 보장 x</td>
+</tr>
+<tr>
+<td>신뢰성</td>
+<td>높음</td>
+<td>낮음</td>
+</tr>
+<tr>
+<td>속도</td>
+<td>느림</td>
+<td>빠름</td>
+</tr>
+<tr>
+<td>통신</td>
+<td>1:1</td>
+<td>1:1, 1:N, M:N</td>
+</tr>
+</tbody>
+</table>
+<p>TCP는 연결 설정과 다양한 제어 방법으로 패킷을 손실 없이 전송할 수 있어 신뢰성이 높지만, 매번 연결 설정을 해야 하기 때문에 속도가 느리다. 반면 UDP는
+하지만 이런 프로세스가 없기 때문에 속도가 빠르고, 1:1, 1:N, M:N 통신 모두 가능해서 실시간 속도가 중요한 스트리밍이나 게임 등에 더 적합할 수 있다!</p>
+<h2 id="reference" class="headerLink">
+    <a href="#reference" class="header-mark" aria-label="Header mark for 'Reference'"></a>Reference</h2><p><a href="https://www.officedepot.co.kr/item/itemView.do?currentPageNo=1&amp;phone=&amp;eventId=10030018368353&amp;email=&amp;itemId=1000000088097&amp;limitPrice=&amp;kw=&amp;kw3=&amp;eventList=%EB%A9%94%EC%9D%B8%EC%9D%B4%EB%B2%A4%ED%8A%B8%EA%B8%B0%ED%9A%8D%EC%A0%84" target="_blank" rel="noopener noreferrer">네트워크 개념, OSI 7계층, TCP/IP</a></p>
+<p><a href="https://blog.naver.com/gilbutzigy/223235770275" target="_blank" rel="noopener noreferrer">네트워크 계층 모델과 프로토콜_OSI 7계층과 TCP/IP 4계층</a></p>
+<p><a href="https://yoeubi.github.io/network/Frontend-TCP-IP-3" target="_blank" rel="noopener noreferrer">Transport Layer | 전송 계층</a></p>
+<p><a href="https://forward-movement.tistory.com/188" target="_blank" rel="noopener noreferrer">TCP/IP 전송 계층(Transport)과 포트(Port) 번호 | 복습 ∨</a></p>
+<p><a href="https://better-together.tistory.com/134?category=887984" target="_blank" rel="noopener noreferrer">위 글이 참조</a>- 짱</p>
+<p><a href="https://velog.io/@hyorard-b/TCP-%ED%97%A4%EB%8D%94" target="_blank" rel="noopener noreferrer">TCP 헤더</a></p>
+<p><a href="https://benlee73.tistory.com/186" target="_blank" rel="noopener noreferrer">TCP의 흐름 제어 / 오류 제어 / 혼잡 제어</a></p>
+<p><a href="https://blog.naver.com/4717010/60212483299" target="_blank" rel="noopener noreferrer">TCP/IP - 전송계층 TCP 세그먼트 헤더(segment header)</a></p></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-08-28</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/9-bayesian-estimation/" class="prev" rel="prev" title="Bayesian Estimator"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>Bayesian Estimator</a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>
