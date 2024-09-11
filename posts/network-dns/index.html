@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>DNS - brog</title><meta name="Description" content="도메인부터 DNS 쿼리까지 DNS에 대해 알아보자"><meta property="og:url" content="http://localhost:1313/posts/network-dns/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="DNS">
+  <meta property="og:description" content="도메인부터 DNS 쿼리까지 DNS에 대해 알아보자">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-09-11T13:09:06+09:00">
+    <meta property="article:modified_time" content="2024-09-11T13:09:06+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DNS">
+  <meta name="twitter:description" content="도메인부터 DNS 쿼리까지 DNS에 대해 알아보자">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="http://localhost:1313/posts/network-dns/" /><link rel="prev" href="http://localhost:1313/posts/network-tcp-udp-2/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "DNS",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http://localhost:1313/posts/network-dns/"
+        },"genre": "posts","wordcount":  816 ,
+        "url": "http://localhost:1313/posts/network-dns/","datePublished": "2024-09-11T13:09:06+09:00","dateModified": "2024-09-11T13:09:06+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "http://localhost:1313/authors/braveseokyung"
+                    }],"description": "도메인부터 DNS 쿼리까지 DNS에 대해 알아보자"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > Posts </a><a class="menu-item"
+                    href="/tags/" > Tags </a><a class="menu-item"
+                    href="/categories/" > Categories </a><span class="menu-item delimiter"></span><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="" >Posts</a><a class="menu-item" href="/tags/" title="" >Tags</a><a class="menu-item" href="/categories/" title="" >Categories</a><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#도메인과-ip">도메인과 IP</a></li>
+    <li><a href="#dns">DNS</a></li>
+    <li><a href="#dns-구성요소">DNS 구성요소</a>
+      <ul>
+        <li><a href="#도메인-계층구조">도메인 계층구조</a></li>
+      </ul>
+    </li>
+    <li><a href="#dns-쿼리">DNS 쿼리</a>
+      <ul>
+        <li><a href="#recursive-query">Recursive Query</a></li>
+        <li><a href="#iterative-query">Iterative Query</a></li>
+        <li><a href="#recursive-query와-iterative-query-비교">Recursive Query와 Iterative Query 비교</a></li>
+      </ul>
+    </li>
+    <li><a href="#dns-동작-과정">DNS 동작 과정</a></li>
+    <li><a href="#추가로-알아볼-내용">추가로 알아볼 내용</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">DNS</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='http://localhost:1313/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/computer-network/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Computer-Network</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-09-11">2024-09-11</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-09-11">2024-09-11</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;816 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#도메인과-ip">도메인과 IP</a></li>
+    <li><a href="#dns">DNS</a></li>
+    <li><a href="#dns-구성요소">DNS 구성요소</a>
+      <ul>
+        <li><a href="#도메인-계층구조">도메인 계층구조</a></li>
+      </ul>
+    </li>
+    <li><a href="#dns-쿼리">DNS 쿼리</a>
+      <ul>
+        <li><a href="#recursive-query">Recursive Query</a></li>
+        <li><a href="#iterative-query">Iterative Query</a></li>
+        <li><a href="#recursive-query와-iterative-query-비교">Recursive Query와 Iterative Query 비교</a></li>
+      </ul>
+    </li>
+    <li><a href="#dns-동작-과정">DNS 동작 과정</a></li>
+    <li><a href="#추가로-알아볼-내용">추가로 알아볼 내용</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>DNS(Domain Name System)란 도메인과 IP를 매핑해주는 시스템이다.</p>
+<h2 id="도메인과-ip" class="headerLink">
+    <a href="#%eb%8f%84%eb%a9%94%ec%9d%b8%ea%b3%bc-ip" class="header-mark" aria-label="Header mark for '도메인과 IP'"></a>도메인과 IP</h2><p>네트워크에 연결되어 있는 장치를 **호스트(host)**라고 한다. 데이터의 송수신은 여러 호스트들이 서로 요청과 응답을 주고받음으로써 이루어지는데, 우리가 많이 들어본 서버/클라이언트도 여기서 요청을 보내는 호스트/응답하는 호스트를 부르는 이름이다. 그렇다면 무수히 많은 호스트를 어떻게 구별할 수 있을까? 바로 IP다. IP는 각 호스트를 구별하기 위해 주어지는 번호이다.</p>
+<p>그렇다면 웹 브라우저에서 주소창에 url을 입력해 해당 서버에 요청을 보내는 과정을 생각해보자. 해당 서버에 요청을 보내려면 IP를 알아야 할 것 같은데, 우리는 IP 주소(XXX.XXX.XXX.XXX 같은)을 입력하지 않고, 문자열로 된 주소를 입력한다.</p>
+<p>예를 들어 이 블로그 주소를 보자.</p>
+<p><a href="https://braveseokyung.github.io/" target="_blank" rel="noopener noreferrer">https://braveseokyung.github.io/</a></p>
+<p>이 주소에는 IP번호는 없지만, 내 아이디와 깃헙에서 호스팅했음을 알 수 있는 github 등 우리가 의도한 바를 담을 수 있는 정보들이 있다. 이렇게 사용자의 의도를 반영한 문자열 주소를 **도메인(Domain)**이라고 한다.</p>
+<p>위 주소에서 https(이건 프로토콜을 나타낸다)를 제외한 braveseokyung.github.io가 도메인에 해당한다.</p>
+<p>그렇다면 어떻게 도메인만으로 우리가 찾고자 하는 IP를 가진 서버에 요청을 보낼 수 있을까? 이때 등장하는 것이 DNS이다.</p>
+<h2 id="dns" class="headerLink">
+    <a href="#dns" class="header-mark" aria-label="Header mark for 'DNS'"></a>DNS</h2><p>DNS는 도메인과 IP를 매핑해주는 시스템이다. 즉 웹 브라우저에서 도메인을 입력하면, DNS가 거기에 맞는 IP 주소롤 반환해줘서 해당 서버에 요청을 보낼 수 있게 한다.</p>
+<p>비유하자면, IP가 도로명 주소라면 도메인의 그 도로명 주소의 건물이름이다.</p>
+<p>DNS가 어떤 역할을 하는지 알았으니, 이제 좀 더 자세하게 구성요소부터 매핑하는 방식을 살펴보자!</p>
+<h2 id="dns-구성요소" class="headerLink">
+    <a href="#dns-%ea%b5%ac%ec%84%b1%ec%9a%94%ec%86%8c" class="header-mark" aria-label="Header mark for 'DNS 구성요소'"></a>DNS 구성요소</h2><p>DNS는 크게 도메인 네임스페이스, 네임서버, 리졸버로 구성되어있다.</p>
+<p>왜 이렇게 구성되어있는지 살펴보기 전에, 질문을 해보자.</p>
+<div class="details admonition note open">
+    <div class="details-summary admonition-title">
+        <span class="icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg></span>Note<span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+    </div>
+    <div class="details-content">
+        <div class="admonition-content">만약 도메인과 IP 주소를 매핑해주는 정보가 모두 하나의 서버에 저장되어있다면 어떻게 될까?</div></div></div>
+<p>만약 이렇게 한 서버에 모든 정보가 저장되어있다면 어느 사이트에 들어가려고 해도 그 서버를 거쳐야 해서 서버의 부하도 커지고 속도도 느려질 것이다. 그렇다면 서버를 나눠서 저장해야 할 텐데,</p>
+<div class="details admonition note open">
+    <div class="details-summary admonition-title">
+        <span class="icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg></span>Note<span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+    </div>
+    <div class="details-content">
+        <div class="admonition-content">정보를 나눠서 저장한다면, 클라이언트가 요청한 도메인에 대응되는 IP가 있는 서버를 어떻게 찾을 수 있을까?</div></div></div>
+<h3 id="도메인-계층구조" class="headerLink">
+    <a href="#%eb%8f%84%eb%a9%94%ec%9d%b8-%ea%b3%84%ec%b8%b5%ea%b5%ac%ec%a1%b0" class="header-mark" aria-label="Header mark for '도메인 계층구조'"></a>도메인 계층구조</h3><p>위의 질문을 해결하는 것이 도메인/DNS 서버의 계층구조이다!
+도메인 주소를 보면 &lsquo;.&lsquo;으로 나뉘어져 있는데, 이 &lsquo;.&lsquo;을 기준으로 계층이 나뉜다.</p>
+<p>도메인에서 역순으로 상위에서 하위계층이다. 가장 상위 계층인 루트는 일반적으로 생략되고, &lsquo;com&rsquo; , &lsquo;kr&rsquo;등은 Top-Level Domain(TLD), &rsquo;naver&rsquo; , &rsquo;tistory&rsquo; , &lsquo;github&rsquo; 등 그 다음에 오는 것이 Second-Level Domain(SLD), 마지막으로 Third-Level Domain 또는 Sub-Domain이 있다.</p>
+<p><img class="tw-inline" loading="lazy" src="image-8.png"   alt="alt text"  ></p>
+<p><a href="https://thebook.io/007046/0045/" target="_blank" rel="noopener noreferrer">사진출처</a></p>
+<p>그리고 DNS 서버 도메인의 계층구조에 따라 노드별로 배치되고, 상위서버는 하위서버에 대한 정보를 가지고 있어 하위 서버의 주소를 반환하거나 요청을 보낼 수 있다. 도메인과 똑같이 루트 서버, TLD 서버, SLD 서버(Authorative Server)로 나뉜다.</p>
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%208.38.56.png" title="" data-thumbnail="스크린샷 2024-09-11 오후 8.38.56.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%208.38.56.png"    height="500" width="500"></a>
+<p>정보를 서버마다 나눠서 저장하더라도, 이러한 계층구조를 통해 정보를 상위 도메인의 서버에서 하위 도메인의 서버로 이동하면서 도메인의 IP를 가지고 있는 서버를 찾아갈 수 있는 것이다!</p>
+<p>도메인과 DNS 서버의 계층구조를 이해했다면, 다시 DNS 구성요소로 돌아와보자.</p>
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%208.45.11.png" title="" data-thumbnail="스크린샷 2024-09-11 오후 8.45.11.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%208.45.11.png"     ></a>
+<ul>
+<li>도메인 네임 스페이스 : 앞에서 설명한 도메인의 계층구조를 이르는 말</li>
+<li>네임 서버 : 각 노드에 배치된 도메인과 IP에 대한 정보를 가지고 있는 서버</li>
+<li>리졸버(Resolver) : 리졸버는 클라이언트와 DNS 서버의 매개체로, 클라이언트가 요청한 도메인에 대해 DNS 서버에 조회 메시지(쿼리)를 보내고 IP 주소를 응답으로 받아 다시 클라이언트에게 준다.</li>
+</ul>
+<p><img class="tw-inline" loading="lazy" src="image-9.png"   alt="alt text"  ></p>
+<p><a href="https://malwareanalysis.tistory.com/631" target="_blank" rel="noopener noreferrer">사진출처</a></p>
+<h2 id="dns-쿼리" class="headerLink">
+    <a href="#dns-%ec%bf%bc%eb%a6%ac" class="header-mark" aria-label="Header mark for 'DNS 쿼리'"></a>DNS 쿼리</h2><p>위에서 도메인과 DNS 서버는 도메인 네임 스페이스라고 부르는 계층구조로 이루어져있고, 이 계층 구조에 따라 각 네임서버에 자신의 하위서버에 대한 정보가 저장되어있다는 것을 알게됐다. 하지만 구체적으로 어떻게 최종적으로 원하는 도메인의 IP를 찾을 수 있는지 알려면, DNS 쿼리에 대해 알아야 한다.</p>
+<p>DNS 쿼리란 말 그대로 각 DNS 서버에게 &lsquo;너 이 도메인의 IP 주소를 가지고 있어?&lsquo;라고 물어보는 방법이다. DNS 쿼리에는 두 가지 방식이 있는데, 바로 Recursive Query와 Iterative Query이다.</p>
+<h3 id="recursive-query" class="headerLink">
+    <a href="#recursive-query" class="header-mark" aria-label="Header mark for 'Recursive Query'"></a>Recursive Query</h3><p>Recursive Query는 말 그대로 루트 네임 서버에서 시작해 상위 네임 서버에서 하위 네임 서버로 원하는 도메인의 네임 서버가 나올 때까지 재귀적으로 쿼리하는 것이다. 여기서의 중요한 특징은 클라이언트의 리졸버를 통한 최초 요청은 한 번 뿐이고, 이외의 쿼리는 DNS 서버 간(상위 서버가 하위 서버에 물어보는 방식으로) 이루어진다는 것이다.</p>
+<p>사진으로 보면 이해가 편한데,
+<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%209.19.24.png" title="" data-thumbnail="스크린샷 2024-09-11 오후 9.19.24.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%209.19.24.png"     ></a></p>
+<p><a href="https://www.google.com" target="_blank" rel="noopener noreferrer">www.google.com</a>을 찾는다고 하면 클라이언트가 리졸버를 통해 최초의 요청을 보내고, 루트 네임 서버에 질의한다. 루트 네임 서버는 &lsquo;com&rsquo;을 담당하는 TLD 서버에 쿼리하고, TLD 서버는 다시 하위 google SLD 서버에, SLD 서버는 자신의 하위 www 서버에 질의한다. 최종 www 서버에서 <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">www.google.com</a>의 IP 주소를 찾으면 클라이언트는 한번의 요청으로 응답을 받을 수 있게 된다.</p>
+<h3 id="iterative-query" class="headerLink">
+    <a href="#iterative-query" class="header-mark" aria-label="Header mark for 'Iterative Query'"></a>Iterative Query</h3><p>Iterative Query는 각 DNS 서버가 직접 쿼리하는 것이 아니라 하위 서버의 주소만 반환해주면서 리졸버가 그 주소의 서버에 반복적으로 질의하는 방식이다. Recursive Query와 비교해보면 한 번의 요청으로 최종 노드까지 타고 들어가는 방식이 아니라, 여러번 요청하면서 원하는 노드를 찾아낸다.</p>
+<h3 id="recursive-query와-iterative-query-비교" class="headerLink">
+    <a href="#recursive-query%ec%99%80-iterative-query-%eb%b9%84%ea%b5%90" class="header-mark" aria-label="Header mark for 'Recursive Query와 Iterative Query 비교'"></a>Recursive Query와 Iterative Query 비교</h3><p><a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%209.24.45.png" title="" data-thumbnail="스크린샷 2024-09-11 오후 9.24.45.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%209.24.45.png"     ></a>
+Recursive Query는 상위 서버가 하위 서버에 직접 요청하면서 원하는 결과를 얻을 때까지 재귀적으로 들어가는 방식, Iterative Query는 상위 서버가 하위 서버의 주소만 반환해주면서 쿼리는 리졸버에게 맡기는 방식이다.</p>
+<p><img class="tw-inline" loading="lazy" src="image-10.png"   alt="alt text"  ></p>
+<p>즉 Recursive Query의 리졸버가 보내는 요청은 한 번, Iterative Query에서는 여러 번이라는 것이 가장 큰 차이이다.</p>
+<h2 id="dns-동작-과정" class="headerLink">
+    <a href="#dns-%eb%8f%99%ec%9e%91-%ea%b3%bc%ec%a0%95" class="header-mark" aria-label="Header mark for 'DNS 동작 과정'"></a>DNS 동작 과정</h2><a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%209.33.29.png" title="" data-thumbnail="스크린샷 2024-09-11 오후 9.33.29.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-11%20%ec%98%a4%ed%9b%84%209.33.29.png"     ></a>
+<p>전체적인 동작 과정은 다음과 같다.</p>
+<ol>
+<li>클라이언트가 도메인에 대한 IP 주소를 찾아달라고 요청을 보낸다</li>
+<li>이때 먼저 hosts 파일을 찾아보는데, 운영체제에 기록되어 있는 기본 정보이다.</li>
+<li>hosts 파일에 없으면 리졸버를 통해 로컬 DNS 서버를 찾아본다
+로컬 DNS 서버는 각 기지국 등이 가지고 있는 서버로, 여기에서도 이전에 찾았던 도메인에 대해 캐싱이 되어 있어 여기서 원하는 도메인을 찾으면 IP주소가 반환되고 끝난다.</li>
+<li>로컬 DNS 서버에서 찾지 못했으면, DNS 쿼리 과정을 통해 루트 서버부터 순차적으로 찾아본다.</li>
+<li>쿼리를 통해 원하는 네임서버를 찾아 IP 응답을 받으면 리졸버가 그 응답을 클라이언트에 전달한다!</li>
+</ol>
+<h2 id="추가로-알아볼-내용" class="headerLink">
+    <a href="#%ec%b6%94%ea%b0%80%eb%a1%9c-%ec%95%8c%ec%95%84%eb%b3%bc-%eb%82%b4%ec%9a%a9" class="header-mark" aria-label="Header mark for '추가로 알아볼 내용'"></a>추가로 알아볼 내용</h2><p>리졸버(socket 부품이래), DNS 스푸핑, DNS에서 UDP 사용</p>
+<h2 id="reference" class="headerLink">
+    <a href="#reference" class="header-mark" aria-label="Header mark for 'Reference'"></a>Reference</h2><ul>
+<li><a href="https://m.blog.naver.com/pxkey/221216492103" target="_blank" rel="noopener noreferrer">IP 주소와 도메인의 관계</a></li>
+<li><a href="https://anggeum.tistory.com/entry/DNS-%EA%B0%9C%EB%85%90%EC%9E%A1%EA%B8%B0-2-DNS-%EA%B5%AC%EC%84%B1-%EC%9A%94%EC%86%8C-%EB%B0%8F-%EB%B6%84%EB%A5%98DNS-Resolver-DNS-%EC%84%9C%EB%B2%84" target="_blank" rel="noopener noreferrer">DNS-개념잡기-2-DNS-구성-요소-및-분류(DNS-Resolver-DNS-서버)</a></li>
+<li><a href="https://blog.sysbot32.com/entry/DNS-Recursive-Query%EB%A5%BC-%EC%A7%81%EC%A0%91-%ED%95%B4%EB%B3%B4%EC%9E%90" target="_blank" rel="noopener noreferrer">DNS Recursive Query를 직접 해보자</a></li>
+<li><a href="https://wonsjung.tistory.com/614" target="_blank" rel="noopener noreferrer">HTTP 통신과정, 리졸버를 이용한 DNS 서버에서 IP 조회하기</a></li>
+<li><a href="https://malwareanalysis.tistory.com/631" target="_blank" rel="noopener noreferrer">DNS 이해</a></li>
+<li><a href="https://croquisine.com/dns-%EC%BF%BC%EB%A6%AC-%EC%B2%98%EB%A6%AC/" target="_blank" rel="noopener noreferrer">DNS 쿼리, DNS의 쿼리 처리</a> - DNS Resolver와 Local DNS Server의 차이</li>
+<li><a href="https://inpa.tistory.com/entry/WEB-%F0%9F%8C%90-DNS-%EA%B0%9C%EB%85%90-%EB%8F%99%EC%9E%91-%EC%99%84%EB%B2%BD-%EC%9D%B4%ED%95%B4-%E2%98%85-%EC%95%8C%EA%B8%B0-%EC%89%BD%EA%B2%8C-%EC%A0%95%EB%A6%AC" target="_blank" rel="noopener noreferrer">DNS 개념 &amp; 동작 ★ 알기 쉽게 정리</a></li>
+<li><a href="https://kghworks.tistory.com/126" target="_blank" rel="noopener noreferrer">DNS는 어떻게 동작하는가</a></li>
+</ul></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-09-11</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/network-tcp-udp-2/" class="prev" rel="prev" title="TCP와 UDP"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>TCP와 UDP</a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>
