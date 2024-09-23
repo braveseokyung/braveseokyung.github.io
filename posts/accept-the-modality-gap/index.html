@@ -1,0 +1,685 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space - brog</title><meta name="Description" content="CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다."><meta property="og:url" content="http://localhost:1313/posts/accept-the-modality-gap/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space">
+  <meta property="og:description" content="CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-09-24T00:16:26+09:00">
+    <meta property="article:modified_time" content="2024-09-24T00:16:26+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space">
+  <meta name="twitter:description" content="CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="http://localhost:1313/posts/accept-the-modality-gap/" /><link rel="prev" href="http://localhost:1313/posts/network-dns/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http://localhost:1313/posts/accept-the-modality-gap/"
+        },"genre": "posts","wordcount":  1762 ,
+        "url": "http://localhost:1313/posts/accept-the-modality-gap/","datePublished": "2024-09-24T00:16:26+09:00","dateModified": "2024-09-24T00:16:26+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "http://localhost:1313/authors/braveseokyung"
+                    }],"description": "CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다."
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > Posts </a><a class="menu-item"
+                    href="/tags/" > Tags </a><a class="menu-item"
+                    href="/categories/" > Categories </a><span class="menu-item delimiter"></span><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="" >Posts</a><a class="menu-item" href="/tags/" title="" >Tags</a><a class="menu-item" href="/categories/" title="" >Categories</a><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#논문-정보">논문 정보</a></li>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#preliminaries">Preliminaries</a>
+      <ul>
+        <li><a href="#hyperbolic-spaces">Hyperbolic Spaces</a></li>
+        <li><a href="#spatial-proximity-based-contrastive-loss">Spatial Proximity based Contrastive Loss</a></li>
+      </ul>
+    </li>
+    <li><a href="#interplay-between-losses">Interplay between Losses</a>
+      <ul>
+        <li><a href="#proposition-1">Proposition 1.</a></li>
+        <li><a href="#proposition-2">Proposition 2.</a></li>
+      </ul>
+    </li>
+    <li><a href="#our-approach--accept-the-modality-gap">Our Approach : Accept the Modality Gap</a></li>
+    <li><a href="#related-work">Related Work</a>
+      <ul>
+        <li><a href="#embeddings-in-hyperbolic-spaces">Embeddings in Hyperbolic Spaces</a></li>
+        <li><a href="#joint-multimodal-learning">Joint Multimodal Learning</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='http://localhost:1313/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/paper-review/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Paper-Review</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-09-24">2024-09-24</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-09-24">2024-09-24</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;1762 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;9 minutes&nbsp;</div>
+        </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#논문-정보">논문 정보</a></li>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#preliminaries">Preliminaries</a>
+      <ul>
+        <li><a href="#hyperbolic-spaces">Hyperbolic Spaces</a></li>
+        <li><a href="#spatial-proximity-based-contrastive-loss">Spatial Proximity based Contrastive Loss</a></li>
+      </ul>
+    </li>
+    <li><a href="#interplay-between-losses">Interplay between Losses</a>
+      <ul>
+        <li><a href="#proposition-1">Proposition 1.</a></li>
+        <li><a href="#proposition-2">Proposition 2.</a></li>
+      </ul>
+    </li>
+    <li><a href="#our-approach--accept-the-modality-gap">Our Approach : Accept the Modality Gap</a></li>
+    <li><a href="#related-work">Related Work</a>
+      <ul>
+        <li><a href="#embeddings-in-hyperbolic-spaces">Embeddings in Hyperbolic Spaces</a></li>
+        <li><a href="#joint-multimodal-learning">Joint Multimodal Learning</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="논문-정보" class="headerLink">
+    <a href="#%eb%85%bc%eb%ac%b8-%ec%a0%95%eb%b3%b4" class="header-mark" aria-label="Header mark for '논문 정보'"></a>논문 정보</h2><ul>
+<li>CVPR 2024 Highlight</li>
+<li>Keyword : multimodal learning, modality gap, hyperbolic representation learning</li>
+<li><a href="https://www.google.com/url?sa=t&amp;source=web&amp;rct=j&amp;opi=89978449&amp;url=https://openaccess.thecvf.com/content/CVPR2024/papers/Ramasinghe_Accept_the_Modality_Gap_An_Exploration_in_the_Hyperbolic_Space_CVPR_2024_paper.pdf&amp;ved=2ahUKEwjax__SrtmIAxXSh1YBHYrfDq4QFnoECBkQAQ&amp;usg=AOvVaw26x5QLHl4rCwV3Fe1tYq97" target="_blank" rel="noopener noreferrer">paper</a></li>
+</ul>
+<h2 id="abstract" class="headerLink">
+    <a href="#abstract" class="header-mark" aria-label="Header mark for 'Abstract'"></a>Abstract</h2><ul>
+<li>
+<p>최근 연구로 hierarchical한 feature representation의 학습에 hyperbolic space의 포텐셜이 주목받고 있음</p>
+</li>
+<li>
+<p>single modality에 대해 hyperbolic space를 leveraging하는 것은 어느 정도 진전이 있었지만, multimodal settting에서는 under explored</p>
+</li>
+<li>
+<p>최근 연구
+Euclidean multimodal learning 테크닉을 hyperbolic space에 적용(geodesic distance based contrastive loss)</p>
+<p>→ 이 논문은 이러한 spatial proximity based contrastive loss 가 latent space에서의 hierarchy를 방해한다는 이론적/경험적 반박 제시</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+</li>
+<li>
+<p>이 연구</p>
+<p>(latent space 상에서의 hierarchy를 방해한다는) 문제를 해결하기 위해,</p>
+<ul>
+<li><strong>cross-modal representation이 text와 image 사이의 inherent modality gap을 accept해야 함을 주장</strong></li>
+<li><strong>spatial proximity를 enforce하지 않는 novel한 cross-modal similarity를 제안</strong></li>
+</ul>
+</li>
+<li>
+<p>이 연구의 의의</p>
+<ul>
+<li>unimodal hierarchy를 보존하면서 두 모달리티를 잘 align함</li>
+<li>downstream task에서 더 좋은 latent structure가 나타남과 동시에, text-to-image, image-to-text retrieval task에서 성능이 superior</li>
+</ul>
+</li>
+</ul>
+<h2 id="introduction" class="headerLink">
+    <a href="#introduction" class="header-mark" aria-label="Header mark for 'Introduction'"></a>Introduction</h2><ul>
+<li>
+<p>natural world에서 hierarchical한 structure는 fundamental한 요소</p>
+</li>
+<li>
+<p>image-text representation으로 natural world를 총체적으로 보고자 하는 Multimodal foundation model CLIP은, <strong>Euclidean and spherical geometry</strong>를 사용</p>
+<ul>
+<li>하지만 이런 방법은 hierarchical한 information을 capture하는데에 있어 intrinsic geometric constraint가 존재</li>
+</ul>
+</li>
+<li>
+<p>hierarchical structure에서 continuous approximation이 가능한 hyperbolic space가 등장</p>
+<blockquote>
+<ul>
+<li>MERU(2023)</li>
+<li>Hyperbolic self-paced learning for self-supervised skeleton-based action representations(2023)</li>
+<li>Hyperbolic contrastive learning for visual representations beyond objects(2023)</li>
+<li>Hyperbolic image embeddings(2020)</li>
+<li>Hypliloc: Towards effective lidar pose regression with hyperbolic fusion (2023)</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>hyperbolic space에서의 hyperbolic embedding은 unimodal setting에서는 많이 탐구되었지만, multimodal에서는 under explored</p>
+</li>
+<li>
+<p>지금의 multimodal model들은 cross-modal embedding의 similarity를 shared embedding space에서의 spatial proximity로 계산 → spatial proximity based contrastive loss</p>
+<ul>
+<li>modality 간 matching concept을 cluster, non-matching을 밀어내는 방식</li>
+<li>널리 사용되지만, image-text modality 사이의 alignment가 ill-posed problem</li>
+<li><strong>modality gap</strong>이라는 문제가 발생(modality 간의 misalignment)</li>
+</ul>
+</li>
+</ul>
+<p><strong>modality gap</strong></p>
+<p>주장: modality gap의 원인은 visual/linguistic data의 1) <strong>representational nature</strong>의 intrinsic한 차이와 2) information content의 차이라고 생각함</p>
+<p>Text</p>
+<ul>
+<li>구조적 syntax, semantically rich → abstract concept과 relationship을 <strong>explicit</strong>하게 담고있음</li>
+</ul>
+<p>Image</p>
+<ul>
+<li>concrete instances of the world</li>
+<li>복잡한 scene과 hierarchical한 relationship을 visual cue를 통해 <strong>implict</strong>하게 표현</li>
+<li>distance metric을 minimize하려는 모델들은 text-image사이의 nuanced association을 capture하기 어려워 할 수 있음</li>
+<li>그 결과 rich, one-to-many correspondence from text-to-image를 간과하는 oversimplified alignment를 초래할 수 있음</li>
+</ul>
+<p><strong>meru (최근 연구)</strong></p>
+<ul>
+<li>hyperbolic space에서 unified image-text representation을 배우기 위해 entailment loss를 사용</li>
+<li>entailment loss는 cross-modal hierarchy(text description이 image보다 더 generic하다)를 이용</li>
+<li>하지만 여전히 spatial proximity based contrastive loss의 비중이 크고, Euclidean/spherical과 같은 pitfall이 발생</li>
+<li>이 논문에서 modality 간의 spatial proximity를 minimize하는 strategy는 text/image embedding 모두의 hierarchical representation에 나쁘게 영향을 미침을 이론적/실험적으로 보일 것임</li>
+</ul>
+<p><strong>이 논문에서는~</strong></p>
+<ul>
+<li>image와 text embedding사이의 modality gap을 accept하는 <strong>novel loss function</strong>을 소개</li>
+<li>pairwise similiarity를 평가하는데 기존의 latent space에서의 spatial proximity → hyperbolic angle-based metric</li>
+<li>이 논문의 loss function은 hierarchy를 더 잘 보일 뿐만 아니라 hyperbolic space의 expanse를 better utilize</li>
+</ul>
+<p><strong>논문 contribution</strong></p>
+<ul>
+<li>hyperbolic space에서 image/text를 align하는데 쓰이는 spatial proximity based contrastive loss가 hierarchy를 보존하는데 detrimental함을 보임 + meru의 contrastive loss 와 entailment loss combine 한 게 fundamental mismatch가 있음을 보임</li>
+<li>위의 문제를 modality gap을 accept함으로써 해결하는 novel objective function을 제안
+<ul>
+<li>hierarchy 보존 + 두 모달리티를 align할 때 hyperbolic space를 better utilize</li>
+</ul>
+</li>
+<li>CLIP에서 hyperbolic space로의 최근 extension이 near-Euclidan geometry with low curvature에서만 잘 작동하는 것임을 보임, 우리껀 high curvature space에서도 잘 작동함!</li>
+<li>text-to-image, image-to-text retrieval task에서 superior!</li>
+</ul>
+<h2 id="preliminaries" class="headerLink">
+    <a href="#preliminaries" class="header-mark" aria-label="Header mark for 'Preliminaries'"></a>Preliminaries</h2><h3 id="hyperbolic-spaces" class="headerLink">
+    <a href="#hyperbolic-spaces" class="header-mark" aria-label="Header mark for 'Hyperbolic Spaces'"></a>Hyperbolic Spaces</h3><ul>
+<li>Hyperbolic space는 constance negative curvature을 가지는 Riemannian manifold( Euclidean, spherical space는 0 또는 constant positive curvature)을 가짐</li>
+<li>그에 따르는 unique property : 평행선의 divergence(발산), boundary로 갈수록 exponential volume growth</li>
+<li>volume growth property → hyperbolic space를 hierarchical/graph structured data를 embedding할 수 있는 ideal한 후보로 만듦</li>
+</ul>
+<h4 id="lorentz-modelminkowski-model" class="headerLink">
+    <a href="#lorentz-modelminkowski-model" class="header-mark" aria-label="Header mark for 'Lorentz Model(Minkowski model)'"></a>Lorentz Model(Minkowski model)</h4><ul>
+<li>
+<p>hyperbolic space를 표현하는 방법</p>
+</li>
+<li>
+<p>curvature c를 가지는 hyperbolic space $\mathbb{H}^d$ within (d+1)dimensional Euclidean space $\mathbb{R}^{d+1}$</p>
+$$
+    \mathbb{H}^d=\{x\in\mathbb{d+1}| ⟨x, x⟩_\mathbb{H}=-\frac{1}{c},x_0>0\}
+    $$
+<p>Lorentzian inner product :</p>
+$$
+    \langle{\mathbf{x},\mathbf{y}}\rangle_\mathbb{H}=-x_0y_0+\sum^d_{i=1}x_iy_i
+    $$
+<p>vector의 0번째 component는 time으로, 나머지는 space component로 취급됨</p>
+<p>time component를 space component로부터 계산</p>
+$$
+    x_{\text{time}}=x_0=\sqrt{\frac{1}{c}+\lVert\mathbf{x}_{\text{space}}\rVert}
+    $$
+<ul>
+<li>Euclidean norm, $\mathbf{x}_{\text{space}}=\mathbf{x}_{1:d}$</li>
+</ul>
+</li>
+</ul>
+<p><strong>Geodesics</strong></p>
+<p>hyperbolic space에서 point 간 가장 짧은 path(Euclidean geometry에서 straight lines(직선)에 대응)</p>
+<ul>
+<li>
+<p>Lorentz model에서, geodesic은 intersection of planes through origin with the hyperboloid</p>
+</li>
+<li>
+<p>두 point x,y 사이의 geodesic distance(가장 짧은 거리)는</p>
+$$
+    d_{\mathbb{H}}(\mathbf{x,y})=\sqrt{\frac{1}{c}} \cosh^{-1}(-c\langle{\mathbf{x,y}\rangle}_{\mathbb{H}})
+    $$
+</li>
+</ul>
+<p><strong>Tangent Spaces</strong></p>
+<p>hyperbolic space에서 point $\mathbf{x}\in\mathbb{H}^d$ 에서의 tangent space는 그것을 locally approximate하는 Euclidean space</p>
+<p>formula reference <a href="https://www.notion.so/Learning-continuous-hierarchies-in-the-lorentz-model-of-hyperbolic-geometry-3fa173b760f64b7bb7836cdac45fcc92?pvs=21" target="_blank" rel="noopener noreferrer"> Learning continuous
+hierarchies in the lorentz model of hyperbolic geometry</a></p>
+<p><strong>Centroid of Points</strong></p>
+<p>hyperbolic space에서 set of point의 centroid를 찾는 것은 Euclidean에서처럼 straightforward하지 않다→ Einstein midpoint</p>
+<ul>
+<li>Eistein midpoint
+<ul>
+<li>
+<p>Klein coordinate으로 변환해서 얻는 것이 더 쉬움</p>
+<p>$\mathbf{x}=(x_0,\mathbf{x}_{1:d})\in\mathbb{H}^d$ 가 hyperboloid model의 point라면, 다음 projection을 통해 Klein coordinate $\mathbf{k}\in\mathbb{K}^d$로 변환 가능</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-26_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.12.08.png"   alt="스크린샷 2024-08-26 오후 3.12.08.png"  ></p>
+</li>
+<li>
+<p>그러면 centroid를 다음과 같이 나타낼 수 있다</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-26_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.13.56.png"   alt="스크린샷 2024-08-26 오후 3.13.56.png"  ></p>
+<p>$\gamma_j$는 Lorentz factor</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-26_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.14.15.png"   alt="스크린샷 2024-08-26 오후 3.14.15.png"  ></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="spatial-proximity-based-contrastive-loss" class="headerLink">
+    <a href="#spatial-proximity-based-contrastive-loss" class="header-mark" aria-label="Header mark for 'Spatial Proximity based Contrastive Loss'"></a>Spatial Proximity based Contrastive Loss</h3><p>contrastive loss의 핵심은 matching datapoint(positive pair)간의 거리를 최소화하고 non-matching datapoint(negative pair) 간의 거리를 최대화하는 것</p>
+<p>Formally,</p>
+<p>$\mathcal{B}$ : N image-text pair batch</p>
+<p>$\mathbf{x}_i,\mathbf{y}_i\in\mathbb{R}^d$ : data sample $i$ 에 대응되는 text, image embedding</p>
+<p>$\mathcal{K}:\mathbb{R}^{d\times d} \rightarrow\mathbb{R}$ : similarity function</p>
+<p>$\tau>0$ : temperature parameter</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-26_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.16.40.png"   alt="스크린샷 2024-08-26 오후 3.16.40.png"  ></p>
+<ul>
+<li>
+<p>CLIP</p>
+<p>symmetric contrastive loss 사용</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-26_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_4.05.26.png"   alt="스크린샷 2024-08-26 오후 4.05.26.png"  ></p>
+<ul>
+<li>embedding unit으로 normalize</li>
+<li>$\mathcal{K}$ : cosine similarity</li>
+<li>CLIP embedding은 (d-1)-dimensional hypersphere에 있게 된다</li>
+</ul>
+<p>cosine similarity가 hypersphere에서 geodesic distance에 대해 inversely proportional하므로, CLIP은 <strong>spatial proximity를 이용해서 cross-modal similarity를 구한다고 볼 수 있다</strong></p>
+</li>
+<li>
+<p>Hyperbolic space에서</p>
+<p>image와 text가 hyperbolic space에 있다고 ensure하고 geodesic distance로 proximity를 구하면 위의 contrastive loss를 hyperbolic space로 확장될 수 있다</p>
+<p>by setting $\mathcal{K}=-d_{\mathbb{H}}$</p>
+<p>MERU에서는 위의 loss와 entailment loss(<strong>impose hierarchy that text entails images</strong>)를 함께 사용</p>
+</li>
+</ul>
+<h2 id="interplay-between-losses" class="headerLink">
+    <a href="#interplay-between-losses" class="header-mark" aria-label="Header mark for 'Interplay between Losses'"></a>Interplay between Losses</h2><ul>
+<li>
+<p>앞서 설명했듯이, contrastive loss는 spatial proximity를 기반으로 text와 image embedding 사이의  modality gap을 bridge해주려고 함(spherical or hyperbolic)</p>
+<p>→ 그래서 objective가 <strong>modality에 관계없이</strong> matching concept을 가까이 당기고, non-matching을 멀리 미는 것이 됨</p>
+<p>→ 그래서 <strong>cross-modal hierarchy를 encourage하기 위해 entailment loss</strong>를 사용하는 것</p>
+<p><a href="https://www.notion.so/Hyperbolic-entailment-cones-for-learning-hierarchical-embeddings-2e7150fdfb8c46749c2a9c9cc8f0862d?pvs=21" target="_blank" rel="noopener noreferrer">Hyperbolic entailment cones for learning hierarchical embeddings</a> 에서 제안했다고 함</p>
+<p>목적 : text embedding이 그에 대응하는 image embedding에 비하면 더 abstract한 concept이라는 전제를 반영하기 위함</p>
+<p>이걸 위해 entailment loss는 text embedding에 대응되는 모든 image embedding을 text embedding으로부터 비롯된 cone 안으로 넣음</p>
+<p>Formally, text embedding($\mathbf{x}$)와 image embedding($\mathbf{y}$) 사이의 entailment loss는</p>
+$$
+    L_{\text{entail}}(\mathbf{x},\mathbf{y})=\max(0,\text{ext}(\mathbf{x},\mathbf{y})-\text{aper}(\mathbf{x}))
+    $$
+<p>ext(,) : <strong>text와 image embedding 사이의 exterior angle</strong> → 이후 등장하는 이 논문의 loss에서도 사용됨($\alpha$)</p>
+<p>origin을 지나는 geodesic 위의 angle의 합은 $\pi$ 이므로</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-26_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_4.44.55.png"   alt="스크린샷 2024-08-26 오후 4.44.55.png"  ></p>
+<p>aper() : cone의 aperture angle, space component의 norm이 커지면 aper()은 작아짐</p>
+<p>K : constant hyperparameter로, origin 근처에서 discontinuity of cones를 mitigate(완화)하기 위함</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/92fc74fa-461e-480c-9f40-a79b3f0e5004.png"   alt="스크린샷 2024-08-26 오후 4.47.53.png"  ></p>
+</li>
+<li>
+<p>이론적으로, contrastive loss는 모든 image embedding을 matching text embedding에 가깝게 push → <strong>image embedding의 diversity를 reduce</strong> → discourage hierarchies</p>
+<p>entailment loss는 이 collapse를 방지 못함 → contrastive &amp; entailment loss combination은 hierarchy를 discourage(특히 image 도메인에서)</p>
+</li>
+<li>
+<p>in practice,</p>
+<p>text와 image의 natural variation과 stochasticity 때문에 contrastive loss로 train하면 latent space에서 diversity가 존재(이론적으로는 diversity reduce 였지만)</p>
+<p>nevertheless, image embedding에서 diversity가 존재하더라도  entailment objective가 violate될 가능성이 매우 높음을 보임 → 2차원 케이스에서 수식적으로 보이겠음</p>
+</li>
+</ul>
+<h3 id="proposition-1" class="headerLink">
+    <a href="#proposition-1" class="header-mark" aria-label="Header mark for 'Proposition 1.'"></a>Proposition 1.</h3><ul>
+<li>consider set of points $\{\mathbf{y}_i\}^{n}_{i=1}\in\mathbb{H}^2$, 한 점 $\mathbf{x}\in{\mathbb{H}^2}$</li>
+<li>모든 i에 대해 hyperbolic distance $d_\mathbb{H}(\mathbf{x},\mathbf{y}_i)=r$이라고 가정</li>
+</ul>
+<p>→ 그러면 to maximize sum $\sum^{n}_{i=1}\sum^{n}_{j=1} d_{\mathbb{H}}(\mathbf{y}_i,\mathbf{y}_j)$ (for n&gt;1),</p>
+<p>적어도 하나의 $\mathbf{y}_i$는 $\mathbf{x}$로부터 originate되는 entailment cone의 바깥에 있어야 한다.</p>
+<p>직관적으로 생각해서, cat의 text embedding과 visually distinct한 cat image의 집합을 생각해보자.</p>
+<p>contrastive loss에 의하면, image embedding은 전부 cat을 depict하기 때문에 text embedding으로부터 consistent(일관된) distance에 있어야만한다</p>
+<p>하지만 image의 visual diversity 때문에 image embedding들이 maximally separated되는 것을 고려하지 않을 수 없다(만약 얘네가 떨어져있지 않으면 model은 forced to only learn abstract features-hierarcy를 보존하기 위해 꼭 필요한 visual cue를 놓칠 수 있는-)</p>
+<p>→ 적어도 하나의 image embedding은 어쩔 수 없이 entailment cone 바깥에 떨어질 것 → contrastive loss와 entailment loss 사이의 fundamental discrepancy</p>
+<p>MERU paper와 이 논문의 실험에서 실험적으로도 보임</p>
+<p>다음 분석에서는 두 loss를 동시에 minimize하는 것이 hyperbolic space에서 image embedding의 구역을 rapid decrease할 필요가 있게 만듦(i.e. <strong>collapse</strong>)을 보일 것</p>
+<p>이러한 constraint는 hyperbolic space를 full extent로 사용하는 것을 크게 limit, hierarchical structure establishment를 방해한다</p>
+<h3 id="proposition-2" class="headerLink">
+    <a href="#proposition-2" class="header-mark" aria-label="Header mark for 'Proposition 2.'"></a>Proposition 2.</h3><ul>
+<li>consider set of points $\{\mathbf{y}_i\}^{n}_{i=1}\in\mathbb{H}^2$, 한 점 $\mathbf{x}\in{\mathbb{H}^2}$</li>
+<li>Let $d_{\max}=\max_i(d_{\mathbb{H}}(\mathbf{x},\mathbf{y}_i))$</li>
+<li>Let $\{\mathbf{y}_i\}^{n}_{i=1}$ : x로부터 originate되는 entailment cone 안에 있음</li>
+</ul>
+<p>→ 그러면 $d_{\max}$가 감소하면, image embedding의 전체 구역이 exponentially 감소</p>
+<p>직관적으로, cat 예시를 다시 생각해보자.</p>
+<p>두 loss가 모두 converge하면, (entailment loss)모든 Image embedding이 entailment cone 안에 들어가고 contrastive loss가 이 embedding들로부터 text embedding까지의 maximum geodesic distance를 reduce</p>
+<p>→ 이렇게 되면, image embedding이 차지하는 spatial domain이 축소됨</p>
+<p>→ 줄어드는 공간에서 embedding끼리의 타이트한 clustering을 요구하므로 spatial proximity에 기반한 모든 형태의 image hierarchy를 유지하기 어렵다</p>
+<h2 id="our-approach--accept-the-modality-gap" class="headerLink">
+    <a href="#our-approach--accept-the-modality-gap" class="header-mark" aria-label="Header mark for 'Our Approach : Accept the Modality Gap'"></a>Our Approach : Accept the Modality Gap</h2><p>위의 discussion에서 geodesic-based contrastive loss(entailment cone loss within hyperbolic spaces)의 inherent한 한계를 조명했다</p>
+<p>여기서부터 얻을 수 있는 key insight는,</p>
+<p>이러한 한계가 두 fundamentally distinct한 <strong>modality의 gap을 spatially bridge하려는 과정</strong>에서 일어난다는 점이다.</p>
+<p>이걸 극복하기 위해, 이 논문의 novel한 가설은,</p>
+<p>cross-modal concept의 similarity를 측정할 대안으로써 <strong>modality gap을 acknowledge하는 objective function</strong>을 사용한다면, 이러한 챌린지를 해결하는데 효과적일 것이다</p>
+<p>가설을 기반으로</p>
+<ul>
+<li>모든 matching concept가(unimodal/cross-modal) hyperbolic space의 origin으로부터 특정한 geodesic으로 align되는 unique constraint를 제안</li>
+<li>위 constraint 하에 image가 text와 비교했을 때 더 specific하다는 것을 반영하여 image embedding을 textual counterpart보다 더 멀리 위치</li>
+<li>그 결과, <strong>geodesic 상에서 두 컨셉 간의 deviation angle</strong>이 conceptual distance를 측정하는 새로운 metric이 됨.</li>
+</ul>
+<p><strong>Figure 3</strong></p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-27_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.15.16.png"   alt="스크린샷 2024-08-27 오후 3.15.16.png"  ></p>
+<p>예를 들자면, “cat”의 image embedding과 그에 대응되는 textual descriptor를 align한다고 생각해보자</p>
+<p>objective : angle $\alpha$ 를 최소화하는 동시에 angle $\beta$ 를 최대화함으로써, 두 modality 사이의 optimal alignment를 얻는 것</p>
+<p>non-matching concept에 대해서는, 반대로 $\alpha$ 최대화/ $\beta$ 최소화</p>
+<ul>
+<li>
+<p>hyperbolic에서 angle $\alpha$, angle $\beta$ 수식:</p>
+$$
+    \alpha(\mathbf{x},\mathbf{y})=\text{ext}(\mathbf{x},\mathbf{y}), \beta(\mathbf{x},\mathbf{y})=\pi-\alpha(\mathbf{x},\mathbf{y})
+    $$
+</li>
+<li>
+<p>angle-based contrastive loss($L_{\text{angle}}$)</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-27_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_3.37.07.png"   alt="스크린샷 2024-08-27 오후 3.37.07.png"  ></p>
+<ul>
+<li>
+<p>$L^{T\rightarrow I}$ : text to image contrastive loss</p>
+<p>위의 식에서 similarity function $\mathcal{K}$ 가 $\alpha,\beta$로 대체되고 $\mathcal{B}$ 의 matching pair에 대해 $\alpha$ 최소화, $\beta$ 최대화하고 나머지에 대해서는 반대로</p>
+</li>
+<li>
+<p>asymmetric :  text가 image보다 generic하다는 걸 반영했기 때문</p>
+<p>entailment loss의 smoothed, contrastive version이라고 볼 수 있음 (비슷한 concept을 cone의 axis에 align하기 때문에)</p>
+<p>$L_{\text{angle}}$의 두 term이 mutual하게 satisfied되므로 objective간 mismatch가 없다($L_{\text{entail}}$ 은 혼자서는 유의미한 결과를 내지못함을 보였다 - 그래서 실험결과 이 논문 loss가 짱이래 ~)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>regularizer($L_{\text{centroid}}$)</p>
+<p>hyperbolic manifold에서 embedding의 distribution을 개선하기 위해 distribution level에서 regularizer를 사용</p>
+<p>text embedding의 centroid가 image embedding의 centroid보다 origin에서 가깝다고 impose</p>
+<p>Formally,</p>
+<p>$\mathbf{x}_e,\mathbf{y}_e$가 각각 text, image embedding의 Einstein midpoint(centroid)(Eq <a href="https://www.notion.so/Accept-the-Modality-Gap-An-Exploration-in-Hyperbolic-Space-f2eafedf8884417e95d0bf5a0a4303e0?pvs=21" target="_blank" rel="noopener noreferrer">6</a>)</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-27_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_4.19.38.png"   alt="스크린샷 2024-08-27 오후 4.19.38.png"  ></p>
+<ul>
+<li>norm의 뒤 term은 x,y 사이의 geodesic distance</li>
+<li>Euclidean norm</li>
+<li>p&gt;q : image가 text보다 centroid가 origin으로부터 멂</li>
+</ul>
+</li>
+<li>
+<p>Final loss</p>
+$$
+    L_{\text{final}}=L_{\text{angle}}+\lambda L_{\text{centroid}}
+    $$
+<p>$\lambda>0$ 는 trade-off hyperparameter</p>
+</li>
+<li>
+<p>MERU의 parametrization을 따름</p>
+<ul>
+<li>
+<p>loss를 계산할 때 $\mathbf{x}=(x_{\text{time}},\mathbf{x}_{\text{space}})$</p>
+</li>
+<li>
+<p>neural network를 사용해서 tangent space에서 Lorentz 모델의 space component만을 encode</p>
+</li>
+<li>
+<p>hyperboloid를 project하는 exponential mapping은</p>
+<p><img class="tw-inline" loading="lazy" src="Accept%20the%20Modality%20Gap%20An%20Exploration%20in%20Hyperbol%20f2eafedf8884417e95d0bf5a0a4303e0/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2024-08-27_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_4.44.55.png"   alt="스크린샷 2024-08-27 오후 4.44.55.png"  ></p>
+</li>
+<li>
+<p>Eq <a href="https://www.notion.so/Accept-the-Modality-Gap-An-Exploration-in-Hyperbolic-Space-f2eafedf8884417e95d0bf5a0a4303e0?pvs=21" target="_blank" rel="noopener noreferrer">3</a> 에 의해 time component를 얻을 수 있음</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="related-work" class="headerLink">
+    <a href="#related-work" class="header-mark" aria-label="Header mark for 'Related Work'"></a>Related Work</h2><h3 id="embeddings-in-hyperbolic-spaces" class="headerLink">
+    <a href="#embeddings-in-hyperbolic-spaces" class="header-mark" aria-label="Header mark for 'Embeddings in Hyperbolic Spaces'"></a>Embeddings in Hyperbolic Spaces</h3><ul>
+<li>
+<p>Hyperbolic geometry는 boundary로 향할 때 exponential volume expansion을 가능하게 하고 → hierarchical structure embedding을 가능하게 한다</p>
+<p>hierarchical relationship가 있는 곳에서 활용됨 : molecular structure/action recognition/3D data/text data/image</p>
+</li>
+<li>
+<p>hyperbolic embedding 학습 방법</p>
+<ul>
+<li>standard deep learning layer(ResNet, Transformer)</li>
+<li>hyperbolic projection<a href="https://www.notion.so/Poincar-Embeddings-for-Learning-Hierarchical-Representations-69bcc72619d64be2854f602ab5725d46?pvs=21" target="_blank" rel="noopener noreferrer"><strong>Poincaré Embeddings for Learning Hierarchical Representations</strong></a></li>
+<li>hyperbolic neural network<a href="https://www.notion.so/Hyperbolic-neural-networks-c56b2e81b017499d979c36e4e8858fcf?pvs=21" target="_blank" rel="noopener noreferrer">Hyperbolic neural networks</a></li>
+</ul>
+</li>
+<li>
+<p>tree-like inductive bias incorporate</p>
+<ul>
+<li><strong>entailment loss</strong>를 통해 child node가 parent node embedding으로부터 비롯된 cone에 들어가도록 force<a href="https://www.notion.so/Hyperbolic-entailment-cones-for-learning-hierarchical-embeddings-2e7150fdfb8c46749c2a9c9cc8f0862d?pvs=21" target="_blank" rel="noopener noreferrer">Hyperbolic entailment cones for learning hierarchical embeddings</a></li>
+</ul>
+</li>
+<li>
+<p>Hyperbolic contrastive learning</p>
+<ul>
+<li>
+<p>hyperbolic space에서 geodesic distance objective를 최소화하도록 <strong>contrastive learning</strong>을 사용</p>
+<blockquote>
+<ul>
+<li>Hyperbolic Contrastive Learning for Visual Representations beyond Objects</li>
+<li>Hyperbolic Contrastive Learning</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>Hyperbolic embedding in cross-modality setting → MERU</p>
+<ul>
+<li><strong>contrastive loss + entailment loss</strong> 사용됨</li>
+</ul>
+</li>
+</ul>
+<p>이 논문에서 마지막 MERU의 loss 간 interplay를 다뤘음</p>
+<h3 id="joint-multimodal-learning" class="headerLink">
+    <a href="#joint-multimodal-learning" class="header-mark" aria-label="Header mark for 'Joint Multimodal Learning'"></a>Joint Multimodal Learning</h3><ul>
+<li>
+<p>early pretraining work : unimodal pretraining</p>
+<p>pretraining task로 인해 structured embedding space가 생긴다면, downstream task에 유용할 것이라는 생각</p>
+</li>
+<li>
+<p>multimodal setting으로 확장 : image-text pair에 대한 weak supervision을 추가로 assume</p>
+<blockquote>
+<ul>
+<li>Unicoder-VL: A Universal Encoder for Vision and Language by Cross-modal Pre-training</li>
+<li>Large-scale multi-modal pre-trained models: A comprehensive survey</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>가장 유명 : contrastive objective를 train</p>
+<blockquote>
+<p>CLIP
+ALIGN</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>encoder only에서 text decoder를 포함하거나(BLIP) LLM과 합치는 쪽(BLIP-2,LLaVA)으로 발전하는 중</p>
+</li>
+</ul></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-09-24</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/network-dns/" class="prev" rel="prev" title="DNS"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>DNS</a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2024<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>

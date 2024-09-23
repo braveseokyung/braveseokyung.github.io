@@ -3,7 +3,14 @@
         <title>Braveseokyung - Author - brog</title>
         <link>http://localhost:1313/authors/braveseokyung/</link>
         <description>Braveseokyung - Author - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/authors/braveseokyung/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/authors/braveseokyung/" rel="self" type="application/rss+xml" /><item>
+    <title>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</title>
+    <link>http://localhost:1313/posts/accept-the-modality-gap/</link>
+    <pubDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>http://localhost:1313/posts/accept-the-modality-gap/</guid>
+    <description><![CDATA[CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.]]></description>
+</item><item>
     <title>DNS</title>
     <link>http://localhost:1313/posts/network-dns/</link>
     <pubDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</pubDate><author>

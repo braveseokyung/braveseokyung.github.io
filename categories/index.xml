@@ -3,7 +3,14 @@
         <title>Categories - Category - brog</title>
         <link>http://localhost:1313/categories/</link>
         <description>Categories - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>Paper-Review</title>
+    <link>http://localhost:1313/categories/paper-review/</link>
+    <pubDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</pubDate><author>
+        <name>Author</name>
+    </author><guid>http://localhost:1313/categories/paper-review/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>Computer-Network</title>
     <link>http://localhost:1313/categories/computer-network/</link>
     <pubDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</pubDate><author>
