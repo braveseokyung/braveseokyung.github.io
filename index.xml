@@ -1,58 +1,65 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>brog</title>
-        <link>http://localhost:1313/</link>
+        <link>https://braveseokyung.github.io/</link>
         <description>brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</lastBuildDate>
-            <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 02 Oct 2024 11:39:16 &#43;0900</lastBuildDate>
+            <atom:link href="https://braveseokyung.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>네이버 쇼핑 크롤링 (Selenium, 네이버 API)</title>
+    <link>https://braveseokyung.github.io/posts/naver-shopping-crawling/</link>
+    <pubDate>Wed, 02 Oct 2024 11:39:16 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>https://braveseokyung.github.io/posts/naver-shopping-crawling/</guid>
+    <description><![CDATA[네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API]]></description>
+</item><item>
     <title>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</title>
-    <link>http://localhost:1313/posts/accept-the-modality-gap/</link>
+    <link>https://braveseokyung.github.io/posts/accept-the-modality-gap/</link>
     <pubDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/accept-the-modality-gap/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/accept-the-modality-gap/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.]]></description>
 </item><item>
     <title>DNS</title>
-    <link>http://localhost:1313/posts/network-dns/</link>
+    <link>https://braveseokyung.github.io/posts/network-dns/</link>
     <pubDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/network-dns/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/network-dns/</guid>
     <description><![CDATA[도메인부터 DNS 쿼리까지 DNS에 대해 알아보자]]></description>
 </item><item>
     <title>TCP와 UDP</title>
-    <link>http://localhost:1313/posts/network-tcp-udp-2/</link>
+    <link>https://braveseokyung.github.io/posts/network-tcp-udp-2/</link>
     <pubDate>Tue, 03 Sep 2024 21:30:12 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/network-tcp-udp-2/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/network-tcp-udp-2/</guid>
     <description><![CDATA[전송계층의 TCP와 UDP의 차이를 알아보자]]></description>
 </item><item>
     <title>TCP와 UDP</title>
-    <link>http://localhost:1313/posts/network-tcp-udp/</link>
+    <link>https://braveseokyung.github.io/posts/network-tcp-udp/</link>
     <pubDate>Wed, 28 Aug 2024 15:37:24 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/network-tcp-udp/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/network-tcp-udp/</guid>
     <description><![CDATA[전송계층의 TCP와 UDP의 차이를 알아보자]]></description>
 </item><item>
     <title>Bayesian Estimator</title>
-    <link>http://localhost:1313/posts/9-bayesian-estimation/</link>
+    <link>https://braveseokyung.github.io/posts/9-bayesian-estimation/</link>
     <pubDate>Wed, 21 Aug 2024 21:00:37 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/9-bayesian-estimation/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/9-bayesian-estimation/</guid>
     <description><![CDATA[MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!]]></description>
 </item><item>
     <title>생성모델 평가지표 IS, FID, LPIPS</title>
-    <link>http://localhost:1313/posts/generative-models-evaluation/</link>
+    <link>https://braveseokyung.github.io/posts/generative-models-evaluation/</link>
     <pubDate>Wed, 07 Aug 2024 19:35:06 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/generative-models-evaluation/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/generative-models-evaluation/</guid>
     <description><![CDATA[생성모델의 평가지표 IS, FID, LPIPS 에 대해 알아보자!]]></description>
 </item><item>
     <title>VAE 이해해보기</title>
-    <link>http://localhost:1313/posts/vae/</link>
+    <link>https://braveseokyung.github.io/posts/vae/</link>
     <pubDate>Wed, 31 Jul 2024 21:22:15 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/vae/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/vae/</guid>
     <description><![CDATA[이 글은 VAE 논문(Auto-Encoding Variational Bayes)을 리뷰하다가 막혀서 오토인코더의 모든 것, 딥러닝 VAE 를 참고해서 VAE를 이해 + 수식적인 부분 정리를 목적으로 쓴 글입니다.
 0. Background AE vs VAE?통계와 수학으로 가득한 내용에 걸맞게 논문의 제목이 Auto-Encoding Variational Bayes인 것과 달리, 우리에게 흔히 알려져 있는 이름은 VAE(variational autoencoder)이다. 그렇다면 이 논문은 autoencoder와는 어떤 관계에 있는 것일까?
 AE의 구조 Autoencoder는 인코더-디코더로 이루어진 네트워크이다. 입출력이 동일한 네트워크로, 인코더는 앞단에서 original data를 input으로 받아 z 차원의 latent를 output으로 뱉고, 디코더는 뒷단에서 latent를 input으로 받아 다시 original data와 같은 차원의 output을 출력한다.]]></description>
