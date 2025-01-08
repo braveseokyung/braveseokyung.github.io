@@ -3,7 +3,14 @@
         <title>Paper-Review - Category - brog</title>
         <link>http://localhost:1313/categories/paper-review/</link>
         <description>Paper-Review - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 06 Nov 2024 20:55:46 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/paper-review/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/paper-review/" rel="self" type="application/rss+xml" /><item>
+    <title>[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU</title>
+    <link>http://localhost:1313/posts/fusemix/</link>
+    <pubDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>http://localhost:1313/posts/fusemix/</guid>
+    <description><![CDATA[CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다.]]></description>
+</item><item>
     <title>[논문 리뷰] Emergent Visual-Semantic Hierarchies in Image-Text Representation</title>
     <link>http://localhost:1313/posts/hierarcaps/</link>
     <pubDate>Wed, 06 Nov 2024 20:55:46 &#43;0900</pubDate><author>

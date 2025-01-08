@@ -3,18 +3,8 @@
         <title>딥러닝 - Category - brog</title>
         <link>http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</link>
         <description>딥러닝 - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 27 Nov 2024 21:43:30 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="self" type="application/rss+xml" /><item>
-    <title>Entropy</title>
-    <link>http://localhost:1313/posts/entropy/</link>
-    <pubDate>Wed, 27 Nov 2024 21:43:30 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/entropy/</guid>
-    <description><![CDATA[ensembleEnsemble $X=(x,A_x,P_x)$ outcome $x$ set of possible values $A_x=\{a_1,a_2,...a_i,a_I\}$ , 각각의 확률 $P_X=\{p_1,p_2,...,p_I\}$ abbreviation : $P(x=a_i)$ 를 $P(a_i),P(x)$ 로 씀
-probability of subsetT가 $A_X$의 subset이면, $P(T)=P(x\in T)=\sum\limits_{a_i\in T}P(x=a_i)$
-joint ensemblejoint ensemble $XY$ : outcome이 순서쌍 $x,y$ joint probability : $P(x,y)$ &lt;- 쉼표 안붙여도 됨! $xy<=>x,y$ 확률변수 X,Y가 독립일 필요는 없다.
-marginal probabilityjoint probability에서 한 확률변수에 대한 summation으로 marginal probability를 얻을 수 있다 $$P(x=a_i)=\sum\limits_{y\in A_Y}P(x=a_i,y)$$ conditional probability$$P(x=a_i|y=b_j)=\frac{P(x=a_i,y=b_j)}{P(y=b_{j})}$$ ==Chain rule (Product rule)==$$P(x,y|H)=P(x|y,H)P(y|H)=P(y|x,H)P(x|H)$$ Sum rule$$P(x|H)=\sum\limits_yP(x,y|H)=\sum\limits_yP(x|y,H)P(y|H)$$ Bayes&rsquo; Theorem$$P(y|x,H)=\frac{P(x|y,H)P(y|H)}{P(x|h)}$$ Independencer.]]></description>
-</item><item>
-    <title>딥러닝의 Cross Entropy Loss 이해하기(w/ negative log likelihood) (1)</title>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 27 Nov 2024 19:48:42 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="self" type="application/rss+xml" /><item>
+    <title>딥러닝의 Cross Entropy Loss 이해하기 (1)</title>
     <link>http://localhost:1313/posts/cross-entropy/</link>
     <pubDate>Wed, 27 Nov 2024 19:48:42 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>

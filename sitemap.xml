@@ -2,20 +2,20 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>http://localhost:1313/authors/</loc><lastmod>2024-11-27T21:43:30&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/authors/braveseokyung/</loc><lastmod>2024-11-27T21:43:30&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/</loc><lastmod>2024-11-27T21:43:30&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/categories/</loc><lastmod>2024-11-27T21:43:30&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/posts/entropy/</loc><lastmod>2024-11-27T21:43:30&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/posts/</loc><lastmod>2024-11-27T21:43:30&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</loc><lastmod>2024-11-27T21:43:30&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/fusemix/</loc><lastmod>2025-01-08T21:56:50&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/</loc><lastmod>2025-01-08T21:56:50&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/authors/braveseokyung/</loc><lastmod>2025-01-08T21:56:50&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/</loc><lastmod>2025-01-08T21:56:50&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/</loc><lastmod>2025-01-08T21:56:50&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/paper-review/</loc><lastmod>2025-01-08T21:56:50&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/posts/</loc><lastmod>2025-01-08T21:56:50&#43;09:00</lastmod></url><url>
+            <loc>http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</loc><lastmod>2024-11-27T19:48:42&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/posts/cross-entropy/</loc><lastmod>2024-11-27T19:48:42&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/categories/courses/</loc><lastmod>2024-11-20T17:54:51&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/posts/estimators/</loc><lastmod>2024-11-20T17:54:51&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/series/information-theory-and-inference/</loc><lastmod>2024-11-20T17:54:51&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/series/</loc><lastmod>2024-11-20T17:54:51&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/posts/hierarcaps/</loc><lastmod>2024-11-06T20:55:46&#43;09:00</lastmod></url><url>
-            <loc>http://localhost:1313/categories/paper-review/</loc><lastmod>2024-11-06T20:55:46&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/categories/python/</loc><lastmod>2024-10-02T11:39:16&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/posts/naver-shopping-crawling/</loc><lastmod>2024-10-02T11:39:16&#43;09:00</lastmod></url><url>
             <loc>http://localhost:1313/posts/accept-the-modality-gap/</loc><lastmod>2024-09-24T00:16:26&#43;09:00</lastmod></url><url>

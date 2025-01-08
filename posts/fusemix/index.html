@@ -1,0 +1,986 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU - brog</title><meta name="Description" content="CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다."><meta property="og:url" content="http://localhost:1313/posts/fusemix/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU">
+  <meta property="og:description" content="CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-08T21:56:50+09:00">
+    <meta property="article:modified_time" content="2025-01-08T21:56:50+09:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU">
+  <meta name="twitter:description" content="CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다.">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="http://localhost:1313/posts/fusemix/" /><link rel="prev" href="http://localhost:1313/posts/cross-entropy/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http://localhost:1313/posts/fusemix/"
+        },"genre": "posts","wordcount":  2575 ,
+        "url": "http://localhost:1313/posts/fusemix/","datePublished": "2025-01-08T21:56:50+09:00","dateModified": "2025-01-08T21:56:50+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "http://localhost:1313/authors/braveseokyung"
+                    }],"description": "CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다."
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > Posts </a><a class="menu-item"
+                    href="/tags/" > Tags </a><a class="menu-item"
+                    href="/categories/" > Categories </a><span class="menu-item delimiter"></span><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="" >Posts</a><a class="menu-item" href="/tags/" title="" >Tags</a><a class="menu-item" href="/categories/" title="" >Categories</a><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#논문-정보">논문 정보</a></li>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#related-work">Related Work</a>
+      <ul>
+        <li><a href="#multimodal-learning">Multimodal Learning</a></li>
+      </ul>
+    </li>
+    <li><a href="#data-augmentation">Data Augmentation</a></li>
+    <li><a href="#problem-setting-and-background">Problem Setting and Background</a>
+      <ul>
+        <li><a href="#multimodal-fusion-as-alignment">Multimodal Fusion as Alignment</a></li>
+      </ul>
+    </li>
+    <li><a href="#mixup">Mixup</a></li>
+    <li><a href="#motivation">Motivation</a>
+      <ul>
+        <li><a href="#computational-burden">Computational Burden</a></li>
+        <li><a href="#scarcity-of-high-quality-paired-data">Scarcity of High-Quality Paired Data</a></li>
+        <li><a href="#tight-coupling-from-end-to-end-fusion">Tight Coupling From End-to-End Fusion</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#towards-efficient-multimodal-fusion">Towards Efficient Multimodal Fusion</a>
+      <ul>
+        <li><a href="#computational-improvements">Computational Improvements</a></li>
+        <li><a href="#paired-data-efficiency">Paired Data Efficiency</a></li>
+        <li><a href="#plug-and-play-framework">Plug-and-Play Framework</a></li>
+      </ul>
+    </li>
+    <li><a href="#fusemix--multimodal-latent-mixup">Fusemix : Multimodal Latent Mixup</a></li>
+    <li><a href="#experiments">Experiments</a>
+      <ul>
+        <li><a href="#implementation-details">Implementation Details</a></li>
+        <li><a href="#training-datasets">Training datasets</a></li>
+        <li><a href="#cross-modal-retrieval-performance">Cross-Modal Retrieval Performance</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion-and-future-work">Conclusion and Future Work</a></li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='http://localhost:1313/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/paper-review/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Paper-Review</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2025-01-08">2025-01-08</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2025-01-08">2025-01-08</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;2575 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;13 minutes&nbsp;</div>
+        </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#논문-정보">논문 정보</a></li>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#related-work">Related Work</a>
+      <ul>
+        <li><a href="#multimodal-learning">Multimodal Learning</a></li>
+      </ul>
+    </li>
+    <li><a href="#data-augmentation">Data Augmentation</a></li>
+    <li><a href="#problem-setting-and-background">Problem Setting and Background</a>
+      <ul>
+        <li><a href="#multimodal-fusion-as-alignment">Multimodal Fusion as Alignment</a></li>
+      </ul>
+    </li>
+    <li><a href="#mixup">Mixup</a></li>
+    <li><a href="#motivation">Motivation</a>
+      <ul>
+        <li><a href="#computational-burden">Computational Burden</a></li>
+        <li><a href="#scarcity-of-high-quality-paired-data">Scarcity of High-Quality Paired Data</a></li>
+        <li><a href="#tight-coupling-from-end-to-end-fusion">Tight Coupling From End-to-End Fusion</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#towards-efficient-multimodal-fusion">Towards Efficient Multimodal Fusion</a>
+      <ul>
+        <li><a href="#computational-improvements">Computational Improvements</a></li>
+        <li><a href="#paired-data-efficiency">Paired Data Efficiency</a></li>
+        <li><a href="#plug-and-play-framework">Plug-and-Play Framework</a></li>
+      </ul>
+    </li>
+    <li><a href="#fusemix--multimodal-latent-mixup">Fusemix : Multimodal Latent Mixup</a></li>
+    <li><a href="#experiments">Experiments</a>
+      <ul>
+        <li><a href="#implementation-details">Implementation Details</a></li>
+        <li><a href="#training-datasets">Training datasets</a></li>
+        <li><a href="#cross-modal-retrieval-performance">Cross-Modal Retrieval Performance</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion-and-future-work">Conclusion and Future Work</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="논문-정보" class="headerLink">
+    <a href="#%eb%85%bc%eb%ac%b8-%ec%a0%95%eb%b3%b4" class="header-mark" aria-label="Header mark for '논문 정보'"></a>논문 정보</h2><ul>
+<li>CVPR 2024 Highlight</li>
+<li>Keyword : multimodal learning, mixup augmentation, computation/data efficient</li>
+<li><a href="https://arxiv.org/abs/2312.10144" target="_blank" rel="noopener noreferrer">paper</a></li>
+</ul>
+<h2 id="abstract" class="headerLink">
+    <a href="#abstract" class="header-mark" aria-label="Header mark for 'Abstract'"></a>Abstract</h2><ul>
+<li>
+<p>multimodal alignment의 목표 : multimodal input 간 공유하는 single latent space를 배우는 것</p>
+<p>이 space에서 가장 강력한 모델들은 paired input이 있는 massive dataset에 large-scale computational resource를 써서 학습됨 → practical 상황에서 train하기에 너무 제한적으로 expensive</p>
+</li>
+<li>
+<p>이미 존재하는, 많은 양의 unimodal data에 pre-trained 된 unimodal encoder들이 multimodal model을 훨씬 낮은 cost로 unimodal로부터 만드는 데에 효과적일 것이라 추측</p>
+</li>
+<li>
+<p>pre-trained unimodal encoder의 latent space에서 작동하는 multimodal augmentation scheme인 FuseMix를 제안</p>
+<ul>
+<li>image-text/audio-text retrieval에서 SOTA에 비교될만한, 혹은 더 좋은 성능</li>
+<li>with 더 적은 compute/data(GPU/image-text pairs)</li>
+<li>pre-trained text-to-image generative model을 audio-to-image로 만들 수 있는 방법 보임</li>
+</ul>
+</li>
+</ul>
+<h2 id="introduction" class="headerLink">
+    <a href="#introduction" class="header-mark" aria-label="Header mark for 'Introduction'"></a>Introduction</h2><ul>
+<li>
+<p>multimodal machine learning이 보인 가능성(application)</p>
+<ul>
+<li>understanding-based application</li>
+<li>generation-based application</li>
+<li>main-stream attention</li>
+</ul>
+</li>
+<li>
+<p>이 논문의 interest : multimodal alignment(또 다른 말로 multimodal fusion)</p>
+<p>목적 : 다양한 modality의 input이 공유할 수 있는 single latent space를 배우는 것</p>
+</li>
+</ul>
+<h2 id="related-work" class="headerLink">
+    <a href="#related-work" class="header-mark" aria-label="Header mark for 'Related Work'"></a>Related Work</h2><h3 id="multimodal-learning" class="headerLink">
+    <a href="#multimodal-learning" class="header-mark" aria-label="Header mark for 'Multimodal Learning'"></a>Multimodal Learning</h3><ul>
+<li>
+<p>overarching objective : 여러 modality의 data를 함께 인신(jointly perceive)할 수 있는 universal model을 만드는 것
+modality는 image, text, audio, video를 포함하여 다양한 data stream</p>
+</li>
+<li>
+<p>standard approach : 사용하는 모든 modality에 대해 paired data로 end-to-end로 학습시키는 방법</p>
+<p>이 approach는 does not scale well : scratch부터 large-scale multimodal model을 학습하는 건 compute/data intensive라소..</p>
+</li>
+<li>
+<p>더 practical approach</p>
+<p>pre-trained unimodal network로부터 bootstrap하는 것</p>
+<p>하지만 pre-trained network로 back propagation해야함 : unimodal network가 커서 significant overhead</p>
+</li>
+<li>
+<p>이 논문의 setting과 더 관련있는 연구는, multimodal model이 하나의 shared latent space를 학습하고, 그 shared space에 여러 modality가 함께 encoded 될 수 있는(ex. multimodal alignment)</p>
+<p>pioneer</p>
+<blockquote>
+<p>CLIP
+ALIGN</p>
+</blockquote>
+<p>text와 image를 jointly embed하기 위해 contrastive objective, dual-encoder architecture로 학습</p>
+<blockquote>
+<p>CoCa: Contrastive Captioners are Image-Text Foundation Models (TMLR 2022)
+: contrastive objective에 autoregressive(자기회귀) image captioning term을 추가
+(3T) Three towers: Flexible contrastive learning with pretrained image models (arxiv 2023)
+: pre-trained classifier를 가지고 text와 image encoder를 latent space에 align
+LiT: Zero-Shot Transfer With Locked-Image Text Tuning (CVPR 2022)
+: freeze한 pre-trained image classifier를 image encoder로 사용하고 그걸 가지고 text encoder를 align</p>
+</blockquote>
+<p>위의 접근들은 성공했지만, 모두 하나 이상의 encoder를 scratch부터 학습시킴 → 많은 gpu, expensive gradient computation을 요구</p>
+<p>또 image-text pair로 이루어진 400M-5B정도의 internet-scale dataset을 사용</p>
+<p>CLIP을 extend해서 다른 modality(ex video, audio)를 포함하도록 했지만, 좋은 성능을 위해서는 CLIP fine-tuning을 필요로 함</p>
+<p>비슷하게, 다른 audio-text fusion 방법을 encoder의 fine-tuning이나 추가적인 학습 데이터를 필요로 함</p>
+<blockquote>
+<p>Audio Retrieval with WavText5K and CLAP Training (arxiv 2022)
+On Metric Learning for Audio-Text CrossModal Retrieval (Interspeech 2022)
+Large-scale contrastive language-audio pretraining with feature fusion and keyword-to-caption augmentation (ICASSP 2023)</p>
+</blockquote>
+<p>마지막으로 ImageBind는 image를 anchor modality로 contrastive objective를 써서 6개의 modality간의 shared latent space를 학습하는데, 이때 여러 modality의 encoder를 함께 scratch부터 학습</p>
+<blockquote>
+<p>ImageBind: One Embedding Space To Bind Them All (CVPR 2023)</p>
+</blockquote>
+</li>
+</ul>
+<p>이 모든 연구들과 달리, 이 논문은 computational/data efficiency에 초점을 두고 pre-trained된 unimodal encoder를 freeze, 적은 양의 multimodal paired data를 사용해서 하나의 GPU에서 실험함</p>
+<h2 id="data-augmentation" class="headerLink">
+    <a href="#data-augmentation" class="header-mark" aria-label="Header mark for 'Data Augmentation'"></a>Data Augmentation</h2><ul>
+<li>
+<p>역사적으로 data augmentation은 dataset size와 diversity를 종합적으로 높이기 위해 사용됐음</p>
+</li>
+<li>
+<p>image domain에서 대표적인 augmentation은 horizontal flip, random crop, color jitter ..</p>
+</li>
+<li>
+<p>하지만 domain마다 semantic information을 잘 보존하는 augmentation을 디자인 하는 것은 전문 지식을 필요로 함</p>
+<p>예를 들어, medical image domain에서 나이브하게 color jitter를 적용하는 것은 cancer classification 같은 task에서 중요한 정보를 망가뜨릴 수 있음</p>
+<p>최근 여러 연구에 불구하고, modality-agnostic한 augmentation scheme의 부족</p>
+<blockquote>
+<p>Self-supervised representation learning from random data projectors(arxiv 2023)
+: random projection</p>
+</blockquote>
+<blockquote>
+<p>Randomized Quantization: A Generic Augmentation for Data Agnostic Self-supervised Learning (ICCV 2023)
+: randomized quantization</p>
+</blockquote>
+</li>
+<li>
+<p>input masking 또한 여러 modality에서 성공적으로 적용되었지만, 각 modality 각각에 적합한 masking strategy를 판단하는데 여전히 전문지식이 요구된다고 생각</p>
+<blockquote>
+<p>BERT: Pre-training of deep bidirectional transformers for language understanding (ACL 2019)
+Masked autoencoders are scalable vision learners (CVPR 2022)
+Masked autoencoders that listen (NIPS 2022)
+Videomae: Masked autoencoders are data-efficient learners
+for self-supervised video pre-training (NIPS 2022)</p>
+</blockquote>
+</li>
+<li>
+<p>이러한 어려움 때문에 multimodal learning에서 data augmentation이 많이 연구되지 않은 것은 어찌보면 당연</p>
+<blockquote>
+<p>Mixgen: A new multimodal data augmentation (WACV 2023)
+: input-level joint data augmentation for vision-language representation - interpolate images, concatenate text</p>
+<p><img class="tw-inline" loading="lazy" src="mixgen.png"   alt="image.png"  ></p>
+</blockquote>
+</li>
+<li>
+<p>이 연구에서는 latent space에서 작동하는 multimodal augementation scheme을 제안, 이 방법은 mixup으로부터 영감을 받음.</p>
+<blockquote>
+<p>mixup: Beyond Empirical Risk Minimization (ICLR 2018)</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="problem-setting-and-background" class="headerLink">
+    <a href="#problem-setting-and-background" class="header-mark" aria-label="Header mark for 'Problem Setting and Background'"></a>Problem Setting and Background</h2><h3 id="multimodal-fusion-as-alignment" class="headerLink">
+    <a href="#multimodal-fusion-as-alignment" class="header-mark" aria-label="Header mark for 'Multimodal Fusion as Alignment'"></a>Multimodal Fusion as Alignment</h3><ul>
+<li>이 연구에서는 multimodal fusion을 alignment의 관점에서 정의</li>
+</ul>
+<p><strong>Alignment</strong></p>
+<p>multimodal input 간 공유하는 single latent space를 학습하는 task</p>
+<p>Formally,</p>
+<p>두 data modality $\mathcal{X}$와 $\mathcal{Y}$(e.g. images/texts)가 주어졌을 때 각 modality를 공유된 latent space $\mathcal{S}$로 embed하는 network</p>
+$$
+f_X:\mathcal{X}\rightarrow\mathcal{S}, f_Y:\mathcal{Y}\rightarrow\mathcal{S}
+$$
+<p>를 학습하는 것을 목표로 함</p>
+<p><strong>Contrastive learning for multimodal alignment</strong></p>
+<ul>
+<li>
+<p>최근 연구에서 contrastive learning이 multimodal alignment의 대표적인 objective</p>
+<blockquote>
+<p>(ALIGN) Scaling up visual and vision-language representation learning with noisy text supervision (ICML 2021)
+Align before Fuse : Vision and language representation learning with momentum distillation (NIPS 2021)
+(CLIP) Learning transferable visual models from natural language supervision (ICML 2021)
+<strong>LiT: Zero-Shot Transfer with Locked-image text Tuning (CVPR 2022)</strong></p>
+</blockquote>
+</li>
+<li>
+<p>ambient space에서 semantic하게 비슷한 multimodal input은 가깝게, 다른 input은 멀게 encode되는 joint latent space를 학습하는 것을 목표로 함.</p>
+<ul>
+<li>이를 위해서는 positive pair로 semantically 비슷한 multimodal input이 있어야 하고(image와 그에 대응되는 text caption) semantically 다른 negative pair(unrelated images, texts)가 있어야 한다.</li>
+</ul>
+</li>
+<li>
+<p>따라서, 가정이 우리가 modality $\mathcal{X},\mathcal{Y}$의 joint distribution에서 positive pair를 sampling하는 방법이 있다는 것</p>
+<ul>
+<li>Negative pair는 각 modality의 marginal distribution $p_X, p_Y$의 product(곱)으로부터 sampling함으로써 얻어짐</li>
+</ul>
+</li>
+<li>
+<p>즉, positive pair $(x,y)\sim p_{X,Y}$ negative pair $(x_i^-,y_i^-)\sim^\text{i.i.d}p_Xp_Y(i=1,...,M)$</p>
+</li>
+<li>
+<p>multimodal alignment의 맥락에서 contrastive learning은 InfoNCE loss를 쓰는데,</p>
+<p><img class="tw-inline" loading="lazy" src="infonceloss.png"   alt="InfoNCE Loss"  ></p>
+<ul>
+<li>$a· b ≜
+    \frac{a
+    ⊤b}
+    {∥a∥^2∥b∥^2}$ : cosine similarity</li>
+<li>$\tau>0$ : fixed or learnable scalar temperature parameter</li>
+</ul>
+</li>
+<li>
+<p>최종 objective는 InfoNCE의 symmetric 버전</p>
+<p><img class="tw-inline" loading="lazy" src="infonce_symmetric.png"   alt="InfoNCE Loss Symmetric"  ></p>
+<ul>
+<li>Expectation with respect to positive pair $(x,y)\sim p_{X,Y}$ and M negative pair $(x_i^-,y_i^-)\sim^\text{i.i.d} p_Xp_Y$</li>
+</ul>
+</li>
+<li>
+<p>contrastive learning으로 alignment를 하는 것이 다양한 multimodal downstream task에 대해 zero-shot transfer를 가능하게 함을 여러 연구에서 보였음</p>
+<blockquote>
+<p>ImageBind: One Embedding Space To Bind Them All (CVPR 2023)
+Audioclip: Extending clip to image, text and audio (ICASSP 2022)
+TR0N: Translator networks for 0-shot plug-and-play conditional generation (ICML 2023)
+(CLIP) Learning transferable visual models from natural language supervision (ICML 2021)</p>
+</blockquote>
+</li>
+<li>
+<p>contrastive learning으로 alignment를 하면, general multimodal setting에서 성능이 좋아짐</p>
+<ul>
+<li>
+<p>understanding-based</p>
+</li>
+<li>
+<p>generation-based</p>
+</li>
+<li>
+<p>mutual information maximization에 이론적 motive를 줌</p>
+<blockquote>
+<p>Learning representations by maximizing mutual information across views (NIPS 2019)
+Align before fuse: Vision and language representation
+learning with momentum distillation (NIPS 2021)
+Representation learning with contrastive predictive coding (arxiv 2018)
+Contrastive multiview coding (ECCV 2020)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="mixup" class="headerLink">
+    <a href="#mixup" class="header-mark" aria-label="Header mark for 'Mixup'"></a>Mixup</h2><p>Mixup은 supervised learning에서 general-purpose data augmentation</p>
+<blockquote>
+<p>mixup: Beyond Empirical Risk Minimization (ICLR 2018)</p>
+</blockquote>
+<ul>
+<li>
+<p>data와 label의 쌍 $(x,l),(\hat{x},\hat{l})$ 이 주어졌을 때, convex combination으로 augmented sample $(\tilde{x},\tilde{l})$을 construct</p>
+$$
+    \tilde{x} ≜ λx + (1 − λ)\hat{x}
+    $$
+$$
+    \tilde{l} ≜ λl + (1 − λ)
+    \hat{l}
+    $$
+<p>$\lambda\in(0,1)$ 은 interpolation coefficient - 보통 sampled from Beta distribution $\mathcal{B}(\alpha,\beta)$</p>
+</li>
+<li>
+<p>모델을 학습하는데 쓰이는 loss는 augmented data/label pair로 optimize됨</p>
+</li>
+<li>
+<p>관련 후속 연구</p>
+<ul>
+<li>
+<p>mixup의 robustness/generalization</p>
+<blockquote>
+<p>How does mixup help with robustness and generalization (ICLR 2021)</p>
+</blockquote>
+</li>
+<li>
+<p>calibration</p>
+<blockquote>
+<p>On mixup training: Improved calibration and predictive uncertainty
+for deep neural networks (NIPS 2019)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>variation of mixup</p>
+<ul>
+<li>
+<p>label이 unavailable한 상황의 contrastive learning</p>
+<blockquote>
+<p>Towards domain-agnostic contrastive learning (ICML 2021)</p>
+</blockquote>
+</li>
+<li>
+<p>label을 proxy로 생성</p>
+<blockquote>
+<p>i-Mix: A Domain-Agnostic Strategy for Contrastive Representation Learning (ICLR 2021)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>multimodal learning 맥락</p>
+<ul>
+<li>
+<p>spherical interpolation을 사용하는 mixup strategy를 제안, CLIP을 fine-tune</p>
+<blockquote>
+<p><strong>Geodesic Multi-Modal Mixup for Robust Fine-Tuning (NIPS 2023)</strong></p>
+</blockquote>
+<p>이미 align된 shared latent space를 필요로 해서 우리의 setting에 바로 적용하기 어려움</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="motivation" class="headerLink">
+    <a href="#motivation" class="header-mark" aria-label="Header mark for 'Motivation'"></a>Motivation</h2><p>최근의 성공에 불구하고 multimodal fusion은 large computational, data overhead(+ modularity 부족)에서 비롯되는 크리티컬한 bottleneck이 있음</p>
+<h3 id="computational-burden" class="headerLink">
+    <a href="#computational-burden" class="header-mark" aria-label="Header mark for 'Computational Burden'"></a>Computational Burden</h3><ul>
+<li>
+<p>model scale이 성능과 downstream capability의 key라는 최근 advance</p>
+</li>
+<li>
+<p>모델 scale을 키우는게 performance에 크게 도움이 되지만, 그런 모델을 학습하는데 드는 cost도 그에 맞춰 증가, ml practitioner, 연구자들은 쓸 수 없음</p>
+</li>
+<li>
+<p>multimodal model은 더 그럼</p>
+<ul>
+<li>
+<p>multimodal fusion에서 jointly train $f_X,f_Y$</p>
+<p>두 네트워크를 메모리에 올려서 backpropagation해야 한다는 뜻</p>
+<p>또 각 network의 scale을 키울수록 비용이 큰 gradient computation은 빠르게 증가</p>
+</li>
+</ul>
+</li>
+<li>
+<p>목표: multimodal fusion에서 computational consideration을 prioritize하는 효율적인 framework를 디자인하는 것이 목적</p>
+</li>
+</ul>
+<h3 id="scarcity-of-high-quality-paired-data" class="headerLink">
+    <a href="#scarcity-of-high-quality-paired-data" class="header-mark" aria-label="Header mark for 'Scarcity of High-Quality Paired Data'"></a>Scarcity of High-Quality Paired Data</h3><p>대부분의 multimodal application에서 multimodal paired data를 모으는 것은 필요한 단계</p>
+<p>== modality의 joint distribution $(x,y)\sim p_{X,Y}$에서 paired sample을 얻는 것</p>
+<ul>
+<li>
+<p>하지만 high-quality paired data는 보통 드물고 얻기 어렵다</p>
+<ul>
+<li>
+<p>쓰려고 하는 모든 modality를 포함하는 paired data가 부족</p>
+<blockquote>
+<p>ImageBind: One Embedding Space To Bind Them All</p>
+</blockquote>
+</li>
+<li>
+<p>noisy sample</p>
+<blockquote>
+<p>BLIP: Bootstrapping language-image pre-training for unified vision-language understanding and generation (PMLR 2022)</p>
+</blockquote>
+<blockquote>
+<p>Too Large; Data Reduction for Vision-Language Pre-Training (ICCV 2023)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>반면 unimodal data의 high-quality sample은 비교적 싸고 많이 모을 수 있다</p>
+<p>각 modality의 marginal distribution $x\rightarrow p_X, y\rightarrow p_Y$</p>
+<p>unimodal data는 informative intrinsic supervisory signal을 주면서도 label pairing 없이 모을 수 있음 - self-supervised learning의 성공으로 증명됨</p>
+<p>→ 사용가능한 unimodal signal을 가지고 multimodal paired data를 sourcing하는 걸 처리하고자 함</p>
+</li>
+</ul>
+<h3 id="tight-coupling-from-end-to-end-fusion" class="headerLink">
+    <a href="#tight-coupling-from-end-to-end-fusion" class="header-mark" aria-label="Header mark for 'Tight Coupling From End-to-End Fusion'"></a>Tight Coupling From End-to-End Fusion</h3><p>$f_X,f_Y$를 scratch부터 jointly training하는 semantically 의미있는 shared latent space를 만들지는 모르지만, 학습된 network는 tightly coupled</p>
+<ul>
+<li>
+<p>network의 어떤 부분을 수정하면 보통 network를 end-to-end로 re-training해야 함 → 각 modality에서 연구에 발전이 있을 때마다 re-training없이는 반영할 수가 없음</p>
+<blockquote>
+<p>Energy and policy considerations for deep learning in NLP (ACL 2019)</p>
+</blockquote>
+</li>
+<li>
+<p>각 component가 unimodal의 발전에 맞추어 minimal overhead로 쉽게 대체될 수있도록 multimodal fusion의 plug-and-play framework를 디자인 하는 것을 목표로 함</p>
+</li>
+</ul>
+<h1 id="method" class="headerLink">
+    <a href="#method" class="header-mark" aria-label="Header mark for 'Method'"></a>Method</h1><ul>
+<li>computational/data efficiency, modularity를 고려한 multimodal fusion framework를 제안 (Towards Efficient Multimodal Fusion)</li>
+<li>latent space에서 multimodal augmentation scheme인 Fusemix를 제안 (Fusemix: Multimodal Latent Mixup)</li>
+</ul>
+<p><img class="tw-inline" loading="lazy" src="fusemix_overview.png"   alt="Model Overview"  ></p>
+<h2 id="towards-efficient-multimodal-fusion" class="headerLink">
+    <a href="#towards-efficient-multimodal-fusion" class="header-mark" aria-label="Header mark for 'Towards Efficient Multimodal Fusion'"></a>Towards Efficient Multimodal Fusion</h2><p>두 encoder $f_X=h_X\circ g_X, f_y=h_Y\circ g_Y$</p>
+<p>원래 $f_X,f_Y$는 S로의 direct mapping</p>
+<p>즉, <strong>intermediate latent space</strong>인 $\mathcal{Z_\mathcal{X}}, \mathcal{Z_\mathcal{Y}}$ 로의</p>
+$$
+g_X:\mathcal{X}\rightarrow\mathcal{Z}_{\mathcal{X}}, g_Y:\mathcal{Y}\rightarrow\mathcal{Z}_{\mathcal{Y}}
+$$
+<p>그 후에 <strong>fusion adapter</strong>라고 부르는</p>
+$$
+h_X:\mathcal{Z}_{\mathcal{X}}\rightarrow S, h_Y:\mathcal{Z}_{\mathcal{Y}}\rightarrow S
+$$
+<ul>
+<li>여기서의 key insight : $g_X,g_Y$ 모두 freeze한 pre-trained unimodal encoder를 쓴다는 것과 fusion adapter $h_X,h_Y$를 multimodal fusion을 위한 learnable head로 만든다는 것</li>
+</ul>
+<p>장점:</p>
+<h3 id="computational-improvements" class="headerLink">
+    <a href="#computational-improvements" class="header-mark" aria-label="Header mark for 'Computational Improvements'"></a>Computational Improvements</h3><ul>
+<li>
+<p>Equation 1의 alignment loss(InfoNCE Loss)</p>
+<p><img class="tw-inline" loading="lazy" src="infonceloss.png"   alt="InfoNCE Loss"  ></p>
+<p>를 다음과 같이 다시 쓸 수있음( latent space에서의 pair )</p>
+$$
+    \mathcal{L}(h_X,h_Y;g_X(x),g_Y(y),\{g_Y(y_i^-)\}^M_{i=1})
+    $$
+</li>
+<li>
+<p>Equation 2의 contrastive objective(symmetric version)</p>
+<p><img class="tw-inline" loading="lazy" src="infonce_symmetric.png"   alt="InfoNCE Loss Symmetric"  ></p>
+<p>위 식의 expectation을 encoding의 positive pair $(g_X(x),g_Y(y))$, negative pair $(g_X(x_i^-),g_Y(y_i^-))$ 에 대해 구함</p>
+<ul>
+<li>$(g_X(x),g_Y(y)), (g_X(x_i^-),g_Y(y_i^-))$ 의 distribution은 encoder $g_X,g_Y$에 넣어서 얻어짐</li>
+<li>expectation이 freeze된 $g_X,g_Y$에 의해서만 결정되는(trainable 한 $h_X,h_Y$ 가 아니라) distribution에 대해 구해지기 때문에, unimodal encoder $g_X,g_Y$는 어떤 gradient computation에도 쓰이지 않음</li>
+<li>d즉, unimodal encoder는 backpropagation이 아니라 latent space의 sample을 제공하는데만 필요하기 때문에 간단하게 이 샘플들을 pre-compute하고 training동안에는 unimodal encoder를 치워버릴 수(메모리에서) 있다 → multimodal fusion을 하는 동안 큰 encoder를 메모리에 올릴 필요가 없어서 computation을 아낌</li>
+<li>fusion을 하면서 메모리에 올라가는 유일한 parameter는 learnable fusion adapter 인데, unimodal encoder에 비해 매우 lightweight</li>
+<li>이 연구의 전체 실험 모든 step에서, 하나의 GPU만 필요함</li>
+</ul>
+</li>
+</ul>
+<h3 id="paired-data-efficiency" class="headerLink">
+    <a href="#paired-data-efficiency" class="header-mark" aria-label="Header mark for 'Paired Data Efficiency'"></a>Paired Data Efficiency</h3><p>pre-trained unimodal encoder의 latent space를 $\mathcal{Z}_{\mathcal{X}}, \mathcal{Z}_{\mathcal{Y}}$ 로 세팅함으로써 이 space가 가지고 있는 rich modality-specific semantic에서 이점을 얻을 수 있다</p>
+<ul>
+<li>
+<p>이 information을 scratch부터 학습하면 multimodal fusion에 대해 redundant할 수 있어서 pre-trained unimodal encoder를 쓰는 건 large-scale multimodal paired data의 필요성을 줄일 수 있는 효과적인 방법</p>
+</li>
+<li>
+<p>저자는 이 효과를 unimodal latent space에서 joint space로의 distillation으로 해석함</p>
+<p>contrastive objective가 이러한 distillation에 효과적이라는 것이 다른 연구에서 보여졌음</p>
+<blockquote>
+<p>Three towers: Flexible contrastive learning with pretrained image models (arxiv 2023)</p>
+</blockquote>
+<blockquote>
+<p>Contrastive representation distillation (ICRL 2020)</p>
+</blockquote>
+<p>즉, multimodal fusion에 pre-trained unimodal encoder를 사용하는 것은 scratch에서 end-to-end로 학습하는 것보다 적은 paired data를 필요로 함</p>
+</li>
+</ul>
+<h3 id="plug-and-play-framework" class="headerLink">
+    <a href="#plug-and-play-framework" class="header-mark" aria-label="Header mark for 'Plug-and-Play Framework'"></a>Plug-and-Play Framework</h3><p>multimodal fusion에서 이 연구의 modular approach가 1)unimodal encoder $g_X,g_Y$의 choice, 2)underlying modality $\mathcal{X},{Y}$ 모두에 대해 상관없다(갈아끼울 수 있다)</p>
+<ul>
+<li>arbitrary pre-trained unimodal encoder를 결함함으로써 multimodal fusion과 unimodal learning을 decoupling할 수 있음</li>
+<li>unimodal encoder가 발전해도, 그걸 plug-and-play manner로 multimodal fusion에 사용할 수 있음</li>
+</ul>
+<h2 id="fusemix--multimodal-latent-mixup" class="headerLink">
+    <a href="#fusemix--multimodal-latent-mixup" class="header-mark" aria-label="Header mark for 'Fusemix : Multimodal Latent Mixup'"></a>Fusemix : Multimodal Latent Mixup</h2><p><img class="tw-inline" loading="lazy" src="fusemix_overview.png"   alt="Model Overview"  ></p>
+<p>paired data의 minimal sample로 multimodal fusion을 하는것이 목표이므로, data augmentation을 통해 synthetic multimodal pairs $(\tilde{x},\tilde{y})\in\mathcal{X}\times\mathcal{Y}$ 를 생성하는 것도 자연스러운 방향</p>
+<ul>
+<li>
+<p>하지만 multimodal data의 heterogeneity에 의해 ambient space $\mathcal{X},\mathcal{Y}$에 바로 semantic하게 의미있는 data augmentation을 형성하는 것은 challenging하다</p>
+<blockquote>
+<p>Mixgen: A new multimodal data augmentation (CVPR 2023)</p>
+</blockquote>
+</li>
+<li>
+<p>반면에, $\mathcal{Z}_\mathcal{X},\mathcal{Z}_{\mathcal{Y}}$ 는 보다 homogeneous한 alternative인데, 둘 다 pre-trained unimodal encoder의 intermediate latent space이기 때문이다.</p>
+</li>
+</ul>
+<p>따라서 modality 종류와 unimodal encoder의 선택에 상관없는 simple/effective multimodal augmentation scheme-Fusemix-을 제안</p>
+<ul>
+<li>
+<p>mixup으로부터 아이디어를 얻음(augmented sample이 random convex combination으로부터 만들어짐)</p>
+<blockquote>
+<p>mixup: Beyond Empirical Risk Minimization</p>
+</blockquote>
+<ul>
+<li>
+<p>$\mathcal{Z}_{\mathcal{X}},\mathcal{Z}_{\mathcal{Y}}$ 모두에서 sample간 linear interpolation</p>
+</li>
+<li>
+<p>두 latent space가 모두 pretrained unimodal encoder에서 얻어졌기 때문에 linear interpolation이 ambient space에서 하는 것보다 semantically meaningful하다고 생각</p>
+</li>
+<li>
+<p>latent space에서의 interpolation은 well-established되어있다.</p>
+<blockquote>
+<p>Analogies Explained : Towards understanding linear word analogies (ACL 2019)
+ImageBind: One Embedding Space To Bind Them All (CVPR 2023)
+Efficient estimation of word representations in vector space (ICLR 2013)
+Glove: Global vectors for word representation (EMNLP 2014)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>각 latent space에서 나이브하게 random sample을 섞는 것은 augmented latent pair $(\tilde{z_x},\tilde{z_y})\in\mathcal{Z}_{\mathcal{X}}\times\mathcal{Z}_{\mathcal{Y}}$ 에서 $\tilde{z}_x,\tilde{z}_y$가 서로 관련되지 않는 것만 만들 수 있다</p>
+<p>→ sematic하게 meaningful한 augmented pair가 생기도록 <strong>across</strong> modality에서 interpolation의 structure를 부과해야 함</p>
+<p>→ convex combination!</p>
+</li>
+<li>
+<p>두 positive(x,y가 positive) multimodal pair $(z_x, z_y) ≜ (g_X(x), g_Y (y)), (\hat{z}_x, \hat{z}_y) ≜ (g_X(\hat{x}), g_Y (\hat{y}))$ ($(x, y),(\hat{x}, \hat{y})
+ ∼^{\text{i.i.d.}} p_{X,Y}$) 가 주어질 때 대응되는 augmentation은</p>
+<p><img class="tw-inline" loading="lazy" src="augmentation.png"   alt="augmentation"  ></p>
+<p>$\lambda\in(0,1)$ 은 shared interpolation coefficient</p>
+<p>modality 간 $\lambda$를 공유하는 것은 augmentation이 semantically consistent하다는 것을 보장, 즉 $\tilde{z_x},\tilde{z_y}$가 여전히 valid한 positive pair가 됨</p>
+<p>negative pair에 대해서도 같은 방법으로 interpolation</p>
+</li>
+<li>
+<p>intermediate latent space에서 Fusemix를 사용한 연구의 loss는</p>
+<p><img class="tw-inline" loading="lazy" src="fusemix_loss.png"   alt="Model Loss"  ></p>
+<p>expectation taken w.r.t. positive pair/negative pair</p>
+<p>$λ ∼ B(α, β)$</p>
+</li>
+<li>
+<p>Fusemix fusion 알고리즘</p>
+<ul>
+<li>pre-computed multimodal latent pair sample</li>
+<li>batch size $B ≜ M + 1$</li>
+<li>$\alpha=\beta$</li>
+</ul>
+<p><img class="tw-inline" loading="lazy" src="algorithm.png"   alt="알고리즘"  ></p>
+</li>
+</ul>
+<h2 id="experiments" class="headerLink">
+    <a href="#experiments" class="header-mark" aria-label="Header mark for 'Experiments'"></a>Experiments</h2><p>image,text,audio pairing</p>
+<h3 id="implementation-details" class="headerLink">
+    <a href="#implementation-details" class="header-mark" aria-label="Header mark for 'Implementation Details'"></a>Implementation Details</h3><p><strong>Unimodal Latent Extraction</strong></p>
+<ul>
+<li>
+<p>32GB NVIDIA V100 GPU 하나만 씀</p>
+<ul>
+<li>pre-trained unimodal encoder로 latent를 pre-compute, 이후에 encode를 제거</li>
+<li>각 modality에서 한번에 하나씩 latent extract → parameter가 billion단위인 large-scale encoder를 쓸 수있도록 함(end-to-end fusion이었으면 single-GPU에서 불가능했을)</li>
+</ul>
+</li>
+<li>
+<p>Transformer-based unimodal encoder를 사용</p>
+<p>끝에서 두번째 layer에서 low-dimensional latent를 extract(of either CLS token, mean-pooled token)</p>
+</li>
+</ul>
+<p><strong>Multimodal Latent Fusion</strong></p>
+<p>fusion adapter로 inverted bottleneck architecture를 사용하는 lightweight MLP를 사용</p>
+<blockquote>
+<p>Scaling MLPs: A Tale of Inductive Bias (arxiv 2023)</p>
+</blockquote>
+<blockquote>
+<p>How far can we go without convolution: Improving fully connected networks (arxiv 2015)</p>
+</blockquote>
+<blockquote>
+<p>MLP-Mixer: An all-MLP architecture for vision (NIPS 2021)</p>
+</blockquote>
+<ul>
+<li>
+<p>각 MLP는 residual block으로 이루어져 있고, 각 modality를 shared space에 embed하기 위해 그 뒤에 마지막으로 512 dimension의 projection layer가 옴</p>
+</li>
+<li>
+<p>fusion adapter가 low-dimensional latent에서 작동하므로 train할 때 computational cost가 적고 하나의 GPU를 사용함에도 큰 batch size를 쓸 수있음(B=20K on V100 GPU)</p>
+<p>batch size가 크면 contrastive learning이 잘된다는 것이 이전 연구에서 보여짐</p>
+</li>
+<li>
+<p>모든 실험에서, 위에서 언급한 $\mathcal{L}^\text{FuseMix}_\text{sym}$ 만 objective로 사용</p>
+</li>
+</ul>
+<h3 id="training-datasets" class="headerLink">
+    <a href="#training-datasets" class="header-mark" aria-label="Header mark for 'Training datasets'"></a>Training datasets</h3><p>training에서 common multimodal dataset만을 사용</p>
+<p>이전 연구를 따라서</p>
+<blockquote>
+<p>UNITER: UNiversal Image-TExt Representation Learning (ECCV 2020)
+Align before fuse: Vision and language representation learning with momentum distillation (NIPS 2021)
+BLIP: Bootstrapping language-image pre-training for unified vision-language understanding and generation (ICML 2022)
+BLIP-2: Bootstrapping language-image pre-training with frozen image encoders and large language models (ICML 2023)</p>
+</blockquote>
+<ul>
+<li>human-annotated image-text pairs dataset
+<ul>
+<li>COCO</li>
+<li>Visual Genome</li>
+</ul>
+</li>
+<li>web datasets(total 5M pairs) image-text pairs
+<ul>
+<li>SBU Captions</li>
+<li>Conceptual Captions 3M</li>
+</ul>
+</li>
+<li>data-efficient이기 때문에, 최근 연구의 internet-scale dataset은 다루지 않음</li>
+<li>audio-text 에서도 data-efficient하게 dataset 설정(human annotated audio-text pair)
+<ul>
+<li>AudioCaps (50K)</li>
+<li>Clotho (15K)</li>
+</ul>
+</li>
+</ul>
+<h3 id="cross-modal-retrieval-performance" class="headerLink">
+    <a href="#cross-modal-retrieval-performance" class="header-mark" aria-label="Header mark for 'Cross-Modal Retrieval Performance'"></a>Cross-Modal Retrieval Performance</h3><p>Fusemix fusion으로 학습된 multimodal alignment의 퀄리티를 확인하기 위해,</p>
+<p>이전 연구를 따라 cross-modal retrieval을 downstream task로 삼아서 evaluate</p>
+<ul>
+<li>image-text pairing
+<ul>
+<li>Flickr30K, COCO test set으로 downstream 성능을 evaluate</li>
+</ul>
+</li>
+<li>audio-text paring
+<ul>
+<li>AudioCaps, Clotho test set으로 성능 evaluate</li>
+</ul>
+</li>
+</ul>
+<p>bootstrapping에 사용된 pre-trained unimodal encoder</p>
+<ul>
+<li>
+<p>image-encoder (현재 ImageNet visual recognition model로 탑이고 linear probing benchmark)</p>
+<ul>
+<li>
+<p>DINOv2 (D)</p>
+<blockquote>
+<p>DINOv2: Learning robust visual features without supervision (arxiv 2023)</p>
+</blockquote>
+</li>
+<li>
+<p>UNICOM (U)</p>
+<blockquote>
+<p>Unicom: Universal and compact representation learning for image retrieval (ICLR 2023)</p>
+</blockquote>
+</li>
+</ul>
+<p>linear probing : 백본 모델에 linear(FCN) 붙여서 linear만 학습. 백본을 학습시키는 fine-tuning과는 다름</p>
+</li>
+<li>
+<p>text-encoder</p>
+<ul>
+<li>
+<p>MTEB text embedding benchmark를 써서 select</p>
+<blockquote>
+<p>MTEB: Massive text embedding benchmark (ACL 2023)</p>
+</blockquote>
+</li>
+<li>
+<p>semantic latent space를 갖는 두 encoder를 선택</p>
+<ul>
+<li>
+<p>BGE (B)</p>
+<blockquote>
+<p>C-pack: Packaged resources to advance general chinese embedding (arxiv 2023)</p>
+</blockquote>
+</li>
+<li>
+<p>E5 (E)</p>
+<blockquote>
+<p>Text embeddings by weakly-supervised contrastive pre-training (arxiv 2022)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>audio encoder</p>
+<ul>
+<li>
+<p>HTS-AT (H)</p>
+<blockquote>
+<p>HTS-AT: A Hierarchical Token-Semantic Audio Transformer for Sound Classification and Detection (ICASSP 2022)</p>
+</blockquote>
+</li>
+<li>
+<p>Whisper</p>
+<blockquote>
+<p>Robust speech recognition via large-scale weak supervision (ICML 2023)</p>
+</blockquote>
+</li>
+<li>
+<p>두 encoder에서 얻은 latent의 concatenation을 씀</p>
+<blockquote>
+<p>Audio Retrieval with WavText5K and CLAP Training ( arxiv 2022)</p>
+</blockquote>
+<p>와 유사</p>
+</li>
+</ul>
+</li>
+<li>
+<p>우리 방법의 plug-and-play 성질로 인해서 더 좋은 unimodal encoder가 나오면 빠르고 쉽게 프레임워크에 적용할 수 있다</p>
+</li>
+</ul>
+<p><strong>Results</strong></p>
+<p>encoder의 모든 combination</p>
+<p>Table 1 (image-text retrieval)</p>
+<p><img class="tw-inline" loading="lazy" src="table1_image_text.png"   alt="Table 1"  ></p>
+<ul>
+<li>더 많은 paired data로 학습된 것들, fusion에 더 많은 GPU를 사용한 모델들과 competitive, 또는 SOTA</li>
+<li>가장 최근 모델인 DINOv2+BGE가 가장 좋은 성능, 발전할 때마다 갈아끼울 수 있는 plug-and-play의 장점</li>
+<li>FuxeMix를 사용한 모델과 CLIP을 Conceptual Captions 3M에 대해서만 학습했을 때, 큰 차이로 CLIP을 outperform → 적은 데이터 상황에서 효과적인 strategy</li>
+</ul>
+<p>Table 2 (audio-text retrieval)</p>
+<p><img class="tw-inline" loading="lazy" src="table2_audio_text.png"   alt="Tabel 2"  ></p>
+<ul>
+<li>audio-text retrieval에서 비슷한 데이터로 학습된 다른 모델들을 outperform, 더 많은 paired data로 학습된 방법들과 비교 가능</li>
+</ul>
+<h2 id="conclusion-and-future-work" class="headerLink">
+    <a href="#conclusion-and-future-work" class="header-mark" aria-label="Header mark for 'Conclusion and Future Work'"></a>Conclusion and Future Work</h2><p>unimodal encoder를 black box model로 취급하기 때문에(latent encoding만 사용) API로만 접근 가능한 encoder를 사용하는 multimodal fusion으로의 application도 가능</p></div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-01-08</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/cross-entropy/" class="prev" rel="prev" title="딥러닝의 Cross Entropy Loss 이해하기 (1)"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>딥러닝의 Cross Entropy Loss 이해하기 (1)</a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2025<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>
