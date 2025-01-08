@@ -1,77 +1,77 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>All Posts - brog</title>
-        <link>http://localhost:1313/posts/</link>
+        <link>https://braveseokyung.github.io/posts/</link>
         <description>All Posts | brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/posts/" rel="self" type="application/rss+xml" /><item>
     <title>[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU</title>
-    <link>http://localhost:1313/posts/fusemix/</link>
+    <link>https://braveseokyung.github.io/posts/fusemix/</link>
     <pubDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/fusemix/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/fusemix/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다.]]></description>
 </item><item>
     <title>딥러닝의 Cross Entropy Loss 이해하기 (1)</title>
-    <link>http://localhost:1313/posts/cross-entropy/</link>
+    <link>https://braveseokyung.github.io/posts/cross-entropy/</link>
     <pubDate>Wed, 27 Nov 2024 19:48:42 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/cross-entropy/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/cross-entropy/</guid>
     <description><![CDATA[딥러닝에서 자주 사용되는 Cross Entropy Loss를 알아봅시다! 정보이론에서 등장하는 개념인 cross entropy가 왜 딥러닝의 loss로 활용되는지, 또 통계학의 negative log likelihood와는 어떤 관계가 있는지에 대해 이해하고자 쓰는 글입니다.]]></description>
 </item><item>
     <title>Information Theory의 관점에서 Estimator 살펴보기</title>
-    <link>http://localhost:1313/posts/estimators/</link>
+    <link>https://braveseokyung.github.io/posts/estimators/</link>
     <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/estimators/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/estimators/</guid>
     <description><![CDATA[Information theory의 관점에서 Estimator를 살펴보자. 키워드 - MSE, MVUE, Fisher Information, CRLB]]></description>
 </item><item>
     <title>[논문 리뷰] Emergent Visual-Semantic Hierarchies in Image-Text Representation</title>
-    <link>http://localhost:1313/posts/hierarcaps/</link>
+    <link>https://braveseokyung.github.io/posts/hierarcaps/</link>
     <pubDate>Wed, 06 Nov 2024 20:55:46 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/hierarcaps/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/hierarcaps/</guid>
     <description><![CDATA[ECCV 2024 oral paper인 Emergent Visual-Semantic Hierarchies in Image-Text Representation 논문에 대한 리뷰입니다.]]></description>
 </item><item>
     <title>네이버 쇼핑 크롤링 (Selenium, 네이버 API)</title>
-    <link>http://localhost:1313/posts/naver-shopping-crawling/</link>
+    <link>https://braveseokyung.github.io/posts/naver-shopping-crawling/</link>
     <pubDate>Wed, 02 Oct 2024 11:39:16 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/naver-shopping-crawling/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/naver-shopping-crawling/</guid>
     <description><![CDATA[네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API]]></description>
 </item><item>
     <title>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</title>
-    <link>http://localhost:1313/posts/accept-the-modality-gap/</link>
+    <link>https://braveseokyung.github.io/posts/accept-the-modality-gap/</link>
     <pubDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/accept-the-modality-gap/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/accept-the-modality-gap/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.]]></description>
 </item><item>
     <title>DNS</title>
-    <link>http://localhost:1313/posts/network-dns/</link>
+    <link>https://braveseokyung.github.io/posts/network-dns/</link>
     <pubDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/network-dns/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/network-dns/</guid>
     <description><![CDATA[도메인부터 DNS 쿼리까지 DNS에 대해 알아보자]]></description>
 </item><item>
     <title>TCP와 UDP</title>
-    <link>http://localhost:1313/posts/network-tcp-udp-2/</link>
+    <link>https://braveseokyung.github.io/posts/network-tcp-udp-2/</link>
     <pubDate>Tue, 03 Sep 2024 21:30:12 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/network-tcp-udp-2/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/network-tcp-udp-2/</guid>
     <description><![CDATA[전송계층의 TCP와 UDP의 차이를 알아보자]]></description>
 </item><item>
     <title>TCP와 UDP</title>
-    <link>http://localhost:1313/posts/network-tcp-udp/</link>
+    <link>https://braveseokyung.github.io/posts/network-tcp-udp/</link>
     <pubDate>Wed, 28 Aug 2024 15:37:24 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/network-tcp-udp/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/network-tcp-udp/</guid>
     <description><![CDATA[전송계층의 TCP와 UDP의 차이를 알아보자]]></description>
 </item><item>
     <title>Bayesian Estimator</title>
-    <link>http://localhost:1313/posts/9-bayesian-estimation/</link>
+    <link>https://braveseokyung.github.io/posts/9-bayesian-estimation/</link>
     <pubDate>Wed, 21 Aug 2024 21:00:37 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/9-bayesian-estimation/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/9-bayesian-estimation/</guid>
     <description><![CDATA[MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!]]></description>
 </item></channel>
 </rss>
