@@ -3,9 +3,16 @@
         <title>brog</title>
         <link>https://braveseokyung.github.io/</link>
         <description>brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</lastBuildDate>
             <atom:link href="https://braveseokyung.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Diffusers 라이브러리(DDPM, DDIM)</title>
+    <link>https://braveseokyung.github.io/posts/diffusers/</link>
+    <pubDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>https://braveseokyung.github.io/posts/diffusers/</guid>
+    <description><![CDATA[DDPM과 DDIM을 쓸 수 있는 Diffusers 라이브러리에 대해 알아보자!]]></description>
+</item><item>
     <title>Machine Unlearning(forgetting)이란?</title>
     <link>https://braveseokyung.github.io/posts/unlearning/</link>
     <pubDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</pubDate><author>
@@ -67,13 +74,6 @@
     <pubDate>Tue, 03 Sep 2024 21:30:12 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
                 </author><guid>https://braveseokyung.github.io/posts/network-tcp-udp-2/</guid>
-    <description><![CDATA[전송계층의 TCP와 UDP의 차이를 알아보자]]></description>
-</item><item>
-    <title>TCP와 UDP</title>
-    <link>https://braveseokyung.github.io/posts/network-tcp-udp/</link>
-    <pubDate>Wed, 28 Aug 2024 15:37:24 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/network-tcp-udp/</guid>
     <description><![CDATA[전송계층의 TCP와 UDP의 차이를 알아보자]]></description>
 </item></channel>
 </rss>
