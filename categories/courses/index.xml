@@ -1,21 +1,21 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Courses - Category - brog</title>
-        <link>https://braveseokyung.github.io/categories/courses/</link>
+        <link>http://localhost:1313/categories/courses/</link>
         <description>Courses - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/categories/courses/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/courses/" rel="self" type="application/rss+xml" /><item>
     <title>Information Theory의 관점에서 Estimator 살펴보기</title>
-    <link>https://braveseokyung.github.io/posts/estimators/</link>
+    <link>http://localhost:1313/posts/estimators/</link>
     <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/estimators/</guid>
+                </author><guid>http://localhost:1313/posts/estimators/</guid>
     <description><![CDATA[Information theory의 관점에서 Estimator를 살펴보자. 키워드 - MSE, MVUE, Fisher Information, CRLB]]></description>
 </item><item>
     <title>Bayesian Estimator</title>
-    <link>https://braveseokyung.github.io/posts/9-bayesian-estimation/</link>
+    <link>http://localhost:1313/posts/9-bayesian-estimation/</link>
     <pubDate>Wed, 21 Aug 2024 21:00:37 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/9-bayesian-estimation/</guid>
+                </author><guid>http://localhost:1313/posts/9-bayesian-estimation/</guid>
     <description><![CDATA[MLE(Maximum Likelihood Estimator)와는 다른, Bayesian Estimator에 대해 알아보자!]]></description>
 </item></channel>
 </rss>

@@ -1,77 +1,77 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>All Posts - brog</title>
-        <link>https://braveseokyung.github.io/posts/</link>
+        <link>http://localhost:1313/posts/</link>
         <description>All Posts | brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 26 Feb 2025 23:17:51 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>유용한 명령어 및 툴 정리</title>
+    <link>http://localhost:1313/posts/command/</link>
+    <pubDate>Wed, 26 Feb 2025 23:17:51 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>http://localhost:1313/posts/command/</guid>
+    <description><![CDATA[자주 쓰는 명령어와 툴 모음]]></description>
+</item><item>
+    <title>Matplotlib</title>
+    <link>http://localhost:1313/posts/matplotlib/</link>
+    <pubDate>Wed, 19 Feb 2025 20:38:04 &#43;0900</pubDate><author>
+        <name>Author</name>
+    </author><guid>http://localhost:1313/posts/matplotlib/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>Diffusers 라이브러리(DDPM, DDIM)</title>
-    <link>https://braveseokyung.github.io/posts/diffusers/</link>
+    <link>http://localhost:1313/posts/diffusers/</link>
     <pubDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/diffusers/</guid>
+                </author><guid>http://localhost:1313/posts/diffusers/</guid>
     <description><![CDATA[DDPM과 DDIM을 쓸 수 있는 Diffusers 라이브러리에 대해 알아보자!]]></description>
 </item><item>
     <title>Machine Unlearning(forgetting)이란?</title>
-    <link>https://braveseokyung.github.io/posts/unlearning/</link>
+    <link>http://localhost:1313/posts/unlearning/</link>
     <pubDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/unlearning/</guid>
+                </author><guid>http://localhost:1313/posts/unlearning/</guid>
     <description><![CDATA[배울 수 있다면, 잊을 수도 있어야지! 딥러닝에서 Machine Unlearning task에 대해 살펴보자.]]></description>
 </item><item>
     <title>[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU</title>
-    <link>https://braveseokyung.github.io/posts/fusemix/</link>
+    <link>http://localhost:1313/posts/fusemix/</link>
     <pubDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/fusemix/</guid>
+                </author><guid>http://localhost:1313/posts/fusemix/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다.]]></description>
 </item><item>
     <title>딥러닝의 Cross Entropy Loss 이해하기 (1)</title>
-    <link>https://braveseokyung.github.io/posts/cross-entropy/</link>
+    <link>http://localhost:1313/posts/cross-entropy/</link>
     <pubDate>Wed, 27 Nov 2024 19:48:42 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/cross-entropy/</guid>
+                </author><guid>http://localhost:1313/posts/cross-entropy/</guid>
     <description><![CDATA[딥러닝에서 자주 사용되는 Cross Entropy Loss를 알아봅시다! 정보이론에서 등장하는 개념인 cross entropy가 왜 딥러닝의 loss로 활용되는지, 또 통계학의 negative log likelihood와는 어떤 관계가 있는지에 대해 이해하고자 쓰는 글입니다.]]></description>
 </item><item>
     <title>Information Theory의 관점에서 Estimator 살펴보기</title>
-    <link>https://braveseokyung.github.io/posts/estimators/</link>
+    <link>http://localhost:1313/posts/estimators/</link>
     <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/estimators/</guid>
+                </author><guid>http://localhost:1313/posts/estimators/</guid>
     <description><![CDATA[Information theory의 관점에서 Estimator를 살펴보자. 키워드 - MSE, MVUE, Fisher Information, CRLB]]></description>
 </item><item>
     <title>[논문 리뷰] Emergent Visual-Semantic Hierarchies in Image-Text Representation</title>
-    <link>https://braveseokyung.github.io/posts/hierarcaps/</link>
+    <link>http://localhost:1313/posts/hierarcaps/</link>
     <pubDate>Wed, 06 Nov 2024 20:55:46 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/hierarcaps/</guid>
+                </author><guid>http://localhost:1313/posts/hierarcaps/</guid>
     <description><![CDATA[ECCV 2024 oral paper인 Emergent Visual-Semantic Hierarchies in Image-Text Representation 논문에 대한 리뷰입니다.]]></description>
 </item><item>
     <title>네이버 쇼핑 크롤링 (Selenium, 네이버 API)</title>
-    <link>https://braveseokyung.github.io/posts/naver-shopping-crawling/</link>
+    <link>http://localhost:1313/posts/naver-shopping-crawling/</link>
     <pubDate>Wed, 02 Oct 2024 11:39:16 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/naver-shopping-crawling/</guid>
+                </author><guid>http://localhost:1313/posts/naver-shopping-crawling/</guid>
     <description><![CDATA[네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API]]></description>
 </item><item>
     <title>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</title>
-    <link>https://braveseokyung.github.io/posts/accept-the-modality-gap/</link>
+    <link>http://localhost:1313/posts/accept-the-modality-gap/</link>
     <pubDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/accept-the-modality-gap/</guid>
+                </author><guid>http://localhost:1313/posts/accept-the-modality-gap/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.]]></description>
-</item><item>
-    <title>DNS</title>
-    <link>https://braveseokyung.github.io/posts/network-dns/</link>
-    <pubDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/network-dns/</guid>
-    <description><![CDATA[도메인부터 DNS 쿼리까지 DNS에 대해 알아보자]]></description>
-</item><item>
-    <title>TCP와 UDP</title>
-    <link>https://braveseokyung.github.io/posts/network-tcp-udp-2/</link>
-    <pubDate>Tue, 03 Sep 2024 21:30:12 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/network-tcp-udp-2/</guid>
-    <description><![CDATA[전송계층의 TCP와 UDP의 차이를 알아보자]]></description>
 </item></channel>
 </rss>

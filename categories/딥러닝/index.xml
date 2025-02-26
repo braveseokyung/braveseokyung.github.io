@@ -1,42 +1,42 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>딥러닝 - Category - brog</title>
-        <link>https://braveseokyung.github.io/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</link>
+        <link>http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</link>
         <description>딥러닝 - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="self" type="application/rss+xml" /><item>
     <title>Diffusers 라이브러리(DDPM, DDIM)</title>
-    <link>https://braveseokyung.github.io/posts/diffusers/</link>
+    <link>http://localhost:1313/posts/diffusers/</link>
     <pubDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/diffusers/</guid>
+                </author><guid>http://localhost:1313/posts/diffusers/</guid>
     <description><![CDATA[DDPM과 DDIM을 쓸 수 있는 Diffusers 라이브러리에 대해 알아보자!]]></description>
 </item><item>
     <title>Machine Unlearning(forgetting)이란?</title>
-    <link>https://braveseokyung.github.io/posts/unlearning/</link>
+    <link>http://localhost:1313/posts/unlearning/</link>
     <pubDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/unlearning/</guid>
+                </author><guid>http://localhost:1313/posts/unlearning/</guid>
     <description><![CDATA[배울 수 있다면, 잊을 수도 있어야지! 딥러닝에서 Machine Unlearning task에 대해 살펴보자.]]></description>
 </item><item>
     <title>딥러닝의 Cross Entropy Loss 이해하기 (1)</title>
-    <link>https://braveseokyung.github.io/posts/cross-entropy/</link>
+    <link>http://localhost:1313/posts/cross-entropy/</link>
     <pubDate>Wed, 27 Nov 2024 19:48:42 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/cross-entropy/</guid>
+                </author><guid>http://localhost:1313/posts/cross-entropy/</guid>
     <description><![CDATA[딥러닝에서 자주 사용되는 Cross Entropy Loss를 알아봅시다! 정보이론에서 등장하는 개념인 cross entropy가 왜 딥러닝의 loss로 활용되는지, 또 통계학의 negative log likelihood와는 어떤 관계가 있는지에 대해 이해하고자 쓰는 글입니다.]]></description>
 </item><item>
     <title>생성모델 평가지표 IS, FID, LPIPS</title>
-    <link>https://braveseokyung.github.io/posts/generative-models-evaluation/</link>
+    <link>http://localhost:1313/posts/generative-models-evaluation/</link>
     <pubDate>Wed, 07 Aug 2024 19:35:06 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/generative-models-evaluation/</guid>
+                </author><guid>http://localhost:1313/posts/generative-models-evaluation/</guid>
     <description><![CDATA[생성모델의 평가지표 IS, FID, LPIPS 에 대해 알아보자!]]></description>
 </item><item>
     <title>VAE 이해해보기</title>
-    <link>https://braveseokyung.github.io/posts/vae/</link>
+    <link>http://localhost:1313/posts/vae/</link>
     <pubDate>Wed, 31 Jul 2024 21:22:15 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/vae/</guid>
+                </author><guid>http://localhost:1313/posts/vae/</guid>
     <description><![CDATA[이 글은 VAE 논문(Auto-Encoding Variational Bayes)을 리뷰하다가 막혀서 오토인코더의 모든 것, 딥러닝 VAE 를 참고해서 VAE를 이해 + 수식적인 부분 정리를 목적으로 쓴 글입니다.
 0. Background AE vs VAE?통계와 수학으로 가득한 내용에 걸맞게 논문의 제목이 Auto-Encoding Variational Bayes인 것과 달리, 우리에게 흔히 알려져 있는 이름은 VAE(variational autoencoder)이다. 그렇다면 이 논문은 autoencoder와는 어떤 관계에 있는 것일까?
 AE의 구조 Autoencoder는 인코더-디코더로 이루어진 네트워크이다. 입출력이 동일한 네트워크로, 인코더는 앞단에서 original data를 input으로 받아 z 차원의 latent를 output으로 뱉고, 디코더는 뒷단에서 latent를 input으로 받아 다시 original data와 같은 차원의 output을 출력한다.]]></description>

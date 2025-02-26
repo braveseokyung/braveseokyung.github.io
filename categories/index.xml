@@ -1,49 +1,49 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Categories - Category - brog</title>
-        <link>https://braveseokyung.github.io/categories/</link>
+        <link>http://localhost:1313/categories/</link>
         <description>Categories - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/" rel="self" type="application/rss+xml" /><item>
     <title>딥러닝</title>
-    <link>https://braveseokyung.github.io/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</link>
+    <link>http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</link>
     <pubDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>https://braveseokyung.github.io/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</guid>
+    </author><guid>http://localhost:1313/categories/%EB%94%A5%EB%9F%AC%EB%8B%9D/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Unlearning</title>
-    <link>https://braveseokyung.github.io/categories/unlearning/</link>
+    <link>http://localhost:1313/categories/unlearning/</link>
     <pubDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>https://braveseokyung.github.io/categories/unlearning/</guid>
+    </author><guid>http://localhost:1313/categories/unlearning/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Paper-Review</title>
-    <link>https://braveseokyung.github.io/categories/paper-review/</link>
+    <link>http://localhost:1313/categories/paper-review/</link>
     <pubDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>https://braveseokyung.github.io/categories/paper-review/</guid>
+    </author><guid>http://localhost:1313/categories/paper-review/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Courses</title>
-    <link>https://braveseokyung.github.io/categories/courses/</link>
+    <link>http://localhost:1313/categories/courses/</link>
     <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>https://braveseokyung.github.io/categories/courses/</guid>
+    </author><guid>http://localhost:1313/categories/courses/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Python</title>
-    <link>https://braveseokyung.github.io/categories/python/</link>
+    <link>http://localhost:1313/categories/python/</link>
     <pubDate>Wed, 02 Oct 2024 11:39:16 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>https://braveseokyung.github.io/categories/python/</guid>
+    </author><guid>http://localhost:1313/categories/python/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Computer-Network</title>
-    <link>https://braveseokyung.github.io/categories/computer-network/</link>
+    <link>http://localhost:1313/categories/computer-network/</link>
     <pubDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>https://braveseokyung.github.io/categories/computer-network/</guid>
+    </author><guid>http://localhost:1313/categories/computer-network/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>
