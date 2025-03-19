@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>Probability, Entropy, Inference - brog</title><meta name="Description" content="Probability에서 출발해서 entropy와 inference까지 알아보자!"><meta property="og:url" content="http://localhost:1313/posts/probability-entropy-inference/">
+  <meta property="og:site_name" content="brog">
+  <meta property="og:title" content="Probability, Entropy, Inference">
+  <meta property="og:description" content="Probability에서 출발해서 entropy와 inference까지 알아보자!">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-19T23:04:13+09:00">
+    <meta property="article:modified_time" content="2025-03-19T23:04:13+09:00">
+      <meta property="og:see_also" content="http://localhost:1313/posts/estimators/">
+      <meta property="og:see_also" content="http://localhost:1313/posts/9-bayesian-estimation/">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Probability, Entropy, Inference">
+  <meta name="twitter:description" content="Probability에서 출발해서 entropy와 inference까지 알아보자!">
+<meta name="application-name" content="brog">
+<meta name="apple-mobile-web-app-title" content="brog">
+
+<meta name="theme-color" content="#f8f8f8"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="canonical" href="http://localhost:1313/posts/probability-entropy-inference/" /><link rel="prev" href="http://localhost:1313/posts/command/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "Probability, Entropy, Inference",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http://localhost:1313/posts/probability-entropy-inference/"
+        },"genre": "posts","wordcount":  501 ,
+        "url": "http://localhost:1313/posts/probability-entropy-inference/","datePublished": "2025-03-19T23:04:13+09:00","dateModified": "2025-03-19T23:04:13+09:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": [{
+                        "@type": "Person",
+                        "name": "braveseokyung",
+                        "url": "http://localhost:1313/authors/braveseokyung"
+                    }],"description": "Probability에서 출발해서 entropy와 inference까지 알아보자!"
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" ><script type="text/javascript">
+        function setTheme(theme) {
+          document.body.setAttribute('theme', theme); 
+          document.documentElement.className = theme;
+          document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('tw-dark')
+          } else {
+            document.documentElement.classList.add('tw-dark')
+          }
+          window.theme = theme;   
+          window.isDark = window.theme !== 'light' 
+        }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {
+            let theme = localStorage.getItem('theme');
+            if (theme === 'light' || theme === 'dark') {
+            setTheme(theme);
+            } else {
+                if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+         } else { 
+            if ('' === 'light' || '' === 'dark') 
+                setTheme(''), saveTheme(''); 
+            else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+        }
+        let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+        window.switchThemeEventSet = new Set()
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="brog">brog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > Posts </a><a class="menu-item"
+                    href="/tags/" > Tags </a><a class="menu-item"
+                    href="/categories/" > Categories </a><span class="menu-item delimiter"></span><button class="menu-item theme-switch" aria-label="Switch Theme">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="brog">brog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="" >Posts</a><a class="menu-item" href="/tags/" title="" >Tags</a><a class="menu-item" href="/categories/" title="" >Categories</a><button class="menu-item theme-switch tw-w-full" aria-label="Switch Theme">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="main">
+            <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">Contents</h2>
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#probabilities-and-ensembles">Probabilities and Ensembles</a>
+      <ul>
+        <li><a href="#ensemble">ensemble</a></li>
+        <li><a href="#probability-of-subset">probability of subset</a></li>
+        <li><a href="#joint-ensemble">joint ensemble</a></li>
+        <li><a href="#marginal-probability">marginal probability</a></li>
+        <li><a href="#conditional-probability">conditional probability</a></li>
+        <li><a href="#chain-rule-product-rule">Chain rule (Product rule)</a></li>
+        <li><a href="#sum-rule">Sum rule</a></li>
+        <li><a href="#bayes-theorem">Bayes&rsquo; Theorem</a></li>
+        <li><a href="#independence">Independence</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-meaning-of-probability">The meaning of probability</a>
+      <ul>
+        <li><a href="#the-shannon-information-content-of-an-outcome">The Shannon information content of an outcome</a></li>
+        <li><a href="#the-entropy-of-an-ensemble">The entropy of an ensemble</a></li>
+        <li><a href="#properties-of-entropy">properties of entropy</a></li>
+      </ul>
+    </li>
+    <li><a href="#decomposability-of-the-entropy">Decomposability of the entropy</a>
+      <ul>
+        <li><a href="#joint-entropy">joint entropy</a></li>
+        <li><a href="#cross-entropy">cross entropy</a></li>
+      </ul>
+    </li>
+    <li><a href="#gibbs-inequaility">Gibbs&rsquo; inequaility</a>
+      <ul>
+        <li><a href="#kl-divergence-relation-entropy">KL Divergence (relation entropy)</a></li>
+        <li><a href="#theorem-gibbs-inequality">theorem: Gibbs&rsquo; inequality</a></li>
+        <li><a href="#kl-divergence는-distancemetric이-아니다">KL divergence는 distance(=metric)이 아니다</a></li>
+      </ul>
+    </li>
+    <li><a href="#jensens-inequality-for-convex-functions">Jensen&rsquo;s inequality for convex functions</a>
+      <ul>
+        <li><a href="#convex-functions">convex functions</a></li>
+        <li><a href="#jensens-inequality">Jensen&rsquo;s inequality</a></li>
+        <li><a href="#joint-entropy-and-kl-divergence">Joint Entropy and KL Divergence</a></li>
+        <li><a href="#cross-entropy-and-kl-divergence">Cross Entropy and KL Divergence</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">Probability, Entropy, Inference</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><span class='author'>
+        <span class='screen-reader-text'>  </span><a href='http://localhost:1313/authors/braveseokyung'>braveseokyung</a></span>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/courses/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Courses</a></span>&nbsp;<span class="post-category">and</span>&nbsp;<span class="post-series">series <a href="/series/information-theory-and-inference/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"/></svg>Information-Theory-and-Inference</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2025-03-19">2025-03-19</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2025-03-19">2025-03-19</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;501 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details series-nav open">
+                                <div class="details-summary series-title">
+                                    <span>Series - </span>
+                                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                                </div>
+                                <div class="details-content series-content">
+                                    <nav>
+                                        <ul><li><span class="active">Probability, Entropy, Inference</span></li>
+                                                    <li><a href="/posts/estimators/">Information Theory의 관점에서 Estimator 살펴보기</a></li>
+                                                    <li><a href="/posts/9-bayesian-estimation/">Bayesian Estimator</a></li></ul>
+                                    </nav>
+                                </div>
+                            </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#probabilities-and-ensembles">Probabilities and Ensembles</a>
+      <ul>
+        <li><a href="#ensemble">ensemble</a></li>
+        <li><a href="#probability-of-subset">probability of subset</a></li>
+        <li><a href="#joint-ensemble">joint ensemble</a></li>
+        <li><a href="#marginal-probability">marginal probability</a></li>
+        <li><a href="#conditional-probability">conditional probability</a></li>
+        <li><a href="#chain-rule-product-rule">Chain rule (Product rule)</a></li>
+        <li><a href="#sum-rule">Sum rule</a></li>
+        <li><a href="#bayes-theorem">Bayes&rsquo; Theorem</a></li>
+        <li><a href="#independence">Independence</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-meaning-of-probability">The meaning of probability</a>
+      <ul>
+        <li><a href="#the-shannon-information-content-of-an-outcome">The Shannon information content of an outcome</a></li>
+        <li><a href="#the-entropy-of-an-ensemble">The entropy of an ensemble</a></li>
+        <li><a href="#properties-of-entropy">properties of entropy</a></li>
+      </ul>
+    </li>
+    <li><a href="#decomposability-of-the-entropy">Decomposability of the entropy</a>
+      <ul>
+        <li><a href="#joint-entropy">joint entropy</a></li>
+        <li><a href="#cross-entropy">cross entropy</a></li>
+      </ul>
+    </li>
+    <li><a href="#gibbs-inequaility">Gibbs&rsquo; inequaility</a>
+      <ul>
+        <li><a href="#kl-divergence-relation-entropy">KL Divergence (relation entropy)</a></li>
+        <li><a href="#theorem-gibbs-inequality">theorem: Gibbs&rsquo; inequality</a></li>
+        <li><a href="#kl-divergence는-distancemetric이-아니다">KL divergence는 distance(=metric)이 아니다</a></li>
+      </ul>
+    </li>
+    <li><a href="#jensens-inequality-for-convex-functions">Jensen&rsquo;s inequality for convex functions</a>
+      <ul>
+        <li><a href="#convex-functions">convex functions</a></li>
+        <li><a href="#jensens-inequality">Jensen&rsquo;s inequality</a></li>
+        <li><a href="#joint-entropy-and-kl-divergence">Joint Entropy and KL Divergence</a></li>
+        <li><a href="#cross-entropy-and-kl-divergence">Cross Entropy and KL Divergence</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="probabilities-and-ensembles" class="headerLink">
+    <a href="#probabilities-and-ensembles" class="header-mark" aria-label="Header mark for 'Probabilities and Ensembles'"></a>Probabilities and Ensembles</h2><h3 id="ensemble" class="headerLink">
+    <a href="#ensemble" class="header-mark" aria-label="Header mark for 'ensemble'"></a>ensemble</h3><p>Ensemble $X=(x,A_x,P_x)$</p>
+<p>outcome $x$</p>
+<p>set of possible values $A_x=\{a_1,a_2,...a_i,a_I\}$ , 각각의 확률 $P_X=\{p_1,p_2,...,p_I\}$
+abbreviation : $P(x=a_i)$ 를 $P(a_i),P(x)$ 로 씀</p>
+<h3 id="probability-of-subset" class="headerLink">
+    <a href="#probability-of-subset" class="header-mark" aria-label="Header mark for 'probability of subset'"></a>probability of subset</h3><p>T가 $A_X$의 subset이면, $P(T)=P(x\in T)=\sum\limits_{a_i\in T}P(x=a_i)$</p>
+<h3 id="joint-ensemble" class="headerLink">
+    <a href="#joint-ensemble" class="header-mark" aria-label="Header mark for 'joint ensemble'"></a>joint ensemble</h3><p>joint ensemble $XY$ : outcome이 순서쌍 $x,y$</p>
+<p>joint probability : $P(x,y)$ &lt;- 쉼표 안붙여도 됨! $xy<=>x,y$</p>
+<p>확률변수 X,Y가 독립일 필요는 없다.</p>
+<h3 id="marginal-probability" class="headerLink">
+    <a href="#marginal-probability" class="header-mark" aria-label="Header mark for 'marginal probability'"></a>marginal probability</h3><p>joint probability에서 한 확률변수에 대한 summation으로 marginal probability를 얻을 수 있다
+</p>
+$$P(x=a_i)=\sum\limits_{y\in A_Y}P(x=a_i,y)$$
+<h3 id="conditional-probability" class="headerLink">
+    <a href="#conditional-probability" class="header-mark" aria-label="Header mark for 'conditional probability'"></a>conditional probability</h3>$$P(x=a_i|y=b_j)=\frac{P(x=a_i,y=b_j)}{P(y=b_{j})}$$
+<h3 id="chain-rule-product-rule" class="headerLink">
+    <a href="#chain-rule-product-rule" class="header-mark" aria-label="Header mark for 'Chain rule (Product rule)'"></a>Chain rule (Product rule)</h3>$$P(x,y|H)=P(x|y,H)P(y|H)=P(y|x,H)P(x|H)$$
+<h3 id="sum-rule" class="headerLink">
+    <a href="#sum-rule" class="header-mark" aria-label="Header mark for 'Sum rule'"></a>Sum rule</h3>$$P(x|H)=\sum\limits_yP(x,y|H)=\sum\limits_yP(x|y,H)P(y|H)$$
+<h3 id="bayes-theorem" class="headerLink">
+    <a href="#bayes-theorem" class="header-mark" aria-label="Header mark for 'Bayes&amp;rsquo; Theorem'"></a>Bayes&rsquo; Theorem</h3>$$P(y|x,H)=\frac{P(x|y,H)P(y|H)}{P(x|h)}$$
+<h3 id="independence" class="headerLink">
+    <a href="#independence" class="header-mark" aria-label="Header mark for 'Independence'"></a>Independence</h3><p>r.v X,Y는 독립 if $P(x,y)=P(x)P(y)$</p>
+<p>ensemble을 conditional probability의 collection으로 정의할 수 있다</p>
+<hr>
+<h2 id="the-meaning-of-probability" class="headerLink">
+    <a href="#the-meaning-of-probability" class="header-mark" aria-label="Header mark for 'The meaning of probability'"></a>The meaning of probability</h2><p>두가지 정의가 있음</p>
+<ul>
+<li>random한 실험에서 outcome의 frequency &lt;- circular
+random variable을 가정함</li>
+<li>degree of belief &lt;- 보다 general한 정의
+Bayesian
+probability를 assumption을 설명하는데 사용할 수 있고, assumption으로부터 inference를 할 수 있음</li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h3 id="the-shannon-information-content-of-an-outcome" class="headerLink">
+    <a href="#the-shannon-information-content-of-an-outcome" class="header-mark" aria-label="Header mark for 'The Shannon information content of an outcome'"></a>The Shannon information content of an outcome</h3><p>random variable $X=(x,A_x,P)$의 outcome x에 대한 Shannon imformation content: </p>
+$$h(x)=log_{2} \frac{1}{P(x)}$$
+<p>
+measured in bits
+앞으로의 챕터에서 Shannon information content가 왜 $x=a_i$라는 event의 information content에 대한 measure로 적당한지 알아볼 것.</p>
+<p>예시 : outcome e의 information content: 3.5, outcome z의 information content: 10.4</p>
+<!-- raw HTML omitted -->
+<h3 id="the-entropy-of-an-ensemble" class="headerLink">
+    <a href="#the-entropy-of-an-ensemble" class="header-mark" aria-label="Header mark for 'The entropy of an ensemble'"></a>The entropy of an ensemble</h3><p>r.v(ensemble) $X=(x,A_x,P)$에 대한 entropy는 outcome의 Shannon information content의 평균
+</p>
+$$H(x)=E_xh(x)=\sum\limits_{x\in A_X}P(x)log_{2} \frac{1}{P(x)}$$
+<ul>
+<li>entropy 또한 measured in bits</li>
+<li>$H(x), H(p)$ 모두 ensemble의 entropy라는 뜻, 이때 <strong>p</strong>는 probability vector</li>
+<li>X의 entropy를 다른말로 X의 ==uncertainty==라고도 한다</li>
+<li>밑 2는 생략하고 그냥 log로 씀</li>
+</ul>
+<h3 id="properties-of-entropy" class="headerLink">
+    <a href="#properties-of-entropy" class="header-mark" aria-label="Header mark for 'properties of entropy'"></a>properties of entropy</h3><ul>
+<li>$H(x)\geq 0$ (하나의 i에 대해 $p_i=1$일 때 등호성립)</li>
+<li><strong>p</strong>가 uniform ($p_i=p_j$)일 때 entropy가 최대가 된다
+==$H(X)\leq log(|A_x|)$== with equality if $p_{i}= \frac{1}{|A_{x}|}$  for all i
+|Ax| 는 set의 원소의 수</li>
+</ul>
+<h2 id="decomposability-of-the-entropy" class="headerLink">
+    <a href="#decomposability-of-the-entropy" class="header-mark" aria-label="Header mark for 'Decomposability of the entropy'"></a>Decomposability of the entropy</h2><p>entropy function은 recursive property를 만족한다
+ensemble $X=\{x,A_x=\{x_1,x_2,...,x_I\},\mathbf{p}=\{p_1,p_2,...,p_I\}\}$
+라 하면, $A_x$를 $x_1$이 일어날 확률, 일어나지 않을 확률로 쪼개고 $x_1$이 일어나지 않은 경우에 대해 다시 entropy를 구하고,.. 반복
+</p>
+$$H(\mathbf{p})=H(p_1,1-p_1)+(1-p_1)H(\frac{p_2}{1-p_{1}},\frac{p_3}{1-p_{1}},...,\frac{p_I}{1-p_{1}})$$
+<h3 id="joint-entropy" class="headerLink">
+    <a href="#joint-entropy" class="header-mark" aria-label="Header mark for 'joint entropy'"></a>joint entropy</h3>$$H(X,Y)=E_{x,y}h(x,y)=\sum\limits_{x,y\in AxA_y}P(x,y)log\frac{1}{P(x,y)}$$
+<p>
+교환법칙이 성립
+$H(X,Y)=H(Y,X)$</p>
+<h4 id="theorem--joint-entropy와-독립" class="headerLink">
+    <a href="#theorem--joint-entropy%ec%99%80-%eb%8f%85%eb%a6%bd" class="header-mark" aria-label="Header mark for 'theorem : joint entropy와 독립'"></a>theorem : joint entropy와 독립</h4><p>X,Y의 joint entropy는 두 rv X,Y가 독립일 때만 additive하다
+$H(X,Y)=H(X)+H(Y)-H(X+Y)$ iff  $P(x,y)=P(x)P(y)$</p>
+<h3 id="cross-entropy" class="headerLink">
+    <a href="#cross-entropy" class="header-mark" aria-label="Header mark for 'cross entropy'"></a>cross entropy</h3><p>cross entropy of two distributions P,Q over $A_x$
+</p>
+$$H(P;Q)=E_{x}h_Q{x}=\sum\limits_{x\in A_x}P(x)log\frac{1}{Q(x)}=-\sum\limits_{x\in A_x}P(x)log{Q(x)}$$
+<h4 id="property" class="headerLink">
+    <a href="#property" class="header-mark" aria-label="Header mark for 'property'"></a>property</h4><ul>
+<li>교환법칙이 성립하지 않음: $H(P;Q) \neq H(Q;P)$</li>
+<li>non-negative : $H(P.Q)\geq 0$</li>
+<li>그냥 entoropy보다 cross entropy가 크다: $H(P;Q) \geq H(P)$</li>
+<li>H(P;Q)는 P=Q일때 최소</li>
+</ul>
+<h2 id="gibbs-inequaility" class="headerLink">
+    <a href="#gibbs-inequaility" class="header-mark" aria-label="Header mark for 'Gibbs&amp;rsquo; inequaility'"></a>Gibbs&rsquo; inequaility</h2><h3 id="kl-divergence-relation-entropy" class="headerLink">
+    <a href="#kl-divergence-relation-entropy" class="header-mark" aria-label="Header mark for 'KL Divergence (relation entropy)'"></a>KL Divergence (relation entropy)</h3><p>같은 $A_x$ 에 대해 정의된 두 probability distribution $P(x),Q(x)$ 의 KL divergence는
+</p>
+$$D_{KL}(P||Q)=\sum\limits_{x}P(x)log{\frac{P(x)}{Q(x)}}$$
+<p>
+KL divergence는 symmetric하지 않다</p>
+<h3 id="theorem-gibbs-inequality" class="headerLink">
+    <a href="#theorem-gibbs-inequality" class="header-mark" aria-label="Header mark for 'theorem: Gibbs&amp;rsquo; inequality'"></a>theorem: Gibbs&rsquo; inequality</h3>$$D_{KL}(P||Q) \geq 0$$
+<p> P=Q일때 등호성립</p>
+<h3 id="kl-divergence는-distancemetric이-아니다" class="headerLink">
+    <a href="#kl-divergence%eb%8a%94-distancemetric%ec%9d%b4-%ec%95%84%eb%8b%88%eb%8b%a4" class="header-mark" aria-label="Header mark for 'KL divergence는 distance(=metric)이 아니다'"></a>KL divergence는 distance(=metric)이 아니다</h3><h4 id="distance" class="headerLink">
+    <a href="#distance" class="header-mark" aria-label="Header mark for 'distance'"></a>distance</h4><p>$d:X\times X \rightarrow [0,\infty]$
+set $X \times X$에서 non-negative real set $[0,\infty)$ 으로 mapping하는 함수 d로, 다음의 조건을 만족해야함</p>
+<ol>
+<li>non-negativity</li>
+<li>$d(x,y)=0$ 이면 $x=y$</li>
+<li>symmetry</li>
+<li>triangle inequality</li>
+</ol>
+<p>KL divergence에서는 두가지가 만족되지 않음</p>
+<ol>
+<li>holds by Gibbs'</li>
+<li>hold by Gibbs'</li>
+<li>symmetry not holds!</li>
+<li>triangle inequality not holds!</li>
+</ol>
+<p>probability의 KL divergence인 경우 set X가 probability set인 P가 된다</p>
+<p>Gibbs&rsquo; inequaility는 convexity로 보일 수 있다</p>
+<h2 id="jensens-inequality-for-convex-functions" class="headerLink">
+    <a href="#jensens-inequality-for-convex-functions" class="header-mark" aria-label="Header mark for 'Jensen&amp;rsquo;s inequality for convex functions'"></a>Jensen&rsquo;s inequality for convex functions</h2><h3 id="convex-functions" class="headerLink">
+    <a href="#convex-functions" class="header-mark" aria-label="Header mark for 'convex functions'"></a>convex functions</h3><p>내분점의 함숫값보다 함숫값의 내분점이 더 큰 함수
+<a class="lightgallery" href="convex.png" title="" data-thumbnail="convex.png"><img  loading="lazy" src="convex.png"     ></a>
+모든 $x_1,x_{2}\in (a,b)$ 와 $0 \leq \lambda \leq 1$ 에 대해 다음이 성립하는 함수 f(x)
+</p>
+$$f(\lambda x_{1}+(1-\lambda)x_{2} \leq \lambda f(x_1)+(1-\lambda)f(x_2) $$
+<p>예) $x^2,e^x,e^{-x},log{\frac{1}{x}}(x>0),xlogx(x>0)$
+<a class="lightgallery" href="convex-functions.png" title="" data-thumbnail="convex-functions.png"><img  loading="lazy" src="convex-functions.png"     ></a></p>
+<h3 id="jensens-inequality" class="headerLink">
+    <a href="#jensens-inequality" class="header-mark" aria-label="Header mark for 'Jensen&amp;rsquo;s inequality'"></a>Jensen&rsquo;s inequality</h3><p>조건) f가 convex 함수이고 x가 random variable이면
+내용) 함숫값의 expectation이 expectation의 함숫값보다 크다
+</p>
+$$E[f(x)]\geq f(E[x])$$
+<p>
+r.v x가 constant일 때 등호 성립</p>
+<p>Gibbs&rsquo; inequality를 Jensen&rsquo;s inequaility를 이용해 보일 수 있다</p>
+<h3 id="joint-entropy-and-kl-divergence" class="headerLink">
+    <a href="#joint-entropy-and-kl-divergence" class="header-mark" aria-label="Header mark for 'Joint Entropy and KL Divergence'"></a>Joint Entropy and KL Divergence</h3>$$H(X)+H(Y)-H(X,Y)=D_{KL}(P(x,y)||P(x)P(y))$$
+<h3 id="cross-entropy-and-kl-divergence" class="headerLink">
+    <a href="#cross-entropy-and-kl-divergence" class="header-mark" aria-label="Header mark for 'Cross Entropy and KL Divergence'"></a>Cross Entropy and KL Divergence</h3>$$H(P;Q)=D_{KL}(P||Q)+H(P)$$</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-03-19</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">Back</button></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/command/" class="prev" rel="prev" title="유용한 명령어 및 툴 정리"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>유용한 명령어 및 툴 정리</a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.126.0">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.0"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2025<span class="author">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer"></a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons" class="print:!tw-hidden"><a href="#back-to-top" id="back-to-top-button" class="fixed-button tw-transition-opacity tw-opacity-0" title="Back to Top">
+            <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+        </a></div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":false,"left":"$","right":"$"}],"strict":false}};</script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script>
+    
+    <script type="speculationrules">
+        {
+          "prerender": [
+            {
+              "where": { "href_matches": "/*" },
+              "eagerness": "moderate"
+            }
+          ]
+        }
+    </script>
+      
+</body>
+
+</html>

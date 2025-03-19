@@ -3,7 +3,14 @@
         <title>Courses - Category - brog</title>
         <link>http://localhost:1313/categories/courses/</link>
         <description>Courses - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/courses/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 19 Mar 2025 23:04:13 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/courses/" rel="self" type="application/rss+xml" /><item>
+    <title>Probability, Entropy, Inference</title>
+    <link>http://localhost:1313/posts/probability-entropy-inference/</link>
+    <pubDate>Wed, 19 Mar 2025 23:04:13 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>http://localhost:1313/posts/probability-entropy-inference/</guid>
+    <description><![CDATA[Probability에서 출발해서 entropy와 inference까지 알아보자!]]></description>
+</item><item>
     <title>Information Theory의 관점에서 Estimator 살펴보기</title>
     <link>http://localhost:1313/posts/estimators/</link>
     <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>

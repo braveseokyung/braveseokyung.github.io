@@ -3,19 +3,19 @@
         <title>Series - Series - brog</title>
         <link>http://localhost:1313/series/</link>
         <description>Series - Series - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/series/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 19 Mar 2025 23:04:13 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/series/" rel="self" type="application/rss+xml" /><item>
+    <title>Information-Theory-and-Inference</title>
+    <link>http://localhost:1313/series/information-theory-and-inference/</link>
+    <pubDate>Wed, 19 Mar 2025 23:04:13 &#43;0900</pubDate><author>
+        <name>Author</name>
+    </author><guid>http://localhost:1313/series/information-theory-and-inference/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>Survey</title>
     <link>http://localhost:1313/series/survey/</link>
     <pubDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</pubDate><author>
         <name>Author</name>
     </author><guid>http://localhost:1313/series/survey/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>Information-Theory-and-Inference</title>
-    <link>http://localhost:1313/series/information-theory-and-inference/</link>
-    <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>
-        <name>Author</name>
-    </author><guid>http://localhost:1313/series/information-theory-and-inference/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Generative-Models</title>

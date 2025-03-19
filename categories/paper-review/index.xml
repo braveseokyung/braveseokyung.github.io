@@ -17,12 +17,5 @@
                     <name>braveseokyung</name>
                 </author><guid>http://localhost:1313/posts/hierarcaps/</guid>
     <description><![CDATA[ECCV 2024 oral paper인 Emergent Visual-Semantic Hierarchies in Image-Text Representation 논문에 대한 리뷰입니다.]]></description>
-</item><item>
-    <title>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</title>
-    <link>http://localhost:1313/posts/accept-the-modality-gap/</link>
-    <pubDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/accept-the-modality-gap/</guid>
-    <description><![CDATA[CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.]]></description>
 </item></channel>
 </rss>
