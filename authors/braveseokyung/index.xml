@@ -3,7 +3,14 @@
         <title>Braveseokyung - Author - brog</title>
         <link>http://localhost:1313/authors/braveseokyung/</link>
         <description>Braveseokyung - Author - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 19 Mar 2025 23:04:13 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/authors/braveseokyung/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Apr 2025 22:20:21 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/authors/braveseokyung/" rel="self" type="application/rss+xml" /><item>
+    <title>Entropy 총정리(joint, conditional, mutual information)</title>
+    <link>http://localhost:1313/posts/more-about-entropy/</link>
+    <pubDate>Wed, 09 Apr 2025 22:20:21 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>http://localhost:1313/posts/more-about-entropy/</guid>
+    <description><![CDATA[Joint entropy, conditional entropy, chain rule of entropy, mutual information - entropy 총정리!]]></description>
+</item><item>
     <title>Probability, Entropy, Inference</title>
     <link>http://localhost:1313/posts/probability-entropy-inference/</link>
     <pubDate>Wed, 19 Mar 2025 23:04:13 &#43;0900</pubDate><author>
@@ -66,12 +73,5 @@
                     <name>braveseokyung</name>
                 </author><guid>http://localhost:1313/posts/naver-shopping-crawling/</guid>
     <description><![CDATA[네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API]]></description>
-</item><item>
-    <title>DNS</title>
-    <link>http://localhost:1313/posts/network-dns/</link>
-    <pubDate>Wed, 11 Sep 2024 13:09:06 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/network-dns/</guid>
-    <description><![CDATA[도메인부터 DNS 쿼리까지 DNS에 대해 알아보자]]></description>
 </item></channel>
 </rss>
