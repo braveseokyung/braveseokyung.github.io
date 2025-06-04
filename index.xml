@@ -3,9 +3,16 @@
         <title>brog</title>
         <link>https://braveseokyung.github.io/</link>
         <description>brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 04 Jun 2025 22:28:26 &#43;0900</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 04 Jun 2025 23:55:58 &#43;0900</lastBuildDate>
             <atom:link href="https://braveseokyung.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>CPU Scheduler 구현 in C</title>
+    <link>https://braveseokyung.github.io/posts/cpu-scheduling/</link>
+    <pubDate>Wed, 04 Jun 2025 23:55:58 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>https://braveseokyung.github.io/posts/cpu-scheduling/</guid>
+    <description><![CDATA[CPU scheduling 알고리즘(FCFS,SJF,Priority(+preemptive),Round Robin)을 알아보고 C언어로 구현해보자!]]></description>
+</item><item>
     <title>CPU Scheduler 구현 in C</title>
     <link>https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/</link>
     <pubDate>Wed, 04 Jun 2025 22:28:26 &#43;0900</pubDate><author>
@@ -68,12 +75,5 @@
                     <name>braveseokyung</name>
                 </author><guid>https://braveseokyung.github.io/posts/cross-entropy/</guid>
     <description><![CDATA[딥러닝에서 자주 사용되는 Cross Entropy Loss를 알아봅시다! 정보이론에서 등장하는 개념인 cross entropy가 왜 딥러닝의 loss로 활용되는지, 또 통계학의 negative log likelihood와는 어떤 관계가 있는지에 대해 이해하고자 쓰는 글입니다.]]></description>
-</item><item>
-    <title>Information Theory의 관점에서 Estimator 살펴보기</title>
-    <link>https://braveseokyung.github.io/posts/estimators/</link>
-    <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>https://braveseokyung.github.io/posts/estimators/</guid>
-    <description><![CDATA[Information theory의 관점에서 Estimator를 살펴보자. 키워드 - MSE, MVUE, Fisher Information, CRLB]]></description>
 </item></channel>
 </rss>

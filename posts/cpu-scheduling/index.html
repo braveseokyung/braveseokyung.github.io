@@ -6,15 +6,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noodp" /><title>CPU Scheduler 구현 in C - brog</title><meta name="Description" content="CPU scheduling 알고리즘(FCFS,SJF,Priority(&#43;preemptive),Round Robin)을 알아보고 C언어로 구현해보자!"><meta property="og:url" content="https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/">
+    <meta name="robots" content="noodp" /><title>CPU Scheduler 구현 in C - brog</title><meta name="Description" content="CPU scheduling 알고리즘(FCFS,SJF,Priority(&#43;preemptive),Round Robin)을 알아보고 C언어로 구현해보자!"><meta property="og:url" content="https://braveseokyung.github.io/posts/cpu-scheduling/">
   <meta property="og:site_name" content="brog">
   <meta property="og:title" content="CPU Scheduler 구현 in C">
   <meta property="og:description" content="CPU scheduling 알고리즘(FCFS,SJF,Priority(&#43;preemptive),Round Robin)을 알아보고 C언어로 구현해보자!">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-06-04T22:28:26+09:00">
-    <meta property="article:modified_time" content="2025-06-04T22:28:26+09:00">
+    <meta property="article:published_time" content="2025-06-04T23:55:58+09:00">
+    <meta property="article:modified_time" content="2025-06-04T23:55:58+09:00">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CPU Scheduler 구현 in C">
@@ -26,15 +26,15 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-<link rel="canonical" href="https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/" /><link rel="prev" href="https://braveseokyung.github.io/posts/more-about-entropy/" /><link rel="next" href="https://braveseokyung.github.io/posts/cpu-scheduling/" />
+<link rel="canonical" href="https://braveseokyung.github.io/posts/cpu-scheduling/" /><link rel="prev" href="https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/" />
 <link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
         "headline": "CPU Scheduler 구현 in C",
         "inLanguage": "en-us",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/"
+            "@id": "https://braveseokyung.github.io/posts/cpu-scheduling/"
         },"genre": "posts","wordcount":  918 ,
-        "url": "https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/","datePublished": "2025-06-04T22:28:26+09:00","dateModified": "2025-06-04T22:28:26+09:00","publisher": {
+        "url": "https://braveseokyung.github.io/posts/cpu-scheduling/","datePublished": "2025-06-04T23:55:58+09:00","dateModified": "2025-06-04T23:55:58+09:00","publisher": {
             "@type": "Organization",
             "name": "Author"},"author": [{
                         "@type": "Person",
@@ -650,7 +650,7 @@
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-1" 
+    id="codeblock-id-4" 
     class="
       chroma 
       !tw-block 
@@ -811,7 +811,7 @@
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-2" 
+    id="codeblock-id-5" 
     class="
       chroma 
       !tw-block 
@@ -982,7 +982,7 @@
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-3" 
+    id="codeblock-id-6" 
     class="
       chroma 
       !tw-block 
@@ -1171,10 +1171,8 @@
         </section>
     </div>
 
-    <div class="post-nav print:tw-hidden"><a href="/posts/more-about-entropy/" class="prev" rel="prev" title="Entropy 총정리(joint, conditional, mutual information)"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>Entropy 총정리(joint, conditional, mutual information)</a>
-            <a href="/posts/cpu-scheduling/" class="next" rel="next" title="CPU Scheduler 구현 in C">CPU Scheduler 구현 in C<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></a></div>
+    <div class="post-nav print:tw-hidden"><a href="/posts/cpu-scheduling-algorithm/" class="prev" rel="prev" title="CPU Scheduler 구현 in C"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>CPU Scheduler 구현 in C</a></div>
 </div>
 <div id="comments" class="print:!tw-hidden tw-pt-32 tw-pb-8"><div id="utterances"></div><noscript>
                 Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
