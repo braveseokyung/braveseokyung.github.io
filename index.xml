@@ -1,79 +1,79 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>brog</title>
-        <link>http://localhost:1313/</link>
+        <link>https://braveseokyung.github.io/</link>
         <description>brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Apr 2025 22:20:21 &#43;0900</lastBuildDate>
-            <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 04 Jun 2025 22:28:26 &#43;0900</lastBuildDate>
+            <atom:link href="https://braveseokyung.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>CPU Scheduler 구현 in C</title>
+    <link>https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/</link>
+    <pubDate>Wed, 04 Jun 2025 22:28:26 &#43;0900</pubDate><author>
+                    <name>braveseokyung</name>
+                </author><guid>https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/</guid>
+    <description><![CDATA[CPU scheduling 알고리즘(FCFS,SJF,Priority(+preemptive),Round Robin)을 알아보고 C언어로 구현해보자!]]></description>
+</item><item>
     <title>Entropy 총정리(joint, conditional, mutual information)</title>
-    <link>http://localhost:1313/posts/more-about-entropy/</link>
+    <link>https://braveseokyung.github.io/posts/more-about-entropy/</link>
     <pubDate>Wed, 09 Apr 2025 22:20:21 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/more-about-entropy/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/more-about-entropy/</guid>
     <description><![CDATA[Joint entropy, conditional entropy, chain rule of entropy, mutual information - entropy 총정리!]]></description>
 </item><item>
     <title>Probability, Entropy, Inference</title>
-    <link>http://localhost:1313/posts/probability-entropy-inference/</link>
+    <link>https://braveseokyung.github.io/posts/probability-entropy-inference/</link>
     <pubDate>Wed, 19 Mar 2025 23:04:13 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/probability-entropy-inference/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/probability-entropy-inference/</guid>
     <description><![CDATA[Probability에서 출발해서 entropy와 inference까지 알아보자!]]></description>
 </item><item>
     <title>유용한 명령어 및 툴 정리</title>
-    <link>http://localhost:1313/posts/command/</link>
+    <link>https://braveseokyung.github.io/posts/command/</link>
     <pubDate>Wed, 26 Feb 2025 23:17:51 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/command/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/command/</guid>
     <description><![CDATA[자주 쓰는 명령어와 툴 모음]]></description>
 </item><item>
     <title>Matplotlib</title>
-    <link>http://localhost:1313/posts/matplotlib/</link>
+    <link>https://braveseokyung.github.io/posts/matplotlib/</link>
     <pubDate>Wed, 19 Feb 2025 20:38:04 &#43;0900</pubDate><author>
         <name>Author</name>
-    </author><guid>http://localhost:1313/posts/matplotlib/</guid>
+    </author><guid>https://braveseokyung.github.io/posts/matplotlib/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>Diffusers 라이브러리(DDPM, DDIM)</title>
-    <link>http://localhost:1313/posts/diffusers/</link>
+    <link>https://braveseokyung.github.io/posts/diffusers/</link>
     <pubDate>Wed, 05 Feb 2025 22:08:05 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/diffusers/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/diffusers/</guid>
     <description><![CDATA[DDPM과 DDIM을 쓸 수 있는 Diffusers 라이브러리에 대해 알아보자!]]></description>
 </item><item>
     <title>Machine Unlearning(forgetting)이란?</title>
-    <link>http://localhost:1313/posts/unlearning/</link>
+    <link>https://braveseokyung.github.io/posts/unlearning/</link>
     <pubDate>Wed, 22 Jan 2025 16:18:43 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/unlearning/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/unlearning/</guid>
     <description><![CDATA[배울 수 있다면, 잊을 수도 있어야지! 딥러닝에서 Machine Unlearning task에 대해 살펴보자.]]></description>
 </item><item>
     <title>[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU</title>
-    <link>http://localhost:1313/posts/fusemix/</link>
+    <link>https://braveseokyung.github.io/posts/fusemix/</link>
     <pubDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/fusemix/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/fusemix/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다.]]></description>
 </item><item>
     <title>딥러닝의 Cross Entropy Loss 이해하기 (1)</title>
-    <link>http://localhost:1313/posts/cross-entropy/</link>
+    <link>https://braveseokyung.github.io/posts/cross-entropy/</link>
     <pubDate>Wed, 27 Nov 2024 19:48:42 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/cross-entropy/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/cross-entropy/</guid>
     <description><![CDATA[딥러닝에서 자주 사용되는 Cross Entropy Loss를 알아봅시다! 정보이론에서 등장하는 개념인 cross entropy가 왜 딥러닝의 loss로 활용되는지, 또 통계학의 negative log likelihood와는 어떤 관계가 있는지에 대해 이해하고자 쓰는 글입니다.]]></description>
 </item><item>
     <title>Information Theory의 관점에서 Estimator 살펴보기</title>
-    <link>http://localhost:1313/posts/estimators/</link>
+    <link>https://braveseokyung.github.io/posts/estimators/</link>
     <pubDate>Wed, 20 Nov 2024 17:54:51 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/estimators/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/estimators/</guid>
     <description><![CDATA[Information theory의 관점에서 Estimator를 살펴보자. 키워드 - MSE, MVUE, Fisher Information, CRLB]]></description>
-</item><item>
-    <title>[논문 리뷰] Emergent Visual-Semantic Hierarchies in Image-Text Representation</title>
-    <link>http://localhost:1313/posts/hierarcaps/</link>
-    <pubDate>Wed, 06 Nov 2024 20:55:46 &#43;0900</pubDate><author>
-                    <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/hierarcaps/</guid>
-    <description><![CDATA[ECCV 2024 oral paper인 Emergent Visual-Semantic Hierarchies in Image-Text Representation 논문에 대한 리뷰입니다.]]></description>
 </item></channel>
 </rss>

@@ -1,28 +1,28 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Paper-Review - Category - brog</title>
-        <link>http://localhost:1313/categories/paper-review/</link>
+        <link>https://braveseokyung.github.io/categories/paper-review/</link>
         <description>Paper-Review - Category - brog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/categories/paper-review/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</lastBuildDate><atom:link href="https://braveseokyung.github.io/categories/paper-review/" rel="self" type="application/rss+xml" /><item>
     <title>[논문 리뷰] Data-Efficient Multimodal Fusion on a Single GPU</title>
-    <link>http://localhost:1313/posts/fusemix/</link>
+    <link>https://braveseokyung.github.io/posts/fusemix/</link>
     <pubDate>Wed, 08 Jan 2025 21:56:50 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/fusemix/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/fusemix/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Data-Efficient Multimodal Fusion on a Single GPU 논문을 읽고 정리한 내용입니다.]]></description>
 </item><item>
     <title>[논문 리뷰] Emergent Visual-Semantic Hierarchies in Image-Text Representation</title>
-    <link>http://localhost:1313/posts/hierarcaps/</link>
+    <link>https://braveseokyung.github.io/posts/hierarcaps/</link>
     <pubDate>Wed, 06 Nov 2024 20:55:46 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/hierarcaps/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/hierarcaps/</guid>
     <description><![CDATA[ECCV 2024 oral paper인 Emergent Visual-Semantic Hierarchies in Image-Text Representation 논문에 대한 리뷰입니다.]]></description>
 </item><item>
     <title>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</title>
-    <link>http://localhost:1313/posts/accept-the-modality-gap/</link>
+    <link>https://braveseokyung.github.io/posts/accept-the-modality-gap/</link>
     <pubDate>Tue, 24 Sep 2024 00:16:26 &#43;0900</pubDate><author>
                     <name>braveseokyung</name>
-                </author><guid>http://localhost:1313/posts/accept-the-modality-gap/</guid>
+                </author><guid>https://braveseokyung.github.io/posts/accept-the-modality-gap/</guid>
     <description><![CDATA[CVPR 2024 Highlight paper인 Accept the Modality Gap An Exploration in Hyperbolic Space 논문을 읽고 정리한 내용입니다.]]></description>
 </item></channel>
 </rss>

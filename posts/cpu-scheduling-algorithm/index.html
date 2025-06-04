@@ -6,19 +6,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noodp" /><title>네이버 쇼핑 크롤링 (Selenium, 네이버 API) - brog</title><meta name="Description" content="네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API"><meta property="og:url" content="https://braveseokyung.github.io/posts/naver-shopping-crawling/">
+    <meta name="robots" content="noodp" /><title>CPU Scheduler 구현 in C - brog</title><meta name="Description" content="CPU scheduling 알고리즘(FCFS,SJF,Priority(&#43;preemptive),Round Robin)을 알아보고 C언어로 구현해보자!"><meta property="og:url" content="https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/">
   <meta property="og:site_name" content="brog">
-  <meta property="og:title" content="네이버 쇼핑 크롤링 (Selenium, 네이버 API)">
-  <meta property="og:description" content="네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API">
+  <meta property="og:title" content="CPU Scheduler 구현 in C">
+  <meta property="og:description" content="CPU scheduling 알고리즘(FCFS,SJF,Priority(&#43;preemptive),Round Robin)을 알아보고 C언어로 구현해보자!">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-10-02T11:39:16+09:00">
-    <meta property="article:modified_time" content="2024-10-02T11:39:16+09:00">
+    <meta property="article:published_time" content="2025-06-04T22:28:26+09:00">
+    <meta property="article:modified_time" content="2025-06-04T22:28:26+09:00">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="네이버 쇼핑 크롤링 (Selenium, 네이버 API)">
-  <meta name="twitter:description" content="네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API">
+  <meta name="twitter:title" content="CPU Scheduler 구현 in C">
+  <meta name="twitter:description" content="CPU scheduling 알고리즘(FCFS,SJF,Priority(&#43;preemptive),Round Robin)을 알아보고 C언어로 구현해보자!">
 <meta name="application-name" content="brog">
 <meta name="apple-mobile-web-app-title" content="brog">
 
@@ -26,21 +26,21 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-<link rel="canonical" href="https://braveseokyung.github.io/posts/naver-shopping-crawling/" /><link rel="prev" href="https://braveseokyung.github.io/posts/accept-the-modality-gap/" /><link rel="next" href="https://braveseokyung.github.io/posts/hierarcaps/" />
+<link rel="canonical" href="https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/" /><link rel="prev" href="https://braveseokyung.github.io/posts/more-about-entropy/" />
 <link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
-        "headline": "네이버 쇼핑 크롤링 (Selenium, 네이버 API)",
+        "headline": "CPU Scheduler 구현 in C",
         "inLanguage": "en-us",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://braveseokyung.github.io/posts/naver-shopping-crawling/"
-        },"genre": "posts","wordcount":  600 ,
-        "url": "https://braveseokyung.github.io/posts/naver-shopping-crawling/","datePublished": "2024-10-02T11:39:16+09:00","dateModified": "2024-10-02T11:39:16+09:00","publisher": {
+            "@id": "https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/"
+        },"genre": "posts","wordcount":  918 ,
+        "url": "https://braveseokyung.github.io/posts/cpu-scheduling-algorithm/","datePublished": "2025-06-04T22:28:26+09:00","dateModified": "2025-06-04T22:28:26+09:00","publisher": {
             "@type": "Organization",
             "name": "Author"},"author": [{
                         "@type": "Person",
                         "name": "braveseokyung",
                         "url": "https://braveseokyung.github.io/authors/braveseokyung"
-                    }],"description": "네이버 쇼핑에서 상품을 검색한 결과를 크롤링하는 두 가지 방법을 소개합니다. 1) Selenium로 검색 자동화 2) 네이버 API"
+                    }],"description": "CPU scheduling 알고리즘(FCFS,SJF,Priority(+preemptive),Round Robin)을 알아보고 C언어로 구현해보자!"
     }</script></head>
 
 
@@ -119,35 +119,29 @@
 </div><main class="main">
             <div class="container"><div class="toc print:!tw-hidden" id="toc-auto">
         <h2 class="toc-title">Contents</h2>
-        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+        <div class="toc-content always-active" id="toc-content-auto"><nav id="TableOfContents">
   <ul>
-    <li><a href="#selenium으로-크롤링하기">Selenium으로 크롤링하기</a>
+    <li><a href="#cpu-스케줄링-알고리즘">CPU 스케줄링 알고리즘</a></li>
+    <li><a href="#cpu-스케줄러-구현">CPU 스케줄러 구현</a>
       <ul>
-        <li><a href="#라이브러리-임포트">라이브러리 임포트</a></li>
-        <li><a href="#로컬에서-크롬-브라우저-열기">로컬에서 크롬 브라우저 열기</a></li>
-        <li><a href="#검색창에-입력하기-검색-자동화">검색창에 입력하기, 검색 자동화</a></li>
-        <li><a href="#html-element-찾기">HTML element 찾기</a></li>
+        <li><a href="#프로세스-생성">프로세스 생성</a></li>
+        <li><a href="#cpu-스케줄링-알고리즘-1">CPU 스케줄링 알고리즘</a></li>
+        <li><a href="#평가">평가</a></li>
       </ul>
     </li>
-    <li><a href="#네이버-api로-크롤링하기">네이버 API로 크롤링하기</a>
-      <ul>
-        <li><a href="#api-크롤링-코드">API 크롤링 코드</a></li>
-      </ul>
-    </li>
-    <li><a href="#reference">Reference</a></li>
   </ul>
 </nav></div>
-    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">네이버 쇼핑 크롤링 (Selenium, 네이버 API)</h1><div class="post-meta">
+    </div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title">CPU Scheduler 구현 in C</h1><div class="post-meta">
             <div class="post-meta-line">
                 <span class="post-author"><span class='author'>
         <span class='screen-reader-text'>  </span><a href='https://braveseokyung.github.io/authors/braveseokyung'>braveseokyung</a></span>
-                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/python/"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Python</a></span></div>
+                </span>&nbsp;<span class="post-category">included in </span>&nbsp;<span class="post-category">category <a href="/categories/operating-system/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Operating-System</a></span></div>
             <div class="post-meta-line"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-10-02">2024-10-02</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-10-02">2024-10-02</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;600 words&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;3 minutes&nbsp;</div>
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2025-06-04">2025-06-04</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2025-06-04">2025-06-04</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;918 words&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;5 minutes&nbsp;</div>
         </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -156,30 +150,47 @@
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#selenium으로-크롤링하기">Selenium으로 크롤링하기</a>
+    <li><a href="#cpu-스케줄링-알고리즘">CPU 스케줄링 알고리즘</a></li>
+    <li><a href="#cpu-스케줄러-구현">CPU 스케줄러 구현</a>
       <ul>
-        <li><a href="#라이브러리-임포트">라이브러리 임포트</a></li>
-        <li><a href="#로컬에서-크롬-브라우저-열기">로컬에서 크롬 브라우저 열기</a></li>
-        <li><a href="#검색창에-입력하기-검색-자동화">검색창에 입력하기, 검색 자동화</a></li>
-        <li><a href="#html-element-찾기">HTML element 찾기</a></li>
+        <li><a href="#프로세스-생성">프로세스 생성</a></li>
+        <li><a href="#cpu-스케줄링-알고리즘-1">CPU 스케줄링 알고리즘</a></li>
+        <li><a href="#평가">평가</a></li>
       </ul>
     </li>
-    <li><a href="#네이버-api로-크롤링하기">네이버 API로 크롤링하기</a>
-      <ul>
-        <li><a href="#api-크롤링-코드">API 크롤링 코드</a></li>
-      </ul>
-    </li>
-    <li><a href="#reference">Reference</a></li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ec%a0%84%2011.49.17.png" title="" data-thumbnail="스크린샷 2024-10-02 오전 11.49.17.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ec%a0%84%2011.49.17.png"     ></a>
-<p>이 글에서는 위 사진처럼 각 데이터를 네이버 쇼핑에 검색한 결과(상품 이름, 상품 링크, 상품 이미지, 상품 가격) 을 크롤링하는 방법을 소개한다.</p>
-<p>크롤링을 할 때, 사이트가 비동기이거나 데이터마다 검색을 해야 해서 클릭을 자동화해야 하는 경우가 있다. 이럴 경우 Selenium이라는 파이썬 라이브러리를 통해 크롬을 불러오고 클릭을 자동화할 수 있다. 하지만 네이버 쇼핑의 경우 Selenium으로 수동 크롤링하는 것 이외의 방법이 있다. 바로 네이버 API를 활용하는 것인데, 항상 API를 활용할 수 있는 것은 아니니 두 가지 방법 모두 정리해두겠다.</p>
-<h2 id="selenium으로-크롤링하기" class="headerLink">
-    <a href="#selenium%ec%9c%bc%eb%a1%9c-%ed%81%ac%eb%a1%a4%eb%a7%81%ed%95%98%ea%b8%b0" class="header-mark" aria-label="Header mark for 'Selenium으로 크롤링하기'"></a>Selenium으로 크롤링하기</h2><p>크롤링에서 많이 쓰이는 라이브러리에는 Selenium, BeautifulSoup가 있다. BeautifulSoup가 조금 더 간단한데, BeautifulSoup를 쓸 때는 입력받은 링크를 기준으로 HTML을 파싱해 가져오기 때문에 비동기로 프로그래밍 된 사이트들, 즉 링크 변화없이 다른 정보를 보여줄 수 있는 사이트에서는 크롤링이 불가능하다. 이럴 때 클릭을 자동화해서 크롤링할 수 있게 해주는 라이브러리가 Selenium이다.</p>
-<p>그럼 Selenium을 이용한 크롤링 코드를 살펴보자!</p>
-<h3 id="라이브러리-임포트" class="headerLink">
-    <a href="#%eb%9d%bc%ec%9d%b4%eb%b8%8c%eb%9f%ac%eb%a6%ac-%ec%9e%84%ed%8f%ac%ed%8a%b8" class="header-mark" aria-label="Header mark for '라이브러리 임포트'"></a>라이브러리 임포트</h3><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+            </div><div class="content" id="content"><p>CPU는 한 번에 하나의 작업만 처리할 수 있기 때문에, 여러 개의 프로세스가 실행 대기 중일 때는 OS가 각 프로세스들을 어떤 순서로 실행할지 결정합니다. 이를 **CPU 스케줄링(CPU Scheduling)**이라고 합니다. 이 글에서는 스케줄링 알고리즘들을 살펴보고 프로세스 생성부터 알고리즘 별 실행결과 비교까지 구현한 과정을 기록했습니다.</p>
+<h2 id="cpu-스케줄링-알고리즘" class="headerLink">
+    <a href="#cpu-%ec%8a%a4%ec%bc%80%ec%a4%84%eb%a7%81-%ec%95%8c%ea%b3%a0%eb%a6%ac%ec%a6%98" class="header-mark" aria-label="Header mark for 'CPU 스케줄링 알고리즘'"></a>CPU 스케줄링 알고리즘</h2><ul>
+<li><strong>FCFS</strong>
+<ul>
+<li>First Come, First Served를 뜻하는 FCFS는 이름과 같이 프로세스들을 도착한 순서대로(arrival time) 스케줄링하는 가장 기본 알고리즘입니다.</li>
+</ul>
+</li>
+<li><strong>SJF</strong>
+<ul>
+<li>SJF는 Shortest Job First의 약자로, 도착한 프로세스 중 실행 시간(burst time)이 적은 것을 먼저 실행합니다.</li>
+<li>Preemptive SJF의 경우, 어떤 프로세스가 실행되는 도중 더 실행 시간이 짧은 프로세스가 도착하면 preemption이 일어나고 해당 프로세스는 실행순서가 맨 뒤로 가게 됩니다. Preemption이 일어난 프로세스는 remaining time을 기준으로 비교합니다.</li>
+</ul>
+</li>
+<li><strong>Priority</strong>
+<ul>
+<li>프로세스는 각 프로세스의 중요성에 따라 Priority를 가질 수 있습니다. Priority 알고리즘은 도착한 프로세스 중 Priority 값이 높은 순서대로 실행합니다.</li>
+<li>Preemptive Priority의 경우 프로세스가 실행되는 도중 더 priority가 높은 프로세스가 도착하면 preemption이 일어나고 해당 프로세스는 실행순서가 맨 뒤로 가게 됩니다.</li>
+</ul>
+</li>
+<li><strong>Round Robin</strong>
+<ul>
+<li>Round Robin 알고리즘은 프로세스를 특정한 time quantum만큼 실행한 후, 그 시간동안 프로세스가 다 끝나지 않으면 중단시키고(preemption) 다음 프로세스를 실행합니다. 기본적인 실행 순서는 FCFS와 같이 arrival time을 따릅니다.</li>
+<li>time quantum의 크기가 너무 작아지게 되면 preemption이 자주 일어나게 context switching에 대한 overhead가 발생합니다. 반면 너무 커지게 되면 FCFS와 동일해집니다.</li>
+<li>SJF, Priority, Round Robin처럼 preemption이 가능한 알고리즘들은 프로세스의 실행순서가 중간에 바뀌기 때문에 큐로 관리하는 것이 적합합니다.</li>
+</ul>
+</li>
+</ul>
+<h2 id="cpu-스케줄러-구현" class="headerLink">
+    <a href="#cpu-%ec%8a%a4%ec%bc%80%ec%a4%84%eb%9f%ac-%ea%b5%ac%ed%98%84" class="header-mark" aria-label="Header mark for 'CPU 스케줄러 구현'"></a>CPU 스케줄러 구현</h2><h3 id="프로세스-생성" class="headerLink">
+    <a href="#%ed%94%84%eb%a1%9c%ec%84%b8%ec%8a%a4-%ec%83%9d%ec%84%b1" class="header-mark" aria-label="Header mark for '프로세스 생성'"></a>프로세스 생성</h3><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
     code-block-title 
     
@@ -203,7 +214,7 @@
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></button>
 
     <div class="code-block-title-bar tw-w-full">
-      <p class="tw-select-none !tw-my-1">python</p>
+      <p class="tw-select-none !tw-my-1">C</p>
     </div>
     <div class="tw-flex">
       <button 
@@ -273,14 +284,25 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span style="display:flex;"><span><span style="color:#f92672">from</span> selenium <span style="color:#f92672">import</span> webdriver
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> selenium.webdriver.chrome.service <span style="color:#f92672">import</span> Service <span style="color:#66d9ef">as</span> ChromeService
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> webdriver_manager.chrome <span style="color:#f92672">import</span> ChromeDriverManager
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> selenium.webdriver.common.by <span style="color:#f92672">import</span> By</span></span></code></pre>
+      "><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> pid;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> arrival_time;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> cpu_burst_time;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> remaining_time;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> priority;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> start_time;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> waiting_time;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> complete_time;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> turnaround_time;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> is_completed;
+</span></span><span style="display:flex;"><span>} Process;</span></span></code></pre>
 </div>
-<p>위에서 임포트한 라이브러리는 크롬 브라우저를 로컬에서 열기 위해 필요한 라이브러리들이다.</p>
-<h3 id="로컬에서-크롬-브라우저-열기" class="headerLink">
-    <a href="#%eb%a1%9c%ec%bb%ac%ec%97%90%ec%84%9c-%ed%81%ac%eb%a1%ac-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%97%b4%ea%b8%b0" class="header-mark" aria-label="Header mark for '로컬에서 크롬 브라우저 열기'"></a>로컬에서 크롬 브라우저 열기</h3><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+<ul>
+<li>프로세스를 구조체로 정의합니다.</li>
+</ul>
+<div class="code-block highlight is-closed show-line-numbers  tw-group tw-my-2">
   <div class="
     code-block-title 
     
@@ -304,7 +326,7 @@
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></button>
 
     <div class="code-block-title-bar tw-w-full">
-      <p class="tw-select-none !tw-my-1">python</p>
+      <p class="tw-select-none !tw-my-1">C</p>
     </div>
     <div class="tw-flex">
       <button 
@@ -374,12 +396,35 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span style="display:flex;"><span><span style="color:#75715e"># Chrome 브라우저를 오픈합니다</span>
-</span></span><span style="display:flex;"><span>driver <span style="color:#f92672">=</span> webdriver<span style="color:#f92672">.</span>Chrome(service<span style="color:#f92672">=</span>ChromeService(ChromeDriverManager()<span style="color:#f92672">.</span>install()))</span></span></code></pre>
+      "><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">create_process</span>(Process <span style="color:#f92672">*</span>processes, <span style="color:#66d9ef">int</span> num_process, <span style="color:#66d9ef">int</span> seed) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">srand</span>(seed);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> num_process; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        processes[i].pid <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>        processes[i].arrival_time <span style="color:#f92672">=</span> <span style="color:#a6e22e">rand</span>() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span>;
+</span></span><span style="display:flex;"><span>        processes[i].cpu_burst_time <span style="color:#f92672">=</span> <span style="color:#a6e22e">rand</span>() <span style="color:#f92672">%</span> <span style="color:#ae81ff">20</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        processes[i].remaining_time <span style="color:#f92672">=</span> processes[i].cpu_burst_time;
+</span></span><span style="display:flex;"><span>        processes[i].priority <span style="color:#f92672">=</span> <span style="color:#a6e22e">rand</span> () <span style="color:#f92672">%</span> num_process <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        processes[i].is_completed <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d processes created.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,num_process);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;pid</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">|CPU burst time</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">|Arrival time</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">|Priority</span><span style="color:#ae81ff">\t\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> num_process; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%d</span><span style="color:#ae81ff">\t\t</span><span style="color:#e6db74">%d</span><span style="color:#ae81ff">\t\t</span><span style="color:#e6db74">%d</span><span style="color:#ae81ff">\t\n</span><span style="color:#e6db74">&#34;</span>, processes[i].pid, processes[i].cpu_burst_time, processes[i].arrival_time, processes[i].priority);
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre>
 </div>
-<p>위의 코드를 실행하면 아래와 같이 브라우저가 로컬에서 열리게 된다.</p>
-<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.10.07.png" title="" data-thumbnail="스크린샷 2024-10-02 오후 12.10.07.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.10.07.png"     ></a>
-<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+<ul>
+<li>각 프로세스마다 arrival time, cpu burst time, priority를 rand() 함수로 랜덤 생성한 후 출력합니다.
+<a class="lightgallery" href="create_process.png" title="" data-thumbnail="create_process.png"><img  loading="lazy" src="create_process.png"     ></a></li>
+</ul>
+<h3 id="cpu-스케줄링-알고리즘-1" class="headerLink">
+    <a href="#cpu-%ec%8a%a4%ec%bc%80%ec%a4%84%eb%a7%81-%ec%95%8c%ea%b3%a0%eb%a6%ac%ec%a6%98-1" class="header-mark" aria-label="Header mark for 'CPU 스케줄링 알고리즘'"></a>CPU 스케줄링 알고리즘</h3><ul>
+<li>
+<p>FCFS</p>
+<div class="code-block highlight is-closed show-line-numbers  tw-group tw-my-2">
   <div class="
     code-block-title 
     
@@ -403,7 +448,7 @@
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></button>
 
     <div class="code-block-title-bar tw-w-full">
-      <p class="tw-select-none !tw-my-1">python</p>
+      <p class="tw-select-none !tw-my-1">C</p>
     </div>
     <div class="tw-flex">
       <button 
@@ -473,21 +518,59 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span style="display:flex;"><span>driver<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;https://shopping.naver.com/home&#34;</span>)</span></span></code></pre>
+      "><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">compare_by_arrival</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>a, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>b){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// arrival time으로 정렬
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Process <span style="color:#f92672">*</span>p1 <span style="color:#f92672">=</span> (Process <span style="color:#f92672">*</span>)a;
+</span></span><span style="display:flex;"><span>Process <span style="color:#f92672">*</span>p2 <span style="color:#f92672">=</span> (Process <span style="color:#f92672">*</span>)b;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 음수면 순서 p1,p2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 양수면 순서 p2,p1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">return</span> p1<span style="color:#f92672">-&gt;</span>arrival_time <span style="color:#f92672">-</span> p2<span style="color:#f92672">-&gt;</span>arrival_time;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fcfs</span>(Process <span style="color:#f92672">*</span>processes, <span style="color:#66d9ef">int</span> num_process) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 복사해서 정렬
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Process processes_copy[MAX_PROCESS];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(processes_copy, processes, <span style="color:#66d9ef">sizeof</span>(Process)<span style="color:#f92672">*</span>num_process);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">qsort</span>(processes_copy, num_process, <span style="color:#66d9ef">sizeof</span>(Process), compare_by_arrival);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Queue ready_queue;
+</span></span><span style="display:flex;"><span>    Queue wait_queue;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">init_queue</span>(<span style="color:#f92672">&amp;</span>ready_queue);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">init_queue</span>(<span style="color:#f92672">&amp;</span>wait_queue);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> num_process; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">enqueue</span>(<span style="color:#f92672">&amp;</span>ready_queue, <span style="color:#f92672">&amp;</span>processes_copy[i]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> current_time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">is_empty</span>(<span style="color:#f92672">&amp;</span>ready_queue)) {
+</span></span><span style="display:flex;"><span>        Process <span style="color:#f92672">*</span>p <span style="color:#f92672">=</span> <span style="color:#a6e22e">dequeue</span>(<span style="color:#f92672">&amp;</span>ready_queue);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (current_time<span style="color:#f92672">&lt;</span>p<span style="color:#f92672">-&gt;</span>arrival_time){
+</span></span><span style="display:flex;"><span>            current_time<span style="color:#f92672">=</span>p<span style="color:#f92672">-&gt;</span>arrival_time;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        p<span style="color:#f92672">-&gt;</span>start_time<span style="color:#f92672">=</span>current_time;
+</span></span><span style="display:flex;"><span>        p<span style="color:#f92672">-&gt;</span>waiting_time<span style="color:#f92672">=</span>current_time<span style="color:#f92672">-</span>p<span style="color:#f92672">-&gt;</span>arrival_time;
+</span></span><span style="display:flex;"><span>        current_time<span style="color:#f92672">+=</span>p<span style="color:#f92672">-&gt;</span>cpu_burst_time;
+</span></span><span style="display:flex;"><span>        p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">=</span>current_time;
+</span></span><span style="display:flex;"><span>        p<span style="color:#f92672">-&gt;</span>turnaround_time<span style="color:#f92672">=</span>p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">-</span>p<span style="color:#f92672">-&gt;</span>arrival_time;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre>
 </div>
-<p>이제 우리가 원하는 네이버 쇼핑으로 이동하기 위해 <code>driver.get()</code> 안에 원하는 링크를 넣어주면 아래와 같이 로컬에서도 페이지가 이동한다.</p>
-<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.20.30.png" title="" data-thumbnail="스크린샷 2024-10-02 오후 12.20.30.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.20.30.png"     ></a>
-<p>사진을 보면 자동화된 소프트웨어에 의해 제어되고 있다고 나오는데, 이게 Selenium이다!</p>
-<div class="details admonition note open">
-    <div class="details-summary admonition-title">
-        <span class="icon"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg></span>Note<span class="details-icon"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
-    </div>
-    <div class="details-content">
-        <div class="admonition-content">크롤링이 끝나면 <code>driver.quit()</code> 으로 종료시켜주는 것을 잊지말자!</div></div></div>
-<h3 id="검색창에-입력하기-검색-자동화" class="headerLink">
-    <a href="#%ea%b2%80%ec%83%89%ec%b0%bd%ec%97%90-%ec%9e%85%eb%a0%a5%ed%95%98%ea%b8%b0-%ea%b2%80%ec%83%89-%ec%9e%90%eb%8f%99%ed%99%94" class="header-mark" aria-label="Header mark for '검색창에 입력하기, 검색 자동화'"></a>검색창에 입력하기, 검색 자동화</h3><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+<ul>
+<li>프로세스를 정렬한 후 순서대로 실행합니다.</li>
+</ul>
+</li>
+<li>
+<p>Non-Preemptive SJF</p>
+<div class="code-block highlight is-closed show-line-numbers  tw-group tw-my-2">
   <div class="
     code-block-title 
     
@@ -511,7 +594,7 @@
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></button>
 
     <div class="code-block-title-bar tw-w-full">
-      <p class="tw-select-none !tw-my-1">python</p>
+      <p class="tw-select-none !tw-my-1">C</p>
     </div>
     <div class="tw-flex">
       <button 
@@ -581,31 +664,74 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span style="display:flex;"><span>search_box<span style="color:#f92672">=</span>driver<span style="color:#f92672">.</span>find_element(By<span style="color:#f92672">.</span>CLASS_NAME,<span style="color:#e6db74">&#34;_searchInput_search_text_3CUDs&#34;</span>)
-</span></span><span style="display:flex;"><span>search_box<span style="color:#f92672">.</span>clear()
-</span></span><span style="display:flex;"><span>search_box<span style="color:#f92672">.</span>send_keys(query)
-</span></span><span style="display:flex;"><span>driver<span style="color:#f92672">.</span>find_element(By<span style="color:#f92672">.</span>CLASS_NAME,<span style="color:#e6db74">&#34;_searchInput_button_search_1n1aw&#34;</span>)<span style="color:#f92672">.</span>click()</span></span></code></pre>
+      "><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pre_sjf</span>(Process <span style="color:#f92672">*</span>processes, <span style="color:#66d9ef">int</span> num_process) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 복사
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Process processes_copy[MAX_PROCESS];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(processes_copy, processes, <span style="color:#66d9ef">sizeof</span>(Process)<span style="color:#f92672">*</span>num_process);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 시간별 실행된 프로세스 저장
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Process <span style="color:#f92672">*</span>executed_timeline[MAX_TIME];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> current_time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> num_completed<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(num_completed <span style="color:#f92672">&lt;</span> num_process){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> min_remain_idx<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> min_remaining_time<span style="color:#f92672">=</span>MAX_CPU_BURST_TIME;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// bool is_preempted=false;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i<span style="color:#f92672">&lt;</span>num_process; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (processes_copy[i].arrival_time <span style="color:#f92672">&gt;</span> current_time){
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>processes_copy[i].is_completed <span style="color:#f92672">&amp;&amp;</span> processes_copy[i].remaining_time <span style="color:#f92672">&lt;</span> min_remaining_time) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                min_remaining_time <span style="color:#f92672">=</span> processes_copy[i].remaining_time;
+</span></span><span style="display:flex;"><span>                min_remain_idx<span style="color:#f92672">=</span>i;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (min_remain_idx<span style="color:#f92672">==-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>            executed_timeline[current_time]<span style="color:#f92672">=</span>NULL;
+</span></span><span style="display:flex;"><span>            current_time<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>        } 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Process <span style="color:#f92672">*</span>curr_p<span style="color:#f92672">=&amp;</span>processes_copy[min_remain_idx];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">==</span>curr_p<span style="color:#f92672">-&gt;</span>cpu_burst_time) {
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>start_time<span style="color:#f92672">=</span>current_time;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>        executed_timeline[current_time]<span style="color:#f92672">=</span>curr_p;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        current_time<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            num_completed<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>is_completed<span style="color:#f92672">=</span>true;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">=</span>current_time;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>turnaround_time<span style="color:#f92672">=</span>curr_p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">-</span>curr_p<span style="color:#f92672">-&gt;</span>arrival_time;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>waiting_time<span style="color:#f92672">=</span>curr_p<span style="color:#f92672">-&gt;</span>turnaround_time<span style="color:#f92672">-</span>curr_p<span style="color:#f92672">-&gt;</span>cpu_burst_time;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre>
 </div>
-<p>검색창 element를 가져온 다음, <code>.clear()</code> 를 통해 내용을 비워서 이전 쿼리를 지운다.
-그 다음 새로운 query를 <code>.send_keys(query)</code>를 통해 입력한다. 마지막으로 검색 버튼을 눌러 검색을 실행하기 위해 검색 element를 찾아서 클릭한다.</p>
-<p><code>.click()</code></p>
-<p>을 통해 검색을 자동화할 수 있다.</p>
-<h3 id="html-element-찾기" class="headerLink">
-    <a href="#html-element-%ec%b0%be%ea%b8%b0" class="header-mark" aria-label="Header mark for 'HTML element 찾기'"></a>HTML element 찾기</h3><p>검색창에 원하는 쿼리를 입력하기 위해서, 또 크롤링할 항목을 가져오기 위해서는 HTML element를 찾아야 한다.
-Selenium에서 <code>driver.find_element()</code>를 이용해서 HTML element를 찾을 수 있다.
-아래와 같이 By를 통해 class, id 등 여러 방법으로 찾을 수 있다. XPATH가 조금 생소한데, HTML을 복붙해오듯이 element를 누르고 copy를 보면 XPATH로 가져올 수 있다.</p>
 <ul>
-<li><code>By.CLASS_NAME</code></li>
-<li><code>By.ID</code></li>
-<li><code>By.TAG_NAME</code></li>
-<li><code>By.XPATH</code></li>
-<li><code>By.CSS_SELECTOR</code></li>
+<li>매 시간마다 cpu burst time이 최소인 프로세스를 찾아서 해당 프로세스를 실행</li>
 </ul>
-<p>참고로 위의 라이브러리 import에서 By를 import 해야 위처럼 가져올 수 있다.</p>
-<p>HTML element를 By로 가져와서 그 안의 text를 얻고 싶은 것이라면  <code>{element}.text().strip()</code>으로 가져올 수 있지만, 태그 안의 다른 attribute의 정보를 가져오고 싶을 수도 있다. 아래 사진을 보면,</p>
-<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.24.36.png" title="" data-thumbnail="스크린샷 2024-10-02 오후 12.24.36.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.24.36.png"     ></a>
-<p>이렇게 class 내에서 우리가 원하는 상품의 이름은 title이라는 attribute에 들어가 있다. 이때 쓰는 것이 <code>{element}.get_attribute()</code> 이다.</p>
-<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+</li>
+<li>
+<p>Preemptive Priority</p>
+<div class="code-block highlight is-closed show-line-numbers  tw-group tw-my-2">
   <div class="
     code-block-title 
     
@@ -629,7 +755,7 @@ Selenium에서 <code>driver.find_element()</code>를 이용해서 HTML element�
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></button>
 
     <div class="code-block-title-bar tw-w-full">
-      <p class="tw-select-none !tw-my-1">python</p>
+      <p class="tw-select-none !tw-my-1">C</p>
     </div>
     <div class="tw-flex">
       <button 
@@ -699,10 +825,83 @@ Selenium에서 <code>driver.find_element()</code>를 이용해서 HTML element�
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span style="display:flex;"><span>prd_title<span style="color:#f92672">=</span>link_element<span style="color:#f92672">.</span>get_attribute(<span style="color:#e6db74">&#34;title&#34;</span>)
-</span></span><span style="display:flex;"><span>prd_link<span style="color:#f92672">=</span>link_element<span style="color:#f92672">.</span>get_attribute(<span style="color:#e6db74">&#34;href&#34;</span>)</span></span></code></pre>
+      "><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pre_priority</span>(Process <span style="color:#f92672">*</span>processes, <span style="color:#66d9ef">int</span> num_process) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 복사
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Process processes_copy[MAX_PROCESS];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(processes_copy, processes, <span style="color:#66d9ef">sizeof</span>(Process)<span style="color:#f92672">*</span>num_process);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 시간별 실행된 프로세스 저장
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Process <span style="color:#f92672">*</span>executed_timeline[MAX_TIME];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> current_time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> num_completed<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(num_completed <span style="color:#f92672">&lt;</span> num_process){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (current_time <span style="color:#f92672">&gt;=</span> MAX_TIME<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;ERROR: current_time exceeded MAX_TIME (%d)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, MAX_TIME<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">1</span>);  <span style="color:#75715e">// 또는 break;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> min_priority_idx<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> min_priority<span style="color:#f92672">=</span>num_process<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// bool is_preempted=false;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i<span style="color:#f92672">&lt;</span>num_process; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (processes_copy[i].arrival_time <span style="color:#f92672">&gt;</span> current_time){
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 현재 시점에서 priority가 작은 것 선택, 만약에 같다면 먼저 도착한 것으로
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>processes_copy[i].is_completed <span style="color:#f92672">&amp;&amp;</span> (processes_copy[i].priority <span style="color:#f92672">&lt;</span> min_priority <span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>                (processes_copy[i].priority <span style="color:#f92672">==</span> min_priority <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>                 processes_copy[i].arrival_time <span style="color:#f92672">&lt;</span> processes_copy[min_priority_idx].arrival_time))) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                min_priority <span style="color:#f92672">=</span> processes_copy[i].priority;
+</span></span><span style="display:flex;"><span>                min_priority_idx<span style="color:#f92672">=</span>i;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (min_priority_idx<span style="color:#f92672">==-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>            executed_timeline[current_time]<span style="color:#f92672">=</span>NULL;
+</span></span><span style="display:flex;"><span>            current_time<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>        } 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Process <span style="color:#f92672">*</span>curr_p<span style="color:#f92672">=&amp;</span>processes_copy[min_priority_idx];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">==</span>curr_p<span style="color:#f92672">-&gt;</span>cpu_burst_time) {
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>start_time<span style="color:#f92672">=</span>current_time;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>        executed_timeline[current_time]<span style="color:#f92672">=</span>curr_p;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        current_time<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            num_completed<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>is_completed<span style="color:#f92672">=</span>true;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">=</span>current_time;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>turnaround_time<span style="color:#f92672">=</span>curr_p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">-</span>curr_p<span style="color:#f92672">-&gt;</span>arrival_time;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>waiting_time<span style="color:#f92672">=</span>curr_p<span style="color:#f92672">-&gt;</span>turnaround_time<span style="color:#f92672">-</span>curr_p<span style="color:#f92672">-&gt;</span>cpu_burst_time;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre>
 </div>
-<p>이제 전체 코드를 살펴보자! 영양소 이름이 든 csv를 읽어와서 각 영양소를 query로 검색해서 제품 이름, 링크, 이미지를 가져와서 리스트에 추가하는 코드이다.</p>
+<ul>
+<li>매 시간마다 Priority가 가장 큰 프로세스를 찾아서 해당 프로세스를 실행</li>
+</ul>
+</li>
+<li>
+<p>Round Robin</p>
 <div class="code-block highlight is-closed show-line-numbers  tw-group tw-my-2">
   <div class="
     code-block-title 
@@ -727,7 +926,7 @@ Selenium에서 <code>driver.find_element()</code>를 이용해서 HTML element�
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></button>
 
     <div class="code-block-title-bar tw-w-full">
-      <p class="tw-select-none !tw-my-1">python</p>
+      <p class="tw-select-none !tw-my-1">C</p>
     </div>
     <div class="tw-flex">
       <button 
@@ -797,192 +996,165 @@ Selenium에서 <code>driver.find_element()</code>를 이용해서 HTML element�
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span style="display:flex;"><span><span style="color:#75715e"># 영양소 csv 읽어오기</span>
-</span></span><span style="display:flex;"><span>prd_csv<span style="color:#f92672">=</span>pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;prd_nm_fnclty.csv&#34;</span>)
+      "><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">round_robin</span>(Process <span style="color:#f92672">*</span>processes, <span style="color:#66d9ef">int</span> num_process) {
+</span></span><span style="display:flex;"><span>    Process processes_copy[MAX_PROCESS];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(processes_copy, processes, <span style="color:#66d9ef">sizeof</span>(Process) <span style="color:#f92672">*</span> num_process);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 크롤링한 항목 저장할 리스트</span>
-</span></span><span style="display:flex;"><span>prd_title_list<span style="color:#f92672">=</span>[]
-</span></span><span style="display:flex;"><span>prd_link_list<span style="color:#f92672">=</span>[]
-</span></span><span style="display:flex;"><span>prd_img_list<span style="color:#f92672">=</span>[]
+</span></span><span style="display:flex;"><span>    Process <span style="color:#f92672">*</span>executed_timeline[MAX_TIME];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> enqueued[MAX_PROCESS] <span style="color:#f92672">=</span> { false };
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_title_link_img</span>(query):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> current_time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> num_completed<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    driver<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;https://shopping.naver.com/home&#34;</span>)
-</span></span><span style="display:flex;"><span>    search_box<span style="color:#f92672">=</span>driver<span style="color:#f92672">.</span>find_element(By<span style="color:#f92672">.</span>CLASS_NAME,<span style="color:#e6db74">&#34;_searchInput_search_text_3CUDs&#34;</span>)
-</span></span><span style="display:flex;"><span>    search_box<span style="color:#f92672">.</span>clear()
-</span></span><span style="display:flex;"><span>    search_box<span style="color:#f92672">.</span>send_keys(query)
-</span></span><span style="display:flex;"><span>    driver<span style="color:#f92672">.</span>find_element(By<span style="color:#f92672">.</span>CLASS_NAME,<span style="color:#e6db74">&#34;_searchInput_button_search_1n1aw&#34;</span>)<span style="color:#f92672">.</span>click()
+</span></span><span style="display:flex;"><span>    Queue ready_queue;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">init_queue</span>(<span style="color:#f92672">&amp;</span>ready_queue);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 페이지 로딩 대기</span>
-</span></span><span style="display:flex;"><span>    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(num_completed <span style="color:#f92672">&lt;</span> num_process ) {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    prd<span style="color:#f92672">=</span>driver<span style="color:#f92672">.</span>find_element(By<span style="color:#f92672">.</span>CLASS_NAME,<span style="color:#e6db74">&#34;product_item__MDtDF&#34;</span>)
-</span></span><span style="display:flex;"><span>    link_element<span style="color:#f92672">=</span>prd<span style="color:#f92672">.</span>find_element(By<span style="color:#f92672">.</span>CLASS_NAME,<span style="color:#e6db74">&#34;product_link__TrAac&#34;</span>)
-</span></span><span style="display:flex;"><span>    img_element<span style="color:#f92672">=</span>prd<span style="color:#f92672">.</span>find_element(By<span style="color:#f92672">.</span>CLASS_NAME,<span style="color:#e6db74">&#34;product_img_area__cUrko&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># img_tag=img_element.find_element(By.CSS_SELECTOR,&#34;img&#34;)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ==
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i<span style="color:#f92672">&lt;</span>num_process; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (processes_copy[i].arrival_time <span style="color:#f92672">==</span> current_time <span style="color:#f92672">&amp;&amp;!</span>enqueued[i]) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">is_full</span>(<span style="color:#f92672">&amp;</span>ready_queue)) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;full&#34;</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">enqueue</span>(<span style="color:#f92672">&amp;</span>ready_queue, <span style="color:#f92672">&amp;</span>processes_copy[i]);
+</span></span><span style="display:flex;"><span>                enqueued[i]<span style="color:#f92672">=</span>true;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">is_empty</span>(<span style="color:#f92672">&amp;</span>ready_queue)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;empty&#34;</span>);
+</span></span><span style="display:flex;"><span>            executed_timeline[current_time]<span style="color:#f92672">=</span>NULL;
+</span></span><span style="display:flex;"><span>            current_time<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    prd_title<span style="color:#f92672">=</span>link_element<span style="color:#f92672">.</span>get_attribute(<span style="color:#e6db74">&#34;title&#34;</span>)
-</span></span><span style="display:flex;"><span>    prd_link<span style="color:#f92672">=</span>link_element<span style="color:#f92672">.</span>get_attribute(<span style="color:#e6db74">&#34;href&#34;</span>)
-</span></span><span style="display:flex;"><span>    prd_title_list<span style="color:#f92672">.</span>append(prd_title)
-</span></span><span style="display:flex;"><span>    prd_link_list<span style="color:#f92672">.</span>append(prd_link)
+</span></span><span style="display:flex;"><span>        Process <span style="color:#f92672">*</span>curr_p <span style="color:#f92672">=</span> <span style="color:#a6e22e">dequeue</span>(<span style="color:#f92672">&amp;</span>ready_queue);
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (curr_p<span style="color:#f92672">-&gt;</span>remaining_time <span style="color:#f92672">==</span> curr_p<span style="color:#f92672">-&gt;</span>cpu_burst_time) {
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>start_time <span style="color:#f92672">=</span> current_time;
+</span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># prd_img=img_tag.get_attribute(&#34;src&#34;)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># prd_img_list.append(prd_img)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># print(prd_img)</span></span></span></code></pre>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> time_quantum<span style="color:#f92672">=</span>TIME_QUANTUM;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span>(time_quantum<span style="color:#f92672">&gt;</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">&gt;</span><span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>            executed_timeline[current_time]<span style="color:#f92672">=</span>curr_p;
+</span></span><span style="display:flex;"><span>            time_quantum<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> num_process; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (processes_copy[i].arrival_time <span style="color:#f92672">==</span> current_time) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">is_full</span>(<span style="color:#f92672">&amp;</span>ready_queue)) {
+</span></span><span style="display:flex;"><span>                        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;full&#34;</span>);
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">enqueue</span>(<span style="color:#f92672">&amp;</span>ready_queue, <span style="color:#f92672">&amp;</span>processes_copy[i]);
+</span></span><span style="display:flex;"><span>                    enqueued[i]<span style="color:#f92672">=</span>true;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            current_time<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (curr_p<span style="color:#f92672">-&gt;</span>remaining_time<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>curr_p<span style="color:#f92672">-&gt;</span>is_completed){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            num_completed<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>is_completed<span style="color:#f92672">=</span>true;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">=</span>current_time;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>turnaround_time<span style="color:#f92672">=</span>curr_p<span style="color:#f92672">-&gt;</span>complete_time<span style="color:#f92672">-</span>curr_p<span style="color:#f92672">-&gt;</span>arrival_time;
+</span></span><span style="display:flex;"><span>            curr_p<span style="color:#f92672">-&gt;</span>waiting_time<span style="color:#f92672">=</span>curr_p<span style="color:#f92672">-&gt;</span>turnaround_time<span style="color:#f92672">-</span>curr_p<span style="color:#f92672">-&gt;</span>cpu_burst_time;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">enqueue</span>(<span style="color:#f92672">&amp;</span>ready_queue,curr_p);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre>
 </div>
-<p>하지만 여기서 문제가 생겼는데, 이미지가 어떻게 해도 가져와지지 않는다는 점이었다. 이미지가 들어있는 태그를 살펴보면,</p>
-<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-27%20%ec%98%a4%ed%9b%84%208.44.28.png" title="" data-thumbnail="스크린샷 2024-09-27 오후 8.44.28.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-09-27%20%ec%98%a4%ed%9b%84%208.44.28.png"     ></a>
-<p>이렇게 ::before에 들어가 있어 어떻게 해도 가져올 수가 없었다.</p>
-<p>그래서 이미지까지 가져오고자 선택한 방법이 바로 API이다!</p>
-<h2 id="네이버-api로-크롤링하기" class="headerLink">
-    <a href="#%eb%84%a4%ec%9d%b4%eb%b2%84-api%eb%a1%9c-%ed%81%ac%eb%a1%a4%eb%a7%81%ed%95%98%ea%b8%b0" class="header-mark" aria-label="Header mark for '네이버 API로 크롤링하기'"></a>네이버 API로 크롤링하기</h2><p>네이버 API를 사용하기 위해서는 먼저 <a href="https://developers.naver.com/main/" target="_blank" rel="noopener noreferrer">Naver Developers</a> 에서 API key를 발급받아야 한다.</p>
-<p>사이트에 들어가서 서비스 API -&gt; 오픈 API 이용 신청을 눌러 네이버 검색 API를 선택하면 client id와 secret key를 발급받을 수 있다.</p>
-<h3 id="api-크롤링-코드" class="headerLink">
-    <a href="#api-%ed%81%ac%eb%a1%a4%eb%a7%81-%ec%bd%94%eb%93%9c" class="header-mark" aria-label="Header mark for 'API 크롤링 코드'"></a>API 크롤링 코드</h3><div class="code-block highlight is-closed show-line-numbers  tw-group tw-my-2">
-  <div class="
-    code-block-title 
-    
-    tw-flex 
-    tw-flex-row 
-    tw-justify-between 
-    tw-w-full tw-bg-bgColor-secondary
-    ">      
-    <button 
-      class="
-        tw-select-none 
-        tw-mx-2 
-        tw-block
-        group-[.is-open]:tw-rotate-90
-        tw-transition-[transform] 
-        tw-duration-500 
-        tw-ease-in-out
-        print:!tw-hidden"
-      disabled
-      aria-hidden="true"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></button>
-
-    <div class="code-block-title-bar tw-w-full">
-      <p class="tw-select-none !tw-my-1">python</p>
-    </div>
-    <div class="tw-flex">
-      <button 
-        class="
-          line-number-button
-          tw-select-none 
-          tw-mx-2 
-          tw-hidden 
-          group-[.is-open]:tw-block 
-          group-[.show-line-numbers]:tw-text-fgColor-link 
-          print:!tw-hidden" 
-        title="Toggle line numbers"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
-
-      <button 
-        class="
-          wrap-code-button
-          tw-select-none 
-          tw-mx-2 
-          tw-hidden 
-          group-[.is-open]:tw-block 
-          group-[.is-wrap]:tw-text-fgColor-link 
-          print:!tw-hidden" 
-        title="Toggle code wrap"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
-      
-      <button 
-        class="
-          copy-code-button
-          tw-select-none
-          tw-mx-2 
-          tw-hidden
-          group-[.is-open]:tw-block
-          hover:tw-text-fgColor-link 
-          print:!tw-hidden"
-        title="Copy code">
-          <span class="copy-icon tw-block"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
-          <span class="check-icon tw-hidden"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
-      </button>
-        
-      <button 
-        class="
-          tw-select-none 
-          tw-mx-2 
-          tw-block 
-          group-[.is-open]:tw-hidden 
-          print:!tw-hidden" 
-        disabled
-        aria-hidden="true"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
-    </div>
-  </div>
-  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-7" 
-    class="
-      chroma 
-      !tw-block 
-      tw-p-0
-      tw-m-0
-      tw-transition-[max-height] 
-      tw-duration-500 
-      tw-ease-in-out 
-      group-[.is-closed]:!tw-max-h-0 
-      group-[.is-wrap]:tw-text-wrap
-      tw-overflow-y-hidden
-      tw-overflow-x-auto
-      tw-scrollbar-thin
-      "><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> urllib
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>CLIENT_ID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>CLIENT_SECRET<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">search_by_api</span>(query):
-</span></span><span style="display:flex;"><span>    query <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>quote(query)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://openapi.naver.com/v1/search/shop?query=&#34;</span> <span style="color:#f92672">+</span> query 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    request <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>Request(url)
-</span></span><span style="display:flex;"><span>    request<span style="color:#f92672">.</span>add_header(<span style="color:#e6db74">&#39;X-Naver-Client-Id&#39;</span>, CLIENT_ID)
-</span></span><span style="display:flex;"><span>    request<span style="color:#f92672">.</span>add_header(<span style="color:#e6db74">&#39;X-Naver-Client-Secret&#39;</span>, CLIENT_SECRET)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlopen(request)
-</span></span><span style="display:flex;"><span>    rescode<span style="color:#f92672">=</span>response<span style="color:#f92672">.</span>getcode()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(rescode<span style="color:#f92672">==</span><span style="color:#ae81ff">200</span>):
-</span></span><span style="display:flex;"><span>        items<span style="color:#f92672">=</span>json<span style="color:#f92672">.</span>load(response)[<span style="color:#e6db74">&#39;items&#39;</span>]
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> items
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;error&#34;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span></span></span></code></pre>
-</div>
-<p>위 코드를 통해 query에 대한 네이버 쇼핑 검색 결과를 가져올 수 있다! 검색을 통해 가져올 수 있는 정보는 아래와 같다.</p>
-<a class="lightgallery" href="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.42.20.png" title="" data-thumbnail="스크린샷 2024-10-02 오후 12.42.20.png"><img  loading="lazy" src="%ec%8a%a4%ed%81%ac%eb%a6%b0%ec%83%b7%202024-10-02%20%ec%98%a4%ed%9b%84%2012.42.20.png"     ></a>
-<p>제품 이름, 링크, 이미지, 가격, 카테고리 모두를 한번에 json 형식으로 가져올 수 있다.</p>
-<h2 id="reference" class="headerLink">
-    <a href="#reference" class="header-mark" aria-label="Header mark for 'Reference'"></a>Reference</h2><ul>
-<li><a href="https://hevton.tistory.com/735?category=1168625" target="_blank" rel="noopener noreferrer">이미지 다운받는법</a></li>
-<li><a href="https://yenpa.tistory.com/2" target="_blank" rel="noopener noreferrer">네이버 api 등록방법</a></li>
-<li><a href="https://developers.naver.com/apps/#/myapps/Oy2Qg5SDr74V_43Y5O0p/overview" target="_blank" rel="noopener noreferrer">네이버 api 내 애플리케이션</a></li>
-<li>네이버 api로 웹크롤링
 <ul>
-<li><a href="https://velog.io/@mingu4u/Web-crawling-naver-API-%EC%9B%B9-%ED%81%AC%EB%A1%A4%EB%A7%81%EC%9C%BC%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%87%BC%ED%95%91-%EC%95%84%EC%9D%B4%ED%8C%A8%EB%93%9C-%EA%B0%80%EA%B2%A9-%EC%9E%90%EB%8F%99-%EB%B9%84%EA%B5%90" target="_blank" rel="noopener noreferrer">https://velog.io/@mingu4u/Web-crawling-naver-API-%EC%9B%B9-%ED%81%AC%EB%A1%A4%EB%A7%81%EC%9C%BC%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%87%BC%ED%95%91-%EC%95%84%EC%9D%B4%ED%8C%A8%EB%93%9C-%EA%B0%80%EA%B2%A9-%EC%9E%90%EB%8F%99-%EB%B9%84%EA%B5%90</a></li>
-<li><a href="https://suyeoniii.tistory.com/39" target="_blank" rel="noopener noreferrer">https://suyeoniii.tistory.com/39</a></li>
+<li>큐에서 프로세스를 꺼내서 time_quantum만큼 실행하면서 완료되지 않은 프로세스는 preemptiong하고 다시 enqueue합니다.</li>
 </ul>
 </li>
-<li><a href="https://m.blog.naver.com/j7youngh/222845624447" target="_blank" rel="noopener noreferrer">결측치 확인 및 제거</a></li>
-<li><a href="https://mingchin.tistory.com/64" target="_blank" rel="noopener noreferrer">괄호와 괄호 안 문자열 제거</a></li>
+</ul>
+<h3 id="평가" class="headerLink">
+    <a href="#%ed%8f%89%ea%b0%80" class="header-mark" aria-label="Header mark for '평가'"></a>평가</h3><ul>
+<li>
+<p>gantt chart : 스케줄러가 시간에 따라 어떤 프로세스를 실행했는지 보여줌</p>
+<p>ex) | PID 1 (0~2) | PID 2 (2~5) | IDLE (5~6) | PID 3 (6~9) |</p>
+</li>
+<li>
+<p>Average Turnaround Time: 프로세스가 도착해서 완전히 끝날 때까지 걸린 평균 시간</p>
+<p><code>turnaround_time = complete_time - arrival_time</code></p>
+</li>
+<li>
+<p>Average Waiting Time: 프로세스가 ready queue에서 대기한 평균 시간</p>
+<p><code>waiting_time = turnaround_time - cpu_burst_time</code>
+<code>waiting_time = start_time - arrival_time</code> (preemption 없는 경우)</p>
+</li>
+<li>
+<p>평가 결과</p>
+<table>
+<thead>
+<tr>
+<th>PID</th>
+<th>CPU Burst Time</th>
+<th>Arrival Time</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr>
+<td>1</td>
+<td>7</td>
+<td>5</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>5</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>9</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>18</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>다음의 프로세스에 대한 각 알고리즘별 평가 결과는 다음과 같습니다.</p>
+<ul>
+<li>FCFS
+<a class="lightgallery" href="fcfs.png" title="" data-thumbnail="fcfs.png"><img  loading="lazy" src="fcfs.png"     ></a></li>
+<li>Preemptive SJF
+<a class="lightgallery" href="preemptive_sjf.png" title="" data-thumbnail="preemptive_sjf.png"><img  loading="lazy" src="preemptive_sjf.png"     ></a></li>
+<li>Preemptive Priority
+<a class="lightgallery" href="preemptive_priority.png" title="" data-thumbnail="preemptive_priority.png"><img  loading="lazy" src="preemptive_priority.png"     ></a></li>
+<li>Round Robin
+<a class="lightgallery" href="round_robin.png" title="" data-thumbnail="round_robin.png"><img  loading="lazy" src="round_robin.png"     ></a></li>
+</ul>
+</li>
 </ul></div>
 
         <div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2024-10-02</span>
+                <span>Updated on 2025-06-04</span>
             </div>
             <div class="post-info-license"></div>
         </div>
@@ -999,10 +1171,8 @@ Selenium에서 <code>driver.find_element()</code>를 이용해서 HTML element�
         </section>
     </div>
 
-    <div class="post-nav print:tw-hidden"><a href="/posts/accept-the-modality-gap/" class="prev" rel="prev" title="[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>[논문 리뷰] Accept the Modality Gap : An Exploration in Hyperbolic Space</a>
-            <a href="/posts/hierarcaps/" class="next" rel="next" title="[논문 리뷰] Emergent Visual-Semantic Hierarchies in Image-Text Representation">[논문 리뷰] Emergent Visual-Semantic Hierarchies in Image-Text Representation<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></a></div>
+    <div class="post-nav print:tw-hidden"><a href="/posts/more-about-entropy/" class="prev" rel="prev" title="Entropy 총정리(joint, conditional, mutual information)"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>Entropy 총정리(joint, conditional, mutual information)</a></div>
 </div>
 <div id="comments" class="print:!tw-hidden tw-pt-32 tw-pb-8"><div id="utterances"></div><noscript>
                 Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
